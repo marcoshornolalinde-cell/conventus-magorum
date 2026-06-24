@@ -457,9 +457,9 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
     }
 
     if (effect.type === "ownCreatureDealsPowerDamage" && target && secondTarget) {
-      const damage = getCreatureStats(target).power;
+      const damage = Math.max(0, getCreatureStats(target).power);
       secondTarget.damageMarked += damage;
-      if (hasKeyword(target, "Deathtouch")) {
+      if (damage > 0 && hasKeyword(target, "Deathtouch")) {
         secondTarget.deathtouchDamageMarked += damage;
       }
       gainLifeFromCreatureDamage(game, target, damage);

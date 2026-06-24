@@ -377,6 +377,34 @@ describe("noncreature spells", () => {
     expect(opponent.graveyard.map((instance) => instance.instanceId)).toContain(target.instanceId);
   });
 
+  it("does not mark negative damage when a creature with negative power deals power damage", () => {
+    const game = createInitialGame(content, {
+      seed: "bite-down-negative-power",
+      players: [
+        { id: "player1", archetypeIds: ["elves", "primal"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const spell = findPoolCard(player, "bite_down");
+    const source = findPoolCard(player, "llanowar_elves");
+    const target = findPoolCard(opponent, "hinterland_sanctifier");
+    source.powerModifier = -3;
+    setHand(player, [spell]);
+    player.battlefield = [source];
+    opponent.battlefield = [target];
+    giveMana(player, "G", 2);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "castSpell");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(target.damageMarked).toBe(0);
+    expect(opponent.battlefield.map((instance) => instance.instanceId)).toContain(target.instanceId);
+  });
+
   it("resolves Felling Blow counter before its damage", () => {
     const game = createInitialGame(content, {
       seed: "felling-blow",
