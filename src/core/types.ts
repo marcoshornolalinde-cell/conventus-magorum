@@ -140,6 +140,37 @@ export interface StackItem {
   targetIds: string[];
 }
 
+export type GameEventType =
+  | "gameCreated"
+  | "turnStarted"
+  | "landEntered"
+  | "manaProduced"
+  | "cardDrawn"
+  | "spellCast"
+  | "spellResolved"
+  | "spellCountered"
+  | "creatureEntered"
+  | "permanentDied"
+  | "permanentExiled"
+  | "permanentAttached"
+  | "damageDealt"
+  | "lifeGained"
+  | "cardDiscarded"
+  | "creatureSacrificed"
+  | "gameEnded";
+
+export interface GameEvent {
+  sequence: number;
+  turn: number;
+  phase: GamePhase;
+  type: GameEventType;
+  playerId?: PlayerId;
+  sourceId?: string;
+  targetId?: string;
+  amount?: number;
+  details?: Record<string, string | number | boolean | null>;
+}
+
 export interface GameLogEntry {
   turn: number;
   phase: GamePhase;
@@ -158,6 +189,11 @@ export interface CombatPairing {
   defendingPlayerId: PlayerId;
 }
 
+export type AdditionalCostPayment =
+  | { type: "mana"; manaCost: string }
+  | { type: "discard"; cardInstanceId: string }
+  | { type: "sacrificeCreature"; permanentId: string };
+
 export interface GameState {
   id: string;
   seed: string;
@@ -171,6 +207,7 @@ export interface GameState {
   winnerId: PlayerId | null;
   loserIds: PlayerId[];
   log: GameLogEntry[];
+  events: GameEvent[];
 }
 
 export type LegalAction =
@@ -184,6 +221,7 @@ export type LegalAction =
       playerId: PlayerId;
       cardInstanceId: string;
       targetIds: string[];
+      additionalCosts: AdditionalCostPayment[];
     }
   | {
       type: "pass";

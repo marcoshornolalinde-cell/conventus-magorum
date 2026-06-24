@@ -70,6 +70,9 @@ describe("general turn start", () => {
 
     expect(game.turnNumber).toBe(1);
     expect(game.phase).toBe("main1");
+    expect(game.events.map((event) => event.type)).toEqual(
+      expect.arrayContaining(["gameCreated", "turnStarted", "landEntered", "manaProduced", "cardDrawn"]),
+    );
 
     for (const player of game.players) {
       expect(player.battlefield.filter((instance) => instance.card.isLand)).toHaveLength(1);

@@ -1,5 +1,6 @@
 import type { CardInstance, CombatPairing, CombatPlan, GameState, PlayerId, PlayerState } from "./types.js";
 import { getOpponent, getPlayer, getPriorityOrder } from "./actions.js";
+import { emitGameEvent } from "./events.js";
 
 export type ChooseCombatPlan = (game: GameState, playerId: PlayerId) => CombatPlan;
 
@@ -273,6 +274,12 @@ export function applyStateBasedActions(game: GameState): void {
 
       if (hasZeroOrLessToughness || hasLethalDamage) {
         moveToGraveyard(game, player, creature);
+        emitGameEvent(game, {
+          type: "permanentDied",
+          playerId: player.playerId,
+          sourceId: creature.instanceId,
+          details: { cardId: creature.card.id },
+        });
         log(game, `${creature.card.name} dies.`);
       }
     }
@@ -296,6 +303,11 @@ function setGameOverFromLifeLoss(game: GameState): void {
   game.phase = "gameOver";
   game.loserIds = loserIds;
   game.winnerId = winner?.playerId ?? null;
+  emitGameEvent(game, {
+    type: "gameEnded",
+    playerId: game.winnerId ?? undefined,
+    details: { reason: "lifeTotal" },
+  });
   log(game, `Game over. Winner: ${game.winnerId ?? "none"}.`);
 }
 
@@ -326,6 +338,12 @@ function gainLifeFromLifelink(game: GameState, source: CardInstance, damage: num
 
   const controller = getPlayer(game, source.ownerId);
   controller.lifeTotal += damage;
+  emitGameEvent(game, {
+    type: "lifeGained",
+    playerId: controller.playerId,
+    sourceId: source.instanceId,
+    amount: damage,
+  });
   log(game, `${controller.playerId} gains ${damage} life from ${source.card.name}.`);
 }
 
@@ -336,6 +354,14 @@ function dealDamageToPlayer(game: GameState, source: CardInstance, defendingPlay
 
   defendingPlayer.lifeTotal -= damage;
   gainLifeFromLifelink(game, source, damage);
+  emitGameEvent(game, {
+    type: "damageDealt",
+    playerId: source.ownerId,
+    sourceId: source.instanceId,
+    targetId: defendingPlayer.playerId,
+    amount: damage,
+    details: { targetType: "player" },
+  });
   log(game, `${source.card.name} deals ${damage} damage to ${defendingPlayer.playerId}.`);
   setGameOverFromLifeLoss(game);
 }
@@ -350,6 +376,14 @@ function dealDamageToCreature(game: GameState, source: CardInstance, target: Car
     target.deathtouchDamageMarked += damage;
   }
   gainLifeFromLifelink(game, source, damage);
+  emitGameEvent(game, {
+    type: "damageDealt",
+    playerId: source.ownerId,
+    sourceId: source.instanceId,
+    targetId: target.instanceId,
+    amount: damage,
+    details: { targetType: "creature" },
+  });
 }
 
 function dealAttackerDamageToBlockers(

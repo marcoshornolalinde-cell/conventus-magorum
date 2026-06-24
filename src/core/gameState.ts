@@ -2,6 +2,7 @@ import type { ArchetypeId, ContentBundle, GameState, PlayerId, PlayerState } fro
 import { createSeededRandom } from "./random.js";
 import { createEmptyManaPool } from "./mana.js";
 import { assertGameStateIsValid } from "./validateGameState.js";
+import { emitGameEvent } from "./events.js";
 import { assertContentBundleIsValid } from "../data/validateContent.js";
 import { createPlayerDecks } from "../data/buildDecks.js";
 
@@ -86,8 +87,14 @@ export function createInitialGame(content: ContentBundle, options: CreateInitial
         message: "Initial game created.",
       },
     ],
+    events: [],
   };
 
+  emitGameEvent(game, {
+    type: "gameCreated",
+    playerId: attackingPriorityPlayerId,
+    details: { seed },
+  });
   assertGameStateIsValid(game, "initial game");
   return game;
 }

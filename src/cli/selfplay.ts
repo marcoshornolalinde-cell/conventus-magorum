@@ -1,5 +1,5 @@
 import { loadContentBundle } from "../data/loadContent.js";
-import { runSelfplay } from "../selfplay/runMatch.js";
+import { runSelfplay, SelfplayRuntimeError } from "../selfplay/runMatch.js";
 
 function readSeedFromArgs(args: string[]): string {
   const seedArg = args.find((arg) => arg.startsWith("--seed="));
@@ -15,7 +15,20 @@ const args = process.argv.slice(2);
 const seed = readSeedFromArgs(args);
 const maxTurns = readMaxTurnsFromArgs(args);
 const content = loadContentBundle();
-const result = runSelfplay(content, { seed, maxTurns });
+let result;
+
+try {
+  result = runSelfplay(content, { seed, maxTurns });
+} catch (error) {
+  if (error instanceof SelfplayRuntimeError) {
+    console.error(error.message);
+    console.error(JSON.stringify(error.diagnostic, null, 2));
+    process.exitCode = 1;
+    process.exit();
+  }
+
+  throw error;
+}
 const { game } = result;
 
 console.log(`Selfplay match`);

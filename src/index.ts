@@ -1,14 +1,24 @@
 export * from "./core/gameState.js";
 export * from "./core/actions.js";
 export * from "./core/combat.js";
+export {
+  canPayFullManaPath,
+  getAdditionalCostOptions,
+  getManaCostForPayment,
+  getOptionalAdditionalManaCost,
+  hasPayableAdditionalCosts,
+} from "./core/costs.js";
 export * from "./core/mana.js";
 export * from "./core/random.js";
 export * from "./core/spells.js";
 export * from "./core/turn.js";
 export * from "./core/types.js";
 export * from "./core/validateGameState.js";
+export * from "./core/events.js";
 export * from "./ai/heuristicAI.js";
+export * from "./data/auditUnsupportedMechanics.js";
 export * from "./data/buildDecks.js";
 export * from "./data/loadContent.js";
 export * from "./data/validateContent.js";
 export * from "./selfplay/runMatch.js";
+export * from "./simulate/runSimulation.js";

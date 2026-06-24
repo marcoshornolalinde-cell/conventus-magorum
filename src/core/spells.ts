@@ -6,6 +6,7 @@ import {
   getCreaturesOnBattlefield,
   hasKeyword,
 } from "./combat.js";
+import { emitGameEvent } from "./events.js";
 
 type SpellEffect =
   | { type: "destroyCreature" }
@@ -251,6 +252,12 @@ function counterStackItem(game: GameState, stackItemId: string): void {
   const [counteredItem] = game.stack.splice(stackIndex, 1);
   const controller = getPlayer(game, counteredItem.controllerId);
   controller.graveyard.push(counteredItem.source);
+  emitGameEvent(game, {
+    type: "spellCountered",
+    playerId: counteredItem.controllerId,
+    sourceId: counteredItem.source.instanceId,
+    details: { cardId: counteredItem.source.card.id },
+  });
   log(game, `${counteredItem.source.card.name} is countered.`);
 }
 
@@ -286,6 +293,12 @@ function movePermanentToGraveyard(game: GameState, instanceId: string): void {
   permanent.attachedToId = null;
   permanent.doesNotUntap = false;
   controller.graveyard.push(permanent);
+  emitGameEvent(game, {
+    type: "permanentDied",
+    playerId: controller.playerId,
+    sourceId: permanent.instanceId,
+    details: { cardId: permanent.card.id },
+  });
 }
 
 function movePermanentToExile(game: GameState, instanceId: string): void {
@@ -320,6 +333,12 @@ function movePermanentToExile(game: GameState, instanceId: string): void {
   permanent.attachedToId = null;
   permanent.doesNotUntap = false;
   controller.exile.push(permanent);
+  emitGameEvent(game, {
+    type: "permanentExiled",
+    playerId: controller.playerId,
+    sourceId: permanent.instanceId,
+    details: { cardId: permanent.card.id },
+  });
 }
 
 function attachPersistentPermanent(game: GameState, controller: PlayerState, source: CardInstance, target: CardInstance): void {
@@ -360,6 +379,13 @@ function attachPersistentPermanent(game: GameState, controller: PlayerState, sou
     target.staticToughnessModifier += 1;
   }
 
+  emitGameEvent(game, {
+    type: "permanentAttached",
+    playerId: controller.playerId,
+    sourceId: source.instanceId,
+    targetId: target.instanceId,
+    details: { cardId: source.card.id },
+  });
   log(game, `${source.card.name} attaches to ${target.card.name}.`);
 }
 
@@ -378,6 +404,12 @@ function drawCards(game: GameState, player: PlayerState, amount: number): void {
     player.spellDeck = remainingDeck;
     player.hand.push(card);
     player.cardsDrawnThisTurn += 1;
+    emitGameEvent(game, {
+      type: "cardDrawn",
+      playerId: player.playerId,
+      sourceId: card.instanceId,
+      details: { cardId: card.card.id },
+    });
   }
 }
 
@@ -388,6 +420,12 @@ function gainLifeFromCreatureDamage(game: GameState, source: CardInstance, damag
 
   const controller = getPlayer(game, source.ownerId);
   controller.lifeTotal += damage;
+  emitGameEvent(game, {
+    type: "lifeGained",
+    playerId: controller.playerId,
+    sourceId: source.instanceId,
+    amount: damage,
+  });
   log(game, `${controller.playerId} gains ${damage} life from ${source.card.name}.`);
 }
 
@@ -424,6 +462,14 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
 
     if (effect.type === "damageCreature" && target) {
       target.damageMarked += effect.amount;
+      emitGameEvent(game, {
+        type: "damageDealt",
+        playerId: controller.playerId,
+        sourceId: stackItem.source.instanceId,
+        targetId: target.instanceId,
+        amount: effect.amount,
+        details: { targetType: "creature" },
+      });
       log(game, `${stackItem.source.card.name} deals ${effect.amount} damage to ${target.card.name}.`);
       applyStateBasedActions(game);
     }
@@ -442,6 +488,12 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
 
     if (effect.type === "gainLife") {
       controller.lifeTotal += effect.amount;
+      emitGameEvent(game, {
+        type: "lifeGained",
+        playerId: controller.playerId,
+        sourceId: stackItem.source.instanceId,
+        amount: effect.amount,
+      });
       log(game, `${controller.playerId} gains ${effect.amount} life from ${stackItem.source.card.name}.`);
     }
 
@@ -463,6 +515,14 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
         secondTarget.deathtouchDamageMarked += damage;
       }
       gainLifeFromCreatureDamage(game, target, damage);
+      emitGameEvent(game, {
+        type: "damageDealt",
+        playerId: target.ownerId,
+        sourceId: target.instanceId,
+        targetId: secondTarget.instanceId,
+        amount: damage,
+        details: { sourceSpellId: stackItem.source.instanceId, targetType: "creature" },
+      });
       log(game, `${target.card.name} deals ${damage} damage to ${secondTarget.card.name} from ${stackItem.source.card.name}.`);
       applyStateBasedActions(game);
     }

@@ -325,6 +325,38 @@ describe("noncreature spells", () => {
     expect(opponent.exile.map((instance) => instance.instanceId)).toContain(target.instanceId);
   });
 
+  it("can pay Eaten Alive additional cost by sacrificing a creature", () => {
+    const game = createInitialGame(content, {
+      seed: "additional-sacrifice",
+      players: [
+        { id: "player1", archetypeIds: ["undead", "vampires"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const spell = findPoolCard(player, "eaten_alive");
+    const sacrifice = findPoolCard(player, "diregraf_ghoul");
+    const target = findPoolCard(opponent, "hinterland_sanctifier");
+    setHand(player, [spell]);
+    player.battlefield = [sacrifice];
+    opponent.battlefield = [target];
+    giveMana(player, "B", 1);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) =>
+        candidate.type === "castSpell" &&
+        candidate.additionalCosts.some((cost) => cost.type === "sacrificeCreature"),
+    );
+    expect(action).toBeDefined();
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(player.graveyard.map((instance) => instance.instanceId)).toContain(sacrifice.instanceId);
+    expect(opponent.exile.map((instance) => instance.instanceId)).toContain(target.instanceId);
+  });
+
   it("pays discard additional costs before resolving draw spells", () => {
     const game = createInitialGame(content, {
       seed: "additional-discard",

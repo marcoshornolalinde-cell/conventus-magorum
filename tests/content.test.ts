@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { createInitialGame } from "../src/core/gameState.js";
 import type { ContentBundle } from "../src/core/types.js";
+import { auditUnsupportedMechanics } from "../src/data/auditUnsupportedMechanics.js";
 import { createPlayerDecks } from "../src/data/buildDecks.js";
 import { loadContentBundle } from "../src/data/loadContent.js";
 import { validateContentBundle } from "../src/data/validateContent.js";
@@ -31,6 +32,14 @@ describe("content bundle", () => {
       expect(archetype.cardCount).toBe(20);
       expect(totalCards).toBe(20);
     }
+  });
+
+  it("audits unsupported mechanics in rules text", () => {
+    const audit = auditUnsupportedMechanics(content);
+
+    expect(audit.cardsWithText).toBeGreaterThan(0);
+    expect(audit.unsupportedCards.length).toBeGreaterThan(0);
+    expect(audit.unsupportedCounts["triggered ability"]).toBeGreaterThan(0);
   });
 });
 

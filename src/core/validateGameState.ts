@@ -141,6 +141,30 @@ function validateGameOverState(game: GameState, errors: string[]): void {
   }
 }
 
+function validateEvents(game: GameState, errors: string[]): void {
+  const playerIds = new Set(game.players.map((player) => player.playerId));
+
+  game.events.forEach((event, index) => {
+    const expectedSequence = index + 1;
+
+    if (event.sequence !== expectedSequence) {
+      errors.push(`Event at index ${index} has sequence ${event.sequence}, expected ${expectedSequence}.`);
+    }
+
+    if (!Number.isInteger(event.turn) || event.turn < 0) {
+      errors.push(`Event ${event.sequence} has invalid turn ${event.turn}.`);
+    }
+
+    if (event.playerId && !playerIds.has(event.playerId)) {
+      errors.push(`Event ${event.sequence} has unknown player ${event.playerId}.`);
+    }
+
+    if (event.amount !== undefined && (!Number.isFinite(event.amount) || event.amount < 0)) {
+      errors.push(`Event ${event.sequence} has invalid amount ${event.amount}.`);
+    }
+  });
+}
+
 export function validateGameState(game: GameState): GameStateValidationResult {
   const errors: string[] = [];
   const playerIds = new Set<string>();
@@ -169,6 +193,7 @@ export function validateGameState(game: GameState): GameStateValidationResult {
   validateAttachments(game, errors);
   validateNumericState(game, errors);
   validateGameOverState(game, errors);
+  validateEvents(game, errors);
 
   return {
     valid: errors.length === 0,

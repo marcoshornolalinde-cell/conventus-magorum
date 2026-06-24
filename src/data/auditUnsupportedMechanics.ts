@@ -1,0 +1,102 @@
+import type { Card, ContentBundle } from "../core/types.js";
+import { getSpellProfile } from "../core/spells.js";
+
+export interface UnsupportedMechanicFinding {
+  cardId: string;
+  cardName: string;
+  typeLine: string;
+  unsupported: string[];
+  text: string;
+}
+
+export interface MechanicsAudit {
+  totalCards: number;
+  cardsWithText: number;
+  unsupportedCards: UnsupportedMechanicFinding[];
+  unsupportedCounts: Record<string, number>;
+}
+
+const unsupportedPatterns: Array<{ label: string; pattern: RegExp }> = [
+  { label: "triggered ability", pattern: /\b(when|whenever|at the beginning|at the end)\b/i },
+  { label: "activated ability", pattern: /(?:^|\s)\{[^}]+}[:,]|\{T}[:,]/i },
+  { label: "token creation", pattern: /\bcreate\b.+\btoken/i },
+  { label: "return from battlefield/yard", pattern: /\breturn\b.+\b(?:hand|battlefield|graveyard)\b/i },
+  { label: "mill", pattern: /\bmill\b/i },
+  { label: "scry", pattern: /\bscry\b/i },
+  { label: "kicker", pattern: /\bkicker\b/i },
+  { label: "ward", pattern: /\bward\b/i },
+  { label: "cost reduction", pattern: /\bcosts? \{?\d?}? less\b/i },
+  { label: "modal choice", pattern: /\bchoose one\b/i },
+  { label: "replacement effect", pattern: /\binstead\b/i },
+  { label: "until leaves battlefield", pattern: /\buntil .* leaves the battlefield\b/i },
+  { label: "static anthem", pattern: /\b(other|attacking|equipped|skeletons|zombies|pirates|goblins|vampires).+get[s]? [+-]\d\/[+-]\d/i },
+  { label: "conditional static ability", pattern: /\bas long as\b|\bas long\b|\bwhile it's attacking\b/i },
+  { label: "can't be blocked", pattern: /\bcan't be blocked\b/i },
+  { label: "graveyard ability", pattern: /\bfrom your graveyard\b|\bexile this card from your graveyard\b/i },
+  { label: "optional payment", pattern: /\byou may pay\b|\byou may discard\b/i },
+];
+
+function normalizeText(card: Card): string {
+  return card.gameText.replace(/\s+/g, " ").trim();
+}
+
+function hasOnlySupportedPrintedKeywords(card: Card, text: string): boolean {
+  if (!card.cardTypes.includes("Creature")) {
+    return false;
+  }
+
+  const keywordPattern =
+    /^(?:(?:Flying|Vigilance|Lifelink|First strike|Double strike|Trample|Deathtouch|Haste|Reach)(?: \([^)]*\))?\s*)+$/i;
+  return keywordPattern.test(text);
+}
+
+function isSupportedNonCreatureSpell(card: Card): boolean {
+  return getSpellProfile(card) !== null;
+}
+
+export function auditUnsupportedMechanics(bundle: ContentBundle): MechanicsAudit {
+  const unsupportedCards: UnsupportedMechanicFinding[] = [];
+  const unsupportedCounts: Record<string, number> = {};
+
+  for (const card of bundle.cards) {
+    const text = normalizeText(card);
+
+    if (!text || card.isLand) {
+      continue;
+    }
+
+    const unsupported = unsupportedPatterns
+      .filter(({ pattern }) => pattern.test(text))
+      .map(({ label }) => label);
+
+    if (
+      unsupported.length === 0 &&
+      (hasOnlySupportedPrintedKeywords(card, text) || isSupportedNonCreatureSpell(card))
+    ) {
+      continue;
+    }
+
+    if (unsupported.length === 0) {
+      unsupported.push("unclassified text");
+    }
+
+    for (const label of unsupported) {
+      unsupportedCounts[label] = (unsupportedCounts[label] ?? 0) + 1;
+    }
+
+    unsupportedCards.push({
+      cardId: card.id,
+      cardName: card.name,
+      typeLine: card.typeLine,
+      unsupported,
+      text,
+    });
+  }
+
+  return {
+    totalCards: bundle.cards.length,
+    cardsWithText: bundle.cards.filter((card) => normalizeText(card).length > 0 && !card.isLand).length,
+    unsupportedCards,
+    unsupportedCounts,
+  };
+}

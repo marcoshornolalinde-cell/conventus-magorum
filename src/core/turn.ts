@@ -2,6 +2,7 @@ import type { CardInstance, GamePhase, GameState, PlayerId, PlayerState } from "
 import type { LegalAction } from "./types.js";
 import { getLegalActions, getOpponent, getPriorityOrder, performAction, resolveTopOfStack } from "./actions.js";
 import { clearCombatDamage, createSafeCombatPlan, resolveCombatPhase, type ChooseCombatPlan } from "./combat.js";
+import { emitGameEvent } from "./events.js";
 import { createEmptyManaPool, produceManaFromBattlefield } from "./mana.js";
 import { assertGameStateIsValid } from "./validateGameState.js";
 
@@ -95,6 +96,11 @@ function setGameOverFromDrawLoss(game: GameState, playersUnableToDraw: PlayerSta
   game.loserIds = loserIds;
   game.winnerId = winner?.playerId ?? null;
 
+  emitGameEvent(game, {
+    type: "gameEnded",
+    playerId: game.winnerId ?? undefined,
+    details: { reason: "drawLoss" },
+  });
   log(game, "gameOver", `Game over. Winner: ${game.winnerId ?? "none"}.`);
 }
 
@@ -114,15 +120,34 @@ export function beginGeneralTurn(game: GameState): void {
   }
 
   log(game, "start", `General turn ${game.turnNumber} starts. Attacking priority: ${game.attackingPriorityPlayerId}.`);
+  emitGameEvent(game, {
+    type: "turnStarted",
+    playerId: game.attackingPriorityPlayerId,
+    details: { turnNumber: game.turnNumber },
+  });
 
   for (const player of game.players) {
     const land = putTopLandOntoBattlefield(player, game.turnNumber);
+    if (land) {
+      emitGameEvent(game, {
+        type: "landEntered",
+        playerId: player.playerId,
+        sourceId: land.instanceId,
+        details: { cardId: land.card.id },
+      });
+    }
     log(game, "start", land ? `${player.playerId} puts ${land.card.name} onto the battlefield.` : `${player.playerId} has no land to put onto the battlefield.`);
   }
 
   for (const player of game.players) {
     player.manaPool = produceManaFromBattlefield(player);
-    log(game, "start", `${player.playerId} produces ${Object.values(player.manaPool).reduce((total, amount) => total + amount, 0)} mana.`);
+    const producedMana = Object.values(player.manaPool).reduce((total, amount) => total + amount, 0);
+    emitGameEvent(game, {
+      type: "manaProduced",
+      playerId: player.playerId,
+      amount: producedMana,
+    });
+    log(game, "start", `${player.playerId} produces ${producedMana} mana.`);
   }
 
   const playersUnableToDraw: PlayerState[] = [];
@@ -134,6 +159,12 @@ export function beginGeneralTurn(game: GameState): void {
       playersUnableToDraw.push(player);
       log(game, "start", `${player.playerId} cannot draw from spellDeck.`);
     } else {
+      emitGameEvent(game, {
+        type: "cardDrawn",
+        playerId: player.playerId,
+        sourceId: drawnCard.instanceId,
+        details: { cardId: drawnCard.card.id },
+      });
       log(game, "start", `${player.playerId} draws ${drawnCard.card.name}.`);
     }
   }

@@ -13,18 +13,71 @@ export interface SelfplayResult {
   reachedTurnLimit: boolean;
 }
 
-export function runSelfplay(content: ContentBundle, options: SelfplayOptions = {}): SelfplayResult {
-  const maxTurns = options.maxTurns ?? 30;
-  const game = createInitialGame(content, options);
-  const turns: TurnSummary[] = [];
+export interface SelfplayDiagnostic {
+  seed: string;
+  players: CreateInitialGameOptions["players"];
+  turnNumber: number | null;
+  phase: string | null;
+  status: string | null;
+  message: string;
+  recentLog: string[];
+  recentEvents: string[];
+}
 
-  while (game.status !== "gameOver" && game.turnNumber < maxTurns) {
-    turns.push(playOneGeneralTurn(game, chooseFirstPlayableCreature, chooseBasicCombatPlan));
+export class SelfplayRuntimeError extends Error {
+  readonly diagnostic: SelfplayDiagnostic;
+  readonly cause: unknown;
+
+  constructor(diagnostic: SelfplayDiagnostic, cause: unknown) {
+    super(`Selfplay failed for seed ${diagnostic.seed}: ${diagnostic.message}`);
+    this.name = "SelfplayRuntimeError";
+    this.diagnostic = diagnostic;
+    this.cause = cause;
   }
+}
+
+function createDiagnostic(
+  seed: string,
+  players: CreateInitialGameOptions["players"],
+  game: GameState | null,
+  cause: unknown,
+): SelfplayDiagnostic {
+  const message = cause instanceof Error ? cause.message : String(cause);
 
   return {
-    game,
-    turns,
-    reachedTurnLimit: game.status !== "gameOver" && game.turnNumber >= maxTurns,
+    seed,
+    players,
+    turnNumber: game?.turnNumber ?? null,
+    phase: game?.phase ?? null,
+    status: game?.status ?? null,
+    message,
+    recentLog: game?.log.slice(-20).map((entry) => `[T${entry.turn} ${entry.phase}] ${entry.message}`) ?? [],
+    recentEvents:
+      game?.events
+        .slice(-20)
+        .map((event) => `#${event.sequence} T${event.turn} ${event.phase} ${event.type}`) ?? [],
   };
+}
+
+export function runSelfplay(content: ContentBundle, options: SelfplayOptions = {}): SelfplayResult {
+  const maxTurns = options.maxTurns ?? 30;
+  const seed = options.seed ?? "default-seed";
+  let game: GameState | null = null;
+  const turns: TurnSummary[] = [];
+
+  try {
+    game = createInitialGame(content, options);
+
+    while (game.status !== "gameOver" && game.turnNumber < maxTurns) {
+      turns.push(playOneGeneralTurn(game, chooseFirstPlayableCreature, chooseBasicCombatPlan));
+    }
+
+    return {
+      game,
+      turns,
+      reachedTurnLimit: game.status !== "gameOver" && game.turnNumber >= maxTurns,
+    };
+  } catch (error) {
+    throw new SelfplayRuntimeError(createDiagnostic(seed, options.players, game, error), error);
+  }
 }
