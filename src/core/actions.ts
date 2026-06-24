@@ -7,7 +7,7 @@ import {
 } from "./costs.js";
 import { getSpellTargetOptions, resolveNonCreatureSpell } from "./spells.js";
 import { assertGameStateIsValid } from "./validateGameState.js";
-import { emitGameEvent } from "./events.js";
+import { dispatchGameEvent } from "./triggerEngine.js";
 
 function isMainPhase(phase: GamePhase): boolean {
   return phase === "main1" || phase === "main2";
@@ -147,7 +147,7 @@ function payAdditionalCosts(game: GameState, player: PlayerState, source: CardIn
       }
 
       player.graveyard.push(discarded);
-      emitGameEvent(game, {
+      dispatchGameEvent(game, {
         type: "cardDiscarded",
         playerId: player.playerId,
         sourceId: source.instanceId,
@@ -186,7 +186,7 @@ function payAdditionalCosts(game: GameState, player: PlayerState, source: CardIn
       sacrificed.doesNotUntap = false;
       detachAttachmentsFromPermanent(game, sacrificed.instanceId);
       player.graveyard.push(sacrificed);
-      emitGameEvent(game, {
+      dispatchGameEvent(game, {
         type: "creatureSacrificed",
         playerId: player.playerId,
         sourceId: source.instanceId,
@@ -283,7 +283,7 @@ export function performAction(game: GameState, action: LegalAction): void {
     phase: game.phase,
     message: `${player.playerId} casts ${card.card.name}.`,
   });
-  emitGameEvent(game, {
+  dispatchGameEvent(game, {
     type: "spellCast",
     playerId: player.playerId,
     sourceId: card.instanceId,
@@ -319,7 +319,7 @@ export function resolveTopOfStack(game: GameState): void {
     stackItem.source.attachedToId = null;
     stackItem.source.doesNotUntap = false;
     controller.battlefield.push(stackItem.source);
-    emitGameEvent(game, {
+    dispatchGameEvent(game, {
       type: "creatureEntered",
       playerId: controller.playerId,
       sourceId: stackItem.source.instanceId,
@@ -335,7 +335,7 @@ export function resolveTopOfStack(game: GameState): void {
     resolveNonCreatureSpell(game, stackItem);
   }
 
-  emitGameEvent(game, {
+  dispatchGameEvent(game, {
     type: "spellResolved",
     playerId: stackItem.controllerId,
     sourceId: stackItem.source.instanceId,

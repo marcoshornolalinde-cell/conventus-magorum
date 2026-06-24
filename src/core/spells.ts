@@ -6,7 +6,7 @@ import {
   getCreaturesOnBattlefield,
   hasKeyword,
 } from "./combat.js";
-import { emitGameEvent } from "./events.js";
+import { dispatchGameEvent } from "./triggerEngine.js";
 
 type SpellEffect =
   | { type: "destroyCreature" }
@@ -252,7 +252,7 @@ function counterStackItem(game: GameState, stackItemId: string): void {
   const [counteredItem] = game.stack.splice(stackIndex, 1);
   const controller = getPlayer(game, counteredItem.controllerId);
   controller.graveyard.push(counteredItem.source);
-  emitGameEvent(game, {
+  dispatchGameEvent(game, {
     type: "spellCountered",
     playerId: counteredItem.controllerId,
     sourceId: counteredItem.source.instanceId,
@@ -293,7 +293,7 @@ function movePermanentToGraveyard(game: GameState, instanceId: string): void {
   permanent.attachedToId = null;
   permanent.doesNotUntap = false;
   controller.graveyard.push(permanent);
-  emitGameEvent(game, {
+  dispatchGameEvent(game, {
     type: "permanentDied",
     playerId: controller.playerId,
     sourceId: permanent.instanceId,
@@ -333,7 +333,7 @@ function movePermanentToExile(game: GameState, instanceId: string): void {
   permanent.attachedToId = null;
   permanent.doesNotUntap = false;
   controller.exile.push(permanent);
-  emitGameEvent(game, {
+  dispatchGameEvent(game, {
     type: "permanentExiled",
     playerId: controller.playerId,
     sourceId: permanent.instanceId,
@@ -379,7 +379,7 @@ function attachPersistentPermanent(game: GameState, controller: PlayerState, sou
     target.staticToughnessModifier += 1;
   }
 
-  emitGameEvent(game, {
+  dispatchGameEvent(game, {
     type: "permanentAttached",
     playerId: controller.playerId,
     sourceId: source.instanceId,
@@ -404,7 +404,7 @@ function drawCards(game: GameState, player: PlayerState, amount: number): void {
     player.spellDeck = remainingDeck;
     player.hand.push(card);
     player.cardsDrawnThisTurn += 1;
-    emitGameEvent(game, {
+    dispatchGameEvent(game, {
       type: "cardDrawn",
       playerId: player.playerId,
       sourceId: card.instanceId,
@@ -420,7 +420,7 @@ function gainLifeFromCreatureDamage(game: GameState, source: CardInstance, damag
 
   const controller = getPlayer(game, source.ownerId);
   controller.lifeTotal += damage;
-  emitGameEvent(game, {
+  dispatchGameEvent(game, {
     type: "lifeGained",
     playerId: controller.playerId,
     sourceId: source.instanceId,
@@ -462,7 +462,7 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
 
     if (effect.type === "damageCreature" && target) {
       target.damageMarked += effect.amount;
-      emitGameEvent(game, {
+      dispatchGameEvent(game, {
         type: "damageDealt",
         playerId: controller.playerId,
         sourceId: stackItem.source.instanceId,
@@ -488,7 +488,7 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
 
     if (effect.type === "gainLife") {
       controller.lifeTotal += effect.amount;
-      emitGameEvent(game, {
+      dispatchGameEvent(game, {
         type: "lifeGained",
         playerId: controller.playerId,
         sourceId: stackItem.source.instanceId,
@@ -515,7 +515,7 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
         secondTarget.deathtouchDamageMarked += damage;
       }
       gainLifeFromCreatureDamage(game, target, damage);
-      emitGameEvent(game, {
+      dispatchGameEvent(game, {
         type: "damageDealt",
         playerId: target.ownerId,
         sourceId: target.instanceId,

@@ -1,5 +1,6 @@
 import type { Card, ContentBundle } from "../core/types.js";
 import { getSpellProfile } from "../core/spells.js";
+import { getTriggeredAbilityProfiles } from "../core/triggerEngine.js";
 
 export interface UnsupportedMechanicFinding {
   cardId: string;
@@ -65,13 +66,15 @@ export function auditUnsupportedMechanics(bundle: ContentBundle): MechanicsAudit
       continue;
     }
 
+    const supportedTriggers = getTriggeredAbilityProfiles(card);
     const unsupported = unsupportedPatterns
       .filter(({ pattern }) => pattern.test(text))
-      .map(({ label }) => label);
+      .map(({ label }) => label)
+      .filter((label) => label !== "triggered ability" || supportedTriggers.length === 0);
 
     if (
       unsupported.length === 0 &&
-      (hasOnlySupportedPrintedKeywords(card, text) || isSupportedNonCreatureSpell(card))
+      (hasOnlySupportedPrintedKeywords(card, text) || isSupportedNonCreatureSpell(card) || supportedTriggers.length > 0)
     ) {
       continue;
     }

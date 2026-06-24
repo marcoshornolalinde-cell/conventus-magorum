@@ -15,6 +15,7 @@ export * from "./core/turn.js";
 export * from "./core/types.js";
 export * from "./core/validateGameState.js";
 export * from "./core/events.js";
+export * from "./core/triggerEngine.js";
 export * from "./ai/heuristicAI.js";
 export * from "./data/auditUnsupportedMechanics.js";
 export * from "./data/buildDecks.js";

@@ -2,7 +2,7 @@ import type { CardInstance, GamePhase, GameState, PlayerId, PlayerState } from "
 import type { LegalAction } from "./types.js";
 import { getLegalActions, getOpponent, getPriorityOrder, performAction, resolveTopOfStack } from "./actions.js";
 import { clearCombatDamage, createSafeCombatPlan, resolveCombatPhase, type ChooseCombatPlan } from "./combat.js";
-import { emitGameEvent } from "./events.js";
+import { dispatchGameEvent } from "./triggerEngine.js";
 import { createEmptyManaPool, produceManaFromBattlefield } from "./mana.js";
 import { assertGameStateIsValid } from "./validateGameState.js";
 
@@ -96,7 +96,7 @@ function setGameOverFromDrawLoss(game: GameState, playersUnableToDraw: PlayerSta
   game.loserIds = loserIds;
   game.winnerId = winner?.playerId ?? null;
 
-  emitGameEvent(game, {
+  dispatchGameEvent(game, {
     type: "gameEnded",
     playerId: game.winnerId ?? undefined,
     details: { reason: "drawLoss" },
@@ -120,7 +120,7 @@ export function beginGeneralTurn(game: GameState): void {
   }
 
   log(game, "start", `General turn ${game.turnNumber} starts. Attacking priority: ${game.attackingPriorityPlayerId}.`);
-  emitGameEvent(game, {
+  dispatchGameEvent(game, {
     type: "turnStarted",
     playerId: game.attackingPriorityPlayerId,
     details: { turnNumber: game.turnNumber },
@@ -129,7 +129,7 @@ export function beginGeneralTurn(game: GameState): void {
   for (const player of game.players) {
     const land = putTopLandOntoBattlefield(player, game.turnNumber);
     if (land) {
-      emitGameEvent(game, {
+      dispatchGameEvent(game, {
         type: "landEntered",
         playerId: player.playerId,
         sourceId: land.instanceId,
@@ -142,7 +142,7 @@ export function beginGeneralTurn(game: GameState): void {
   for (const player of game.players) {
     player.manaPool = produceManaFromBattlefield(player);
     const producedMana = Object.values(player.manaPool).reduce((total, amount) => total + amount, 0);
-    emitGameEvent(game, {
+    dispatchGameEvent(game, {
       type: "manaProduced",
       playerId: player.playerId,
       amount: producedMana,
@@ -159,7 +159,7 @@ export function beginGeneralTurn(game: GameState): void {
       playersUnableToDraw.push(player);
       log(game, "start", `${player.playerId} cannot draw from spellDeck.`);
     } else {
-      emitGameEvent(game, {
+      dispatchGameEvent(game, {
         type: "cardDrawn",
         playerId: player.playerId,
         sourceId: drawnCard.instanceId,
