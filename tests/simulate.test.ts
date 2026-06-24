@@ -19,5 +19,12 @@ describe("simulation reporting", () => {
     expect(result.errors).toHaveLength(0);
     expect(result.stats).toHaveLength(content.archetypes.length);
     expect(result.stats.reduce((total, row) => total + row.played, 0)).toBe(40);
+    expect(result.pairStats.length).toBeGreaterThan(0);
+    expect(result.pairStats.reduce((total, row) => total + row.played, 0)).toBe(20);
+    expect(result.matchupMatrix.length).toBeGreaterThan(0);
+    expect(result.matchupMatrix.reduce((total, row) => total + row.played, 0)).toBe(80);
+    expect(result.damage.avgPlayerDamagePerGame).toBeGreaterThanOrEqual(0);
+    expect(result.mostPlayedCards.length).toBeGreaterThan(0);
+    expect(result.allHandEndCards.length).toBeGreaterThan(0);
   });
 });
