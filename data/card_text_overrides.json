@@ -1,0 +1,295 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "excelFile": "foundations_beginner_box_10_decks_textos_adaptados.xlsx",
+    "sheet": "Cambios texto"
+  },
+  "overrides": [
+    {
+      "cardId": "aggressive_mammoth",
+      "name": "Aggressive Mammoth",
+      "oracleText": "Trample (This creature can deal excess combat damage to the player or planeswalker it's attacking.)\nOther creatures you control have trample.",
+      "gameText": "Trample (This creature can deal excess combat damage to the defending player.)\nOther creatures you control have trample.",
+      "changeApplied": "Referencia a planeswalker eliminada. Reminder de trample adaptado para dañar al jugador defensor.",
+      "engineModules": [
+        "no_planeswalkers",
+        "trample"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "battle_rattle_shaman",
+      "name": "Battle-Rattle Shaman",
+      "oracleText": "At the beginning of combat on your turn, you may have target creature get +2/+0 until end of turn.",
+      "gameText": "At the end of the combat positioning step, target attacking creature you control gets +2/+0 until end of turn.",
+      "changeApplied": "Texto adaptado: disparo obligatorio al final del posicionamiento; solo puede hacer objetivo a una criatura propia en posición de ataque.",
+      "engineModules": [
+        "trigger_end_combat_positioning",
+        "target_attacking_own_creature",
+        "temporary_power_modifier"
+      ],
+      "changeType": "Card-specific override"
+    },
+    {
+      "cardId": "bear_cub",
+      "name": "Bear Cub",
+      "oracleText": "",
+      "gameText": "",
+      "changeApplied": "Sin texto Oracle.",
+      "engineModules": [
+        "none"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "beast_kin_ranger",
+      "name": "Beast-Kin Ranger",
+      "oracleText": "Trample (This creature can deal excess combat damage to the player or planeswalker it's attacking.)\nWhenever another creature you control enters, this creature gets +1/+0 until end of turn.",
+      "gameText": "Trample (This creature can deal excess combat damage to the defending player.)\nWhenever another creature you control enters, this creature gets +1/+0 until end of turn.",
+      "changeApplied": "Referencia a planeswalker eliminada. Reminder de trample adaptado para dañar al jugador defensor.",
+      "engineModules": [
+        "no_planeswalkers",
+        "trample"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "bite_down",
+      "name": "Bite Down",
+      "oracleText": "Target creature you control deals damage equal to its power to target creature or planeswalker you don't control.",
+      "gameText": "Target creature you control deals damage equal to its power to target creature you don't control.",
+      "changeApplied": "Referencia a planeswalker eliminada.",
+      "engineModules": [
+        "no_planeswalkers"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "brineborn_cutthroat",
+      "name": "Brineborn Cutthroat",
+      "oracleText": "Flash (You may cast this spell any time you could cast an instant.)\nWhenever you cast a spell during an opponent's turn, put a +1/+1 counter on this creature.",
+      "gameText": "Flash (You may cast this spell any time you could cast an instant.)\nWhenever you cast an instant spell or a spell with flash, put a +1/+1 counter on Brineborn Cutthroat.",
+      "changeApplied": "Texto adaptado: el contador se obtiene al lanzar instantáneos o hechizos con flash, independientemente de la prioridad atacante.",
+      "engineModules": [
+        "flash",
+        "trigger_cast_instant_or_flash",
+        "plus1_counter"
+      ],
+      "changeType": "Card-specific override"
+    },
+    {
+      "cardId": "deadly_plot",
+      "name": "Deadly Plot",
+      "oracleText": "Choose one —\n• Destroy target creature or planeswalker.\n• Return target Zombie creature card from your graveyard to the battlefield tapped.",
+      "gameText": "Choose one —\n• Destroy target creature.\n• Return target Zombie creature card from your graveyard to the battlefield tapped.",
+      "changeApplied": "Referencia a planeswalker eliminada.",
+      "engineModules": [
+        "no_planeswalkers"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "eaten_alive",
+      "name": "Eaten Alive",
+      "oracleText": "As an additional cost to cast this spell, sacrifice a creature or pay {3}{B}.\nExile target creature or planeswalker.",
+      "gameText": "As an additional cost to cast this spell, sacrifice a creature or pay {3}{B}.\nExile target creature.",
+      "changeApplied": "Referencia a planeswalker eliminada.",
+      "engineModules": [
+        "no_planeswalkers"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "eaten_by_piranhas",
+      "name": "Eaten by Piranhas",
+      "oracleText": "Flash (You may cast this spell any time you could cast an instant.)\nEnchant creature\nEnchanted creature loses all abilities and is a black Skeleton creature with base power and toughness 1/1. (It loses all other colors, card types, and creature types.)",
+      "gameText": "Flash (You may cast this spell any time you could cast an instant.)\nEnchant creature\nEnchanted creature loses all abilities and has base power and toughness 1/1.",
+      "changeApplied": "Texto simplificado: se descartan cambios de color, tipo y subtipo; mantiene pérdida de habilidades y base 1/1.",
+      "engineModules": [
+        "flash",
+        "aura",
+        "enchant_creature",
+        "lose_abilities",
+        "set_base_power_toughness"
+      ],
+      "changeType": "Card-specific override"
+    },
+    {
+      "cardId": "elspeths_smite",
+      "name": "Elspeth's Smite",
+      "oracleText": "Elspeth's Smite deals 3 damage to target attacking or blocking creature. If that creature would die this turn, exile it instead.",
+      "gameText": "Elspeth's Smite deals 3 damage to target attacking or defending creature. If that creature would die this turn, exile it instead.",
+      "changeApplied": "Objetivo 'blocking' adaptado a criatura en defensa.",
+      "engineModules": [
+        "target_attacking_or_defending"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "fire_elemental",
+      "name": "Fire Elemental",
+      "oracleText": "",
+      "gameText": "",
+      "changeApplied": "Sin texto Oracle.",
+      "engineModules": [
+        "none"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "frenzied_goblin",
+      "name": "Frenzied Goblin",
+      "oracleText": "Whenever this creature attacks, you may pay {R}. If you do, target creature can't block this turn.",
+      "gameText": "Whenever this creature attacks, you may pay {R}. If you do, target creature can't be assigned as a blocker this turn.",
+      "changeApplied": "Restricción de bloqueo adaptada a asignación de bloqueador.",
+      "engineModules": [
+        "cant_be_assigned_blocker"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "goblin_smuggler",
+      "name": "Goblin Smuggler",
+      "oracleText": "Haste (This creature can attack and {T} as soon as it comes under your control.)\n{T}: Another target creature with power 2 or less can't be blocked this turn.",
+      "gameText": "Haste (This creature can attack and use {T} abilities even if it entered this turn.)\n{T}: Another target creature with power 2 or less can't be blocked this turn.",
+      "changeApplied": "Reminder de haste adaptado al mareo de invocación del juego.",
+      "engineModules": [
+        "haste"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "heros_downfall",
+      "name": "Hero's Downfall",
+      "oracleText": "Destroy target creature or planeswalker.",
+      "gameText": "Destroy target creature.",
+      "changeApplied": "Referencia a planeswalker eliminada.",
+      "engineModules": [
+        "no_planeswalkers"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "highborn_vampire",
+      "name": "Highborn Vampire",
+      "oracleText": "",
+      "gameText": "",
+      "changeApplied": "Sin texto Oracle.",
+      "engineModules": [
+        "none"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "joraga_invocation",
+      "name": "Joraga Invocation",
+      "oracleText": "Each creature you control gets +3/+3 until end of turn and must be blocked this turn if able.",
+      "gameText": "Each creature you control gets +3/+3 until end of turn and must be assigned a blocker this turn if able.",
+      "changeApplied": "Obligación de bloqueo adaptada al algoritmo de asignación de bloqueadores.",
+      "engineModules": [
+        "must_be_assigned_blocker"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "leonin_vanguard",
+      "name": "Leonin Vanguard",
+      "oracleText": "At the beginning of combat on your turn, if you control three or more creatures, this creature gets +1/+1 until end of turn and you gain 1 life.",
+      "gameText": "At the beginning of combat, if you control three or more creatures, Leonin Vanguard gets +1/+1 until end of turn and you gain 1 life.",
+      "changeApplied": "Texto adaptado: se dispara al comienzo de todos los combates, no solo con prioridad atacante.",
+      "engineModules": [
+        "trigger_beginning_of_combat",
+        "life_gain",
+        "temporary_pt_modifier"
+      ],
+      "changeType": "Card-specific override"
+    },
+    {
+      "cardId": "pacifism",
+      "name": "Pacifism",
+      "oracleText": "Enchant creature\nEnchanted creature can't attack or block.",
+      "gameText": "Enchant creature\nEnchanted creature can't attack or defend.",
+      "changeApplied": "Restricción de bloqueo adaptada a posición de defensa.",
+      "engineModules": [
+        "cant_attack_or_defend"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "quick_draw_katana",
+      "name": "Quick-Draw Katana",
+      "oracleText": "During your turn, equipped creature gets +2/+0 and has first strike. (It deals combat damage before creatures without first strike.)\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+      "gameText": "Equipped creature gets +2/+0 and has first strike while it's attacking. (It deals combat damage before creatures without first strike.)\n\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+      "changeApplied": "Texto adaptado: el bonus y first strike solo se aplican si la criatura equipada está en posición de ataque.",
+      "engineModules": [
+        "equipment",
+        "equip",
+        "conditional_attacking_bonus",
+        "first_strike"
+      ],
+      "changeType": "Card-specific override"
+    },
+    {
+      "cardId": "savannah_lions",
+      "name": "Savannah Lions",
+      "oracleText": "",
+      "gameText": "",
+      "changeApplied": "Sin texto Oracle.",
+      "engineModules": [
+        "none"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "scorching_dragonfire",
+      "name": "Scorching Dragonfire",
+      "oracleText": "Scorching Dragonfire deals 3 damage to target creature or planeswalker. If that creature or planeswalker would die this turn, exile it instead.",
+      "gameText": "Scorching Dragonfire deals 3 damage to target creature. If that creature would die this turn, exile it instead.",
+      "changeApplied": "Referencia a planeswalker eliminada.",
+      "engineModules": [
+        "no_planeswalkers"
+      ],
+      "changeType": "Generic rules adaptation"
+    },
+    {
+      "cardId": "starlight_snare",
+      "name": "Starlight Snare",
+      "oracleText": "Enchant creature\nWhen this Aura enters, tap enchanted creature.\nEnchanted creature doesn't untap during its controller's untap step.",
+      "gameText": "Enchant creature\nWhen this Aura enters, tap enchanted creature.\nEnchanted creature doesn't untap during its controller's untap step. (The untap step happens during final cleanup.)",
+      "changeApplied": "Aclaración: el untap step queda definido dentro de la limpieza final.",
+      "engineModules": [
+        "aura",
+        "enchant_creature",
+        "tap",
+        "does_not_untap",
+        "final_cleanup_untap_step"
+      ],
+      "changeType": "Card-specific override"
+    },
+    {
+      "cardId": "stromkirk_bloodthief",
+      "name": "Stromkirk Bloodthief",
+      "oracleText": "At the beginning of your end step, if an opponent lost life this turn, put a +1/+1 counter on target Vampire you control.",
+      "gameText": "At the beginning of the end step, if an opponent lost life this turn, put a +1/+1 counter on target Vampire you control.",
+      "changeApplied": "Texto adaptado: se dispara al comienzo de la fase final de todos los turnos generales.",
+      "engineModules": [
+        "trigger_beginning_end_step",
+        "opponent_lost_life_this_turn",
+        "plus1_counter",
+        "target_vampire"
+      ],
+      "changeType": "Card-specific override"
+    },
+    {
+      "cardId": "swab_goblin",
+      "name": "Swab Goblin",
+      "oracleText": "",
+      "gameText": "",
+      "changeApplied": "Sin texto Oracle.",
+      "engineModules": [
+        "none"
+      ],
+      "changeType": "Generic rules adaptation"
+    }
+  ]
+}

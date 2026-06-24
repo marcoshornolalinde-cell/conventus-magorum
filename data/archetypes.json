@@ -1,0 +1,3332 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "excelFile": "foundations_beginner_box_10_decks_textos_adaptados.xlsx",
+    "primarySheet": "Cartas por deck",
+    "summarySheet": "Resumen"
+  },
+  "archetypes": [
+    {
+      "id": "cats",
+      "name": "Cats",
+      "themeEs": "Gatos",
+      "colorLabelEs": "Blanco",
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "enabled": true,
+      "cardCount": 20,
+      "uniqueCardCount": 13,
+      "landCount": 8,
+      "spellCount": 12,
+      "creatureCount": 8,
+      "averageManaValueNonLand": 2.58,
+      "cards": [
+        {
+          "cardId": "plains",
+          "name": "Plains",
+          "quantity": 8,
+          "order": 1,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "W",
+          "cardTypes": [
+            "Land"
+          ]
+        },
+        {
+          "cardId": "savannah_lions",
+          "name": "Savannah Lions",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "leonin_skyhunter",
+          "name": "Leonin Skyhunter",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "prideful_parent",
+          "name": "Prideful Parent",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "felidar_savior",
+          "name": "Felidar Savior",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "angelic_edict",
+          "name": "Angelic Edict",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "jazal_goldmane",
+          "name": "Jazal Goldmane",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "pacifism",
+          "name": "Pacifism",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "ingenious_leonin",
+          "name": "Ingenious Leonin",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "helpful_hunter",
+          "name": "Helpful Hunter",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "leonin_vanguard",
+          "name": "Leonin Vanguard",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "moment_of_triumph",
+          "name": "Moment of Triumph",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "elspeths_smite",
+          "name": "Elspeth's Smite",
+          "quantity": 1,
+          "order": 13,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        }
+      ],
+      "landCards": [
+        {
+          "cardId": "plains",
+          "name": "Plains",
+          "quantity": 8,
+          "order": 1,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "W",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "spellCards": [
+        {
+          "cardId": "savannah_lions",
+          "name": "Savannah Lions",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "leonin_skyhunter",
+          "name": "Leonin Skyhunter",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "prideful_parent",
+          "name": "Prideful Parent",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "felidar_savior",
+          "name": "Felidar Savior",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "angelic_edict",
+          "name": "Angelic Edict",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "jazal_goldmane",
+          "name": "Jazal Goldmane",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "pacifism",
+          "name": "Pacifism",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "ingenious_leonin",
+          "name": "Ingenious Leonin",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "helpful_hunter",
+          "name": "Helpful Hunter",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "leonin_vanguard",
+          "name": "Leonin Vanguard",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "moment_of_triumph",
+          "name": "Moment of Triumph",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "elspeths_smite",
+          "name": "Elspeth's Smite",
+          "quantity": 1,
+          "order": 13,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vampires",
+      "name": "Vampires",
+      "themeEs": "Vampiros",
+      "colorLabelEs": "Negro",
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "enabled": true,
+      "cardCount": 20,
+      "uniqueCardCount": 13,
+      "landCount": 8,
+      "spellCount": 12,
+      "creatureCount": 8,
+      "averageManaValueNonLand": 3,
+      "cards": [
+        {
+          "cardId": "swamp",
+          "name": "Swamp",
+          "quantity": 8,
+          "order": 1,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "B",
+          "cardTypes": [
+            "Land"
+          ]
+        },
+        {
+          "cardId": "vampire_interloper",
+          "name": "Vampire Interloper",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "vampire_spawn",
+          "name": "Vampire Spawn",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "moment_of_craving",
+          "name": "Moment of Craving",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "highborn_vampire",
+          "name": "Highborn Vampire",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "untamed_hunger",
+          "name": "Untamed Hunger",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "bloodtithe_collector",
+          "name": "Bloodtithe Collector",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "crossway_troublemakers",
+          "name": "Crossway Troublemakers",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "vengeful_bloodwitch",
+          "name": "Vengeful Bloodwitch",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "heros_downfall",
+          "name": "Hero's Downfall",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "vampire_neonate",
+          "name": "Vampire Neonate",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "offer_immortality",
+          "name": "Offer Immortality",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "stromkirk_bloodthief",
+          "name": "Stromkirk Bloodthief",
+          "quantity": 1,
+          "order": 13,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        }
+      ],
+      "landCards": [
+        {
+          "cardId": "swamp",
+          "name": "Swamp",
+          "quantity": 8,
+          "order": 1,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "B",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "spellCards": [
+        {
+          "cardId": "vampire_interloper",
+          "name": "Vampire Interloper",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "vampire_spawn",
+          "name": "Vampire Spawn",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "moment_of_craving",
+          "name": "Moment of Craving",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "highborn_vampire",
+          "name": "Highborn Vampire",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "untamed_hunger",
+          "name": "Untamed Hunger",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "bloodtithe_collector",
+          "name": "Bloodtithe Collector",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "crossway_troublemakers",
+          "name": "Crossway Troublemakers",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "vengeful_bloodwitch",
+          "name": "Vengeful Bloodwitch",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "heros_downfall",
+          "name": "Hero's Downfall",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "vampire_neonate",
+          "name": "Vampire Neonate",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "offer_immortality",
+          "name": "Offer Immortality",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "stromkirk_bloodthief",
+          "name": "Stromkirk Bloodthief",
+          "quantity": 1,
+          "order": 13,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "healing",
+      "name": "Healing",
+      "themeEs": "Curación / vidas",
+      "colorLabelEs": "Blanco",
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "enabled": true,
+      "cardCount": 20,
+      "uniqueCardCount": 13,
+      "landCount": 8,
+      "spellCount": 12,
+      "creatureCount": 8,
+      "averageManaValueNonLand": 3,
+      "cards": [
+        {
+          "cardId": "ancestor_dragon",
+          "name": "Ancestor Dragon",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "dazzling_angel",
+          "name": "Dazzling Angel",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "quick_draw_katana",
+          "name": "Quick-Draw Katana",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Artifact"
+          ]
+        },
+        {
+          "cardId": "ajanis_pridemate",
+          "name": "Ajani's Pridemate",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "adamant_will",
+          "name": "Adamant Will",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "bishops_soldier",
+          "name": "Bishop's Soldier",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "deadly_riposte",
+          "name": "Deadly Riposte",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "herald_of_faith",
+          "name": "Herald of Faith",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "inspiring_overseer",
+          "name": "Inspiring Overseer",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "prayer_of_binding",
+          "name": "Prayer of Binding",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "twinblade_paladin",
+          "name": "Twinblade Paladin",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "hinterland_sanctifier",
+          "name": "Hinterland Sanctifier",
+          "quantity": 1,
+          "order": 13,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "plains",
+          "name": "Plains",
+          "quantity": 8,
+          "order": 14,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "W",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "landCards": [
+        {
+          "cardId": "plains",
+          "name": "Plains",
+          "quantity": 8,
+          "order": 14,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "W",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "spellCards": [
+        {
+          "cardId": "ancestor_dragon",
+          "name": "Ancestor Dragon",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "dazzling_angel",
+          "name": "Dazzling Angel",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "quick_draw_katana",
+          "name": "Quick-Draw Katana",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Artifact"
+          ]
+        },
+        {
+          "cardId": "ajanis_pridemate",
+          "name": "Ajani's Pridemate",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "adamant_will",
+          "name": "Adamant Will",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "bishops_soldier",
+          "name": "Bishop's Soldier",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "deadly_riposte",
+          "name": "Deadly Riposte",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "herald_of_faith",
+          "name": "Herald of Faith",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "inspiring_overseer",
+          "name": "Inspiring Overseer",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "prayer_of_binding",
+          "name": "Prayer of Binding",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "twinblade_paladin",
+          "name": "Twinblade Paladin",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "hinterland_sanctifier",
+          "name": "Hinterland Sanctifier",
+          "quantity": 1,
+          "order": 13,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pirates",
+      "name": "Pirates",
+      "themeEs": "Piratas",
+      "colorLabelEs": "Azul",
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "enabled": true,
+      "cardCount": 20,
+      "uniqueCardCount": 13,
+      "landCount": 8,
+      "spellCount": 12,
+      "creatureCount": 8,
+      "averageManaValueNonLand": 3,
+      "cards": [
+        {
+          "cardId": "corsair_captain",
+          "name": "Corsair Captain",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "bigfin_bouncer",
+          "name": "Bigfin Bouncer",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "skyship_buccaneer",
+          "name": "Skyship Buccaneer",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "brineborn_cutthroat",
+          "name": "Brineborn Cutthroat",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "spectral_sailor",
+          "name": "Spectral Sailor",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "tolarian_terror",
+          "name": "Tolarian Terror",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "cancel",
+          "name": "Cancel",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "eaten_by_piranhas",
+          "name": "Eaten by Piranhas",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "kitesail_corsair",
+          "name": "Kitesail Corsair",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "opt",
+          "name": "Opt",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "storm_fleet_spy",
+          "name": "Storm Fleet Spy",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "pirates_cutlass",
+          "name": "Pirate's Cutlass",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Artifact"
+          ]
+        },
+        {
+          "cardId": "island",
+          "name": "Island",
+          "quantity": 8,
+          "order": 14,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "U",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "landCards": [
+        {
+          "cardId": "island",
+          "name": "Island",
+          "quantity": 8,
+          "order": 14,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "U",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "spellCards": [
+        {
+          "cardId": "corsair_captain",
+          "name": "Corsair Captain",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "bigfin_bouncer",
+          "name": "Bigfin Bouncer",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "skyship_buccaneer",
+          "name": "Skyship Buccaneer",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "brineborn_cutthroat",
+          "name": "Brineborn Cutthroat",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "spectral_sailor",
+          "name": "Spectral Sailor",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "tolarian_terror",
+          "name": "Tolarian Terror",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "cancel",
+          "name": "Cancel",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "eaten_by_piranhas",
+          "name": "Eaten by Piranhas",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "kitesail_corsair",
+          "name": "Kitesail Corsair",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "opt",
+          "name": "Opt",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "storm_fleet_spy",
+          "name": "Storm Fleet Spy",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "pirates_cutlass",
+          "name": "Pirate's Cutlass",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Artifact"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wizards",
+      "name": "Wizards",
+      "themeEs": "Magos",
+      "colorLabelEs": "Azul",
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "enabled": true,
+      "cardCount": 20,
+      "uniqueCardCount": 13,
+      "landCount": 8,
+      "spellCount": 12,
+      "creatureCount": 7,
+      "averageManaValueNonLand": 2.92,
+      "cards": [
+        {
+          "cardId": "mystic_archaeologist",
+          "name": "Mystic Archaeologist",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "arcane_epiphany",
+          "name": "Arcane Epiphany",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "clinquant_skymage",
+          "name": "Clinquant Skymage",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "erudite_wizard",
+          "name": "Erudite Wizard",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "icewind_elemental",
+          "name": "Icewind Elemental",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "mischievous_mystic",
+          "name": "Mischievous Mystic",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "fleeting_distraction",
+          "name": "Fleeting Distraction",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "burrog_befuddler",
+          "name": "Burrog Befuddler",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "exclusion_mage",
+          "name": "Exclusion Mage",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "into_the_roil",
+          "name": "Into the Roil",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "quick_study",
+          "name": "Quick Study",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "starlight_snare",
+          "name": "Starlight Snare",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "island",
+          "name": "Island",
+          "quantity": 8,
+          "order": 14,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "U",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "landCards": [
+        {
+          "cardId": "island",
+          "name": "Island",
+          "quantity": 8,
+          "order": 14,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "U",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "spellCards": [
+        {
+          "cardId": "mystic_archaeologist",
+          "name": "Mystic Archaeologist",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "arcane_epiphany",
+          "name": "Arcane Epiphany",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "clinquant_skymage",
+          "name": "Clinquant Skymage",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "erudite_wizard",
+          "name": "Erudite Wizard",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "icewind_elemental",
+          "name": "Icewind Elemental",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "mischievous_mystic",
+          "name": "Mischievous Mystic",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "fleeting_distraction",
+          "name": "Fleeting Distraction",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "burrog_befuddler",
+          "name": "Burrog Befuddler",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "exclusion_mage",
+          "name": "Exclusion Mage",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "into_the_roil",
+          "name": "Into the Roil",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "quick_study",
+          "name": "Quick Study",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "starlight_snare",
+          "name": "Starlight Snare",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "undead",
+      "name": "Undead",
+      "themeEs": "No muertos",
+      "colorLabelEs": "Negro",
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "enabled": true,
+      "cardCount": 20,
+      "uniqueCardCount": 13,
+      "landCount": 8,
+      "spellCount": 12,
+      "creatureCount": 8,
+      "averageManaValueNonLand": 2.75,
+      "cards": [
+        {
+          "cardId": "death_baron",
+          "name": "Death Baron",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "hungry_ghoul",
+          "name": "Hungry Ghoul",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "diregraf_ghoul",
+          "name": "Diregraf Ghoul",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "eaten_alive",
+          "name": "Eaten Alive",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "reassembling_skeleton",
+          "name": "Reassembling Skeleton",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "cemetery_recruitment",
+          "name": "Cemetery Recruitment",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "crow_of_dark_tidings",
+          "name": "Crow of Dark Tidings",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "deadly_plot",
+          "name": "Deadly Plot",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "maalfeld_twins",
+          "name": "Maalfeld Twins",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "skeleton_archer",
+          "name": "Skeleton Archer",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "suspicious_shambler",
+          "name": "Suspicious Shambler",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "undying_malice",
+          "name": "Undying Malice",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "swamp",
+          "name": "Swamp",
+          "quantity": 8,
+          "order": 14,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "B",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "landCards": [
+        {
+          "cardId": "swamp",
+          "name": "Swamp",
+          "quantity": 8,
+          "order": 14,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "B",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "spellCards": [
+        {
+          "cardId": "death_baron",
+          "name": "Death Baron",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "hungry_ghoul",
+          "name": "Hungry Ghoul",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "diregraf_ghoul",
+          "name": "Diregraf Ghoul",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "eaten_alive",
+          "name": "Eaten Alive",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "reassembling_skeleton",
+          "name": "Reassembling Skeleton",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "cemetery_recruitment",
+          "name": "Cemetery Recruitment",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "crow_of_dark_tidings",
+          "name": "Crow of Dark Tidings",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "deadly_plot",
+          "name": "Deadly Plot",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "maalfeld_twins",
+          "name": "Maalfeld Twins",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "skeleton_archer",
+          "name": "Skeleton Archer",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "suspicious_shambler",
+          "name": "Suspicious Shambler",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "undying_malice",
+          "name": "Undying Malice",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "goblins",
+      "name": "Goblins",
+      "themeEs": "Goblins",
+      "colorLabelEs": "Rojo",
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "enabled": true,
+      "cardCount": 20,
+      "uniqueCardCount": 13,
+      "landCount": 8,
+      "spellCount": 12,
+      "creatureCount": 7,
+      "averageManaValueNonLand": 2.58,
+      "cards": [
+        {
+          "cardId": "dropkick_bomber",
+          "name": "Dropkick Bomber",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "incinerating_blast",
+          "name": "Incinerating Blast",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "frenzied_goblin",
+          "name": "Frenzied Goblin",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "battle_rattle_shaman",
+          "name": "Battle-Rattle Shaman",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "dragon_fodder",
+          "name": "Dragon Fodder",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "goblin_oriflamme",
+          "name": "Goblin Oriflamme",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "goblin_smuggler",
+          "name": "Goblin Smuggler",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "kindled_fury",
+          "name": "Kindled Fury",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "raging_redcap",
+          "name": "Raging Redcap",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "swab_goblin",
+          "name": "Swab Goblin",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "volley_veteran",
+          "name": "Volley Veteran",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "goblin_firebomb",
+          "name": "Goblin Firebomb",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Artifact"
+          ]
+        },
+        {
+          "cardId": "mountain",
+          "name": "Mountain",
+          "quantity": 8,
+          "order": 14,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "R",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "landCards": [
+        {
+          "cardId": "mountain",
+          "name": "Mountain",
+          "quantity": 8,
+          "order": 14,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "R",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "spellCards": [
+        {
+          "cardId": "dropkick_bomber",
+          "name": "Dropkick Bomber",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "incinerating_blast",
+          "name": "Incinerating Blast",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "frenzied_goblin",
+          "name": "Frenzied Goblin",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "battle_rattle_shaman",
+          "name": "Battle-Rattle Shaman",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "dragon_fodder",
+          "name": "Dragon Fodder",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "goblin_oriflamme",
+          "name": "Goblin Oriflamme",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "goblin_smuggler",
+          "name": "Goblin Smuggler",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "kindled_fury",
+          "name": "Kindled Fury",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "raging_redcap",
+          "name": "Raging Redcap",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "swab_goblin",
+          "name": "Swab Goblin",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "volley_veteran",
+          "name": "Volley Veteran",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "goblin_firebomb",
+          "name": "Goblin Firebomb",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Artifact"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inferno",
+      "name": "Inferno",
+      "themeEs": "Dragones / daño",
+      "colorLabelEs": "Rojo",
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "enabled": true,
+      "cardCount": 20,
+      "uniqueCardCount": 12,
+      "landCount": 9,
+      "spellCount": 11,
+      "creatureCount": 7,
+      "averageManaValueNonLand": 3.55,
+      "cards": [
+        {
+          "cardId": "terror_of_mount_velus",
+          "name": "Terror of Mount Velus",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "fiery_annihilation",
+          "name": "Fiery Annihilation",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "firespitter_whelp",
+          "name": "Firespitter Whelp",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "carnelian_orb_of_dragonkind",
+          "name": "Carnelian Orb of Dragonkind",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Artifact"
+          ]
+        },
+        {
+          "cardId": "dragonlords_servant",
+          "name": "Dragonlord's Servant",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "fire_elemental",
+          "name": "Fire Elemental",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "kargan_dragonrider",
+          "name": "Kargan Dragonrider",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "rapacious_dragon",
+          "name": "Rapacious Dragon",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "scorching_dragonfire",
+          "name": "Scorching Dragonfire",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "seize_the_spoils",
+          "name": "Seize the Spoils",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "skyraker_giant",
+          "name": "Skyraker Giant",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "mountain",
+          "name": "Mountain",
+          "quantity": 9,
+          "order": 13,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "R",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "landCards": [
+        {
+          "cardId": "mountain",
+          "name": "Mountain",
+          "quantity": 9,
+          "order": 13,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "R",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "spellCards": [
+        {
+          "cardId": "terror_of_mount_velus",
+          "name": "Terror of Mount Velus",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "fiery_annihilation",
+          "name": "Fiery Annihilation",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "firespitter_whelp",
+          "name": "Firespitter Whelp",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "carnelian_orb_of_dragonkind",
+          "name": "Carnelian Orb of Dragonkind",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Artifact"
+          ]
+        },
+        {
+          "cardId": "dragonlords_servant",
+          "name": "Dragonlord's Servant",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "fire_elemental",
+          "name": "Fire Elemental",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "kargan_dragonrider",
+          "name": "Kargan Dragonrider",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "rapacious_dragon",
+          "name": "Rapacious Dragon",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "scorching_dragonfire",
+          "name": "Scorching Dragonfire",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "seize_the_spoils",
+          "name": "Seize the Spoils",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "skyraker_giant",
+          "name": "Skyraker Giant",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "elves",
+      "name": "Elves",
+      "themeEs": "Elfos",
+      "colorLabelEs": "Verde",
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "enabled": true,
+      "cardCount": 20,
+      "uniqueCardCount": 13,
+      "landCount": 8,
+      "spellCount": 12,
+      "creatureCount": 8,
+      "averageManaValueNonLand": 3.08,
+      "cards": [
+        {
+          "cardId": "elvish_archdruid",
+          "name": "Elvish Archdruid",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "beast_kin_ranger",
+          "name": "Beast-Kin Ranger",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "elvish_regrower",
+          "name": "Elvish Regrower",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "felling_blow",
+          "name": "Felling Blow",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "broken_wings",
+          "name": "Broken Wings",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "dwynens_elite",
+          "name": "Dwynen's Elite",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "llanowar_elves",
+          "name": "Llanowar Elves",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "snakeskin_veil",
+          "name": "Snakeskin Veil",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "joraga_invocation",
+          "name": "Joraga Invocation",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "tajuru_pathwarden",
+          "name": "Tajuru Pathwarden",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "thornweald_archer",
+          "name": "Thornweald Archer",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "wildheart_invoker",
+          "name": "Wildheart Invoker",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "forest",
+          "name": "Forest",
+          "quantity": 8,
+          "order": 14,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "G",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "landCards": [
+        {
+          "cardId": "forest",
+          "name": "Forest",
+          "quantity": 8,
+          "order": 14,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "G",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "spellCards": [
+        {
+          "cardId": "elvish_archdruid",
+          "name": "Elvish Archdruid",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "beast_kin_ranger",
+          "name": "Beast-Kin Ranger",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "elvish_regrower",
+          "name": "Elvish Regrower",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "felling_blow",
+          "name": "Felling Blow",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "broken_wings",
+          "name": "Broken Wings",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "dwynens_elite",
+          "name": "Dwynen's Elite",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "llanowar_elves",
+          "name": "Llanowar Elves",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "snakeskin_veil",
+          "name": "Snakeskin Veil",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "joraga_invocation",
+          "name": "Joraga Invocation",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "tajuru_pathwarden",
+          "name": "Tajuru Pathwarden",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "thornweald_archer",
+          "name": "Thornweald Archer",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "wildheart_invoker",
+          "name": "Wildheart Invoker",
+          "quantity": 1,
+          "order": 12,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "primal",
+      "name": "Primal",
+      "themeEs": "Bestias / contadores",
+      "colorLabelEs": "Verde",
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "enabled": true,
+      "cardCount": 20,
+      "uniqueCardCount": 12,
+      "landCount": 9,
+      "spellCount": 11,
+      "creatureCount": 7,
+      "averageManaValueNonLand": 2.82,
+      "cards": [
+        {
+          "cardId": "aggressive_mammoth",
+          "name": "Aggressive Mammoth",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "bite_down",
+          "name": "Bite Down",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "giant_growth",
+          "name": "Giant Growth",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "mild_mannered_librarian",
+          "name": "Mild-Mannered Librarian",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "wildwood_scourge",
+          "name": "Wildwood Scourge",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "bear_cub",
+          "name": "Bear Cub",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "biogenic_upgrade",
+          "name": "Biogenic Upgrade",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "druid_of_the_cowl",
+          "name": "Druid of the Cowl",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "magnigoth_sentry",
+          "name": "Magnigoth Sentry",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "new_horizons",
+          "name": "New Horizons",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "thrashing_brontodon",
+          "name": "Thrashing Brontodon",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "forest",
+          "name": "Forest",
+          "quantity": 9,
+          "order": 13,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "G",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "landCards": [
+        {
+          "cardId": "forest",
+          "name": "Forest",
+          "quantity": 9,
+          "order": 13,
+          "isLand": true,
+          "isBasicLand": true,
+          "landMana": "G",
+          "cardTypes": [
+            "Land"
+          ]
+        }
+      ],
+      "spellCards": [
+        {
+          "cardId": "aggressive_mammoth",
+          "name": "Aggressive Mammoth",
+          "quantity": 1,
+          "order": 1,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "bite_down",
+          "name": "Bite Down",
+          "quantity": 1,
+          "order": 2,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "giant_growth",
+          "name": "Giant Growth",
+          "quantity": 1,
+          "order": 3,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Instant"
+          ]
+        },
+        {
+          "cardId": "mild_mannered_librarian",
+          "name": "Mild-Mannered Librarian",
+          "quantity": 1,
+          "order": 4,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "wildwood_scourge",
+          "name": "Wildwood Scourge",
+          "quantity": 1,
+          "order": 5,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "bear_cub",
+          "name": "Bear Cub",
+          "quantity": 1,
+          "order": 6,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "biogenic_upgrade",
+          "name": "Biogenic Upgrade",
+          "quantity": 1,
+          "order": 7,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Sorcery"
+          ]
+        },
+        {
+          "cardId": "druid_of_the_cowl",
+          "name": "Druid of the Cowl",
+          "quantity": 1,
+          "order": 8,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "magnigoth_sentry",
+          "name": "Magnigoth Sentry",
+          "quantity": 1,
+          "order": 9,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        },
+        {
+          "cardId": "new_horizons",
+          "name": "New Horizons",
+          "quantity": 1,
+          "order": 10,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Enchantment"
+          ]
+        },
+        {
+          "cardId": "thrashing_brontodon",
+          "name": "Thrashing Brontodon",
+          "quantity": 1,
+          "order": 11,
+          "isLand": false,
+          "isBasicLand": false,
+          "landMana": null,
+          "cardTypes": [
+            "Creature"
+          ]
+        }
+      ]
+    }
+  ]
+}

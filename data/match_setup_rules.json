@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "deckConstruction": {
+    "archetypesPerPlayer": 2,
+    "samePlayerArchetypesMustBeDifferent": true,
+    "differentPlayersMayShareArchetypes": true,
+    "cardsPerArchetype": 20,
+    "totalCardsPerPlayerPool": 40,
+    "splitDecksAutomatically": true,
+    "spellDeckRule": "All nonland cards from the two selected archetypes.",
+    "landDeckRule": "All basic land cards from the two selected archetypes.",
+    "shuffleSpellDeck": true,
+    "shuffleLandDeck": true,
+    "startingHand": {
+      "drawCount": 4,
+      "drawFrom": "spellDeck",
+      "mulligan": false
+    },
+    "startOfGeneralTurn": {
+      "putTopLandFromLandDeckOntoBattlefield": true,
+      "ifLandDeckEmpty": "No land enters this turn.",
+      "drawFromSpellDeck": 1
+    }
+  },
+  "runtimeNotes": [
+    "Use card.gameText as the functional rules text for this game.",
+    "Do not use planeswalker targeting in this prototype.",
+    "Ward is a mandatory additional cost, not a triggered counter effect.",
+    "Menace uses the custom simplified rule from the ruling document.",
+    "The land deck is separate from the spell deck."
+  ]
+}

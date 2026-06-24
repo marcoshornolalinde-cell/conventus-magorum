@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "checks": {
+    "cardRowsRead": 128,
+    "uniqueCards": 123,
+    "archetypes": 10,
+    "overrides": 24,
+    "allArchetypesHave20Cards": true,
+    "allArchetypesHaveAtLeastOneLand": true,
+    "allArchetypesHaveAtLeastOneSpell": true
+  },
+  "archetypeCounts": [
+    {
+      "id": "cats",
+      "name": "Cats",
+      "themeEs": "Gatos",
+      "total": 20,
+      "lands": 8,
+      "spells": 12,
+      "uniqueCards": 13
+    },
+    {
+      "id": "vampires",
+      "name": "Vampires",
+      "themeEs": "Vampiros",
+      "total": 20,
+      "lands": 8,
+      "spells": 12,
+      "uniqueCards": 13
+    },
+    {
+      "id": "healing",
+      "name": "Healing",
+      "themeEs": "Curación / vidas",
+      "total": 20,
+      "lands": 8,
+      "spells": 12,
+      "uniqueCards": 13
+    },
+    {
+      "id": "pirates",
+      "name": "Pirates",
+      "themeEs": "Piratas",
+      "total": 20,
+      "lands": 8,
+      "spells": 12,
+      "uniqueCards": 13
+    },
+    {
+      "id": "wizards",
+      "name": "Wizards",
+      "themeEs": "Magos",
+      "total": 20,
+      "lands": 8,
+      "spells": 12,
+      "uniqueCards": 13
+    },
+    {
+      "id": "undead",
+      "name": "Undead",
+      "themeEs": "No muertos",
+      "total": 20,
+      "lands": 8,
+      "spells": 12,
+      "uniqueCards": 13
+    },
+    {
+      "id": "goblins",
+      "name": "Goblins",
+      "themeEs": "Goblins",
+      "total": 20,
+      "lands": 8,
+      "spells": 12,
+      "uniqueCards": 13
+    },
+    {
+      "id": "inferno",
+      "name": "Inferno",
+      "themeEs": "Dragones / daño",
+      "total": 20,
+      "lands": 9,
+      "spells": 11,
+      "uniqueCards": 12
+    },
+    {
+      "id": "elves",
+      "name": "Elves",
+      "themeEs": "Elfos",
+      "total": 20,
+      "lands": 8,
+      "spells": 12,
+      "uniqueCards": 13
+    },
+    {
+      "id": "primal",
+      "name": "Primal",
+      "themeEs": "Bestias / contadores",
+      "total": 20,
+      "lands": 9,
+      "spells": 11,
+      "uniqueCards": 12
+    }
+  ],
+  "warnings": []
+}

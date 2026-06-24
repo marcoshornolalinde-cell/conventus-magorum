@@ -1,0 +1,561 @@
+import type { CardInstance, CombatPairing, CombatPlan, GameState, PlayerId, PlayerState } from "./types.js";
+import { getOpponent, getPlayer, getPriorityOrder } from "./actions.js";
+
+export type ChooseCombatPlan = (game: GameState, playerId: PlayerId) => CombatPlan;
+
+export interface CreatureStats {
+  power: number;
+  toughness: number;
+}
+
+function log(game: GameState, message: string): void {
+  game.log.push({
+    turn: game.turnNumber,
+    phase: "combat",
+    message,
+  });
+}
+
+function hasGameEnded(game: GameState): boolean {
+  return game.status === "gameOver";
+}
+
+function isCreature(instance: CardInstance): boolean {
+  return instance.card.cardTypes.includes("Creature");
+}
+
+export function hasKeyword(instance: CardInstance, keyword: string): boolean {
+  const printedKeywords = instance.losesAbilities ? [] : instance.card.keywords;
+  return [...printedKeywords, ...instance.staticKeywords, ...instance.temporaryKeywords].some(
+    (candidate) => candidate.toLowerCase() === keyword.toLowerCase(),
+  );
+}
+
+function hasFirstStrike(instance: CardInstance): boolean {
+  return hasKeyword(instance, "First strike");
+}
+
+function hasDoubleStrike(instance: CardInstance): boolean {
+  return hasKeyword(instance, "Double strike");
+}
+
+function hasTrample(instance: CardInstance): boolean {
+  return hasKeyword(instance, "Trample");
+}
+
+function hasLifelink(instance: CardInstance): boolean {
+  return hasKeyword(instance, "Lifelink");
+}
+
+function hasDeathtouch(instance: CardInstance): boolean {
+  return hasKeyword(instance, "Deathtouch");
+}
+
+export function getCreatureStats(instance: CardInstance): CreatureStats {
+  const basePower = instance.basePowerOverride ?? (Number.parseInt(instance.card.power ?? "0", 10) || 0);
+  const baseToughness = instance.baseToughnessOverride ?? (Number.parseInt(instance.card.toughness ?? "0", 10) || 0);
+
+  return {
+    power: basePower + instance.plusOneCounters + instance.staticPowerModifier + instance.powerModifier,
+    toughness: baseToughness + instance.plusOneCounters + instance.staticToughnessModifier + instance.toughnessModifier,
+  };
+}
+
+function isOnBattlefield(player: PlayerState, instanceId: string): boolean {
+  return player.battlefield.some((instance) => instance.instanceId === instanceId);
+}
+
+function getBattlefieldCreature(player: PlayerState, instanceId: string): CardInstance | null {
+  return player.battlefield.find((instance) => instance.instanceId === instanceId && isCreature(instance)) ?? null;
+}
+
+export function getCreaturesOnBattlefield(player: PlayerState): CardInstance[] {
+  return player.battlefield.filter(isCreature);
+}
+
+export function canAttack(instance: CardInstance, currentTurn: number): boolean {
+  if (!isCreature(instance) || instance.tapped || instance.cannotAttack) {
+    return false;
+  }
+
+  return instance.enteredTurn !== currentTurn || hasKeyword(instance, "Haste");
+}
+
+export function canDefend(instance: CardInstance): boolean {
+  return isCreature(instance) && !instance.tapped && !instance.cannotDefend;
+}
+
+export function canBlock(attacker: CardInstance, defender: CardInstance): boolean {
+  if (!canDefend(defender)) {
+    return false;
+  }
+
+  if (hasKeyword(attacker, "Flying")) {
+    return hasKeyword(defender, "Flying") || hasKeyword(defender, "Reach");
+  }
+
+  return true;
+}
+
+export function createSafeCombatPlan(game: GameState, playerId: PlayerId): CombatPlan {
+  return {
+    playerId,
+    attackerIds: [],
+    defenderIds: getCreaturesOnBattlefield(getPlayer(game, playerId))
+      .filter(canDefend)
+      .map((instance) => instance.instanceId),
+  };
+}
+
+function wouldSurviveDamageFromBlockers(attacker: CardInstance, blockers: CardInstance[]): boolean {
+  for (const blocker of blockers) {
+    if (hasDeathtouch(blocker) && getCreatureStats(blocker).power > 0) {
+      return false;
+    }
+  }
+
+  const assignedDefenderPower = blockers.reduce(
+    (total, blocker) => total + getCreatureStats(blocker).power,
+    0,
+  );
+
+  return assignedDefenderPower < getCreatureStats(attacker).toughness - attacker.damageMarked;
+}
+
+function normalizeCombatPlan(game: GameState, playerId: PlayerId, plan: CombatPlan): CombatPlan {
+  const player = getPlayer(game, playerId);
+  const usedIds = new Set<string>();
+  const attackerIds: string[] = [];
+  const defenderIds: string[] = [];
+
+  for (const attackerId of plan.attackerIds) {
+    const attacker = getBattlefieldCreature(player, attackerId);
+
+    if (attacker && canAttack(attacker, game.turnNumber) && !usedIds.has(attackerId)) {
+      attackerIds.push(attackerId);
+      usedIds.add(attackerId);
+    }
+  }
+
+  for (const defenderId of plan.defenderIds) {
+    const defender = getBattlefieldCreature(player, defenderId);
+
+    if (defender && canDefend(defender) && !usedIds.has(defenderId)) {
+      defenderIds.push(defenderId);
+      usedIds.add(defenderId);
+    }
+  }
+
+  return {
+    playerId,
+    attackerIds,
+    defenderIds,
+  };
+}
+
+function buildPairings(
+  game: GameState,
+  attackingPlayer: PlayerState,
+  defendingPlayer: PlayerState,
+  attackerIds: string[],
+  defenderIds: string[],
+): CombatPairing[] {
+  const freeDefenderIds = defenderIds.filter((defenderId) => isOnBattlefield(defendingPlayer, defenderId));
+  const pairings: CombatPairing[] = [];
+
+  for (const attackerId of attackerIds) {
+    const attacker = getBattlefieldCreature(attackingPlayer, attackerId);
+
+    if (!attacker) {
+      continue;
+    }
+
+    const defenderIndex = freeDefenderIds.findIndex((defenderId) => {
+      const defender = getBattlefieldCreature(defendingPlayer, defenderId);
+      return defender ? canBlock(attacker, defender) : false;
+    });
+
+    if (defenderIndex === -1) {
+      pairings.push({
+        attackerId,
+        defenderIds: [],
+        defendingPlayerId: defendingPlayer.playerId,
+      });
+      continue;
+    }
+
+    const [defenderId] = freeDefenderIds.splice(defenderIndex, 1);
+    pairings.push({
+      attackerId,
+      defenderIds: [defenderId],
+      defendingPlayerId: defendingPlayer.playerId,
+    });
+  }
+
+  for (const defenderId of [...freeDefenderIds]) {
+    const defender = getBattlefieldCreature(defendingPlayer, defenderId);
+
+    if (!defender) {
+      continue;
+    }
+
+    const pairing = pairings.find((candidate) => {
+      const attacker = getBattlefieldCreature(attackingPlayer, candidate.attackerId);
+
+      if (!attacker || candidate.defenderIds.length === 0 || !canBlock(attacker, defender)) {
+        return false;
+      }
+
+      const assignedDefenders = candidate.defenderIds
+        .map((assignedDefenderId) => getBattlefieldCreature(defendingPlayer, assignedDefenderId))
+        .filter((assignedDefender): assignedDefender is CardInstance => assignedDefender !== null);
+
+      return wouldSurviveDamageFromBlockers(attacker, assignedDefenders);
+    });
+
+    if (pairing) {
+      pairing.defenderIds.push(defenderId);
+      freeDefenderIds.splice(freeDefenderIds.indexOf(defenderId), 1);
+    }
+  }
+
+  log(game, `${attackingPlayer.playerId} attacks with ${pairings.length} creature(s).`);
+  return pairings;
+}
+
+function moveToGraveyard(game: GameState, player: PlayerState, instance: CardInstance): void {
+  player.battlefield = player.battlefield.filter((candidate) => candidate.instanceId !== instance.instanceId);
+  detachFromPermanent(game, instance.instanceId);
+  instance.tapped = false;
+  instance.damageMarked = 0;
+  instance.deathtouchDamageMarked = 0;
+  instance.powerModifier = 0;
+  instance.toughnessModifier = 0;
+  instance.staticPowerModifier = 0;
+  instance.staticToughnessModifier = 0;
+  instance.basePowerOverride = null;
+  instance.baseToughnessOverride = null;
+  instance.staticKeywords = [];
+  instance.temporaryKeywords = [];
+  instance.losesAbilities = false;
+  instance.cannotAttack = false;
+  instance.cannotDefend = false;
+  instance.attachedToId = null;
+  instance.doesNotUntap = false;
+  player.graveyard.push(instance);
+}
+
+export function detachFromPermanent(game: GameState, permanentId: string): void {
+  for (const player of game.players) {
+    for (const attachment of [...player.battlefield]) {
+      if (attachment.attachedToId !== permanentId) {
+        continue;
+      }
+
+      attachment.attachedToId = null;
+
+      if (attachment.card.cardTypes.includes("Enchantment")) {
+        player.battlefield = player.battlefield.filter((candidate) => candidate.instanceId !== attachment.instanceId);
+        player.graveyard.push(attachment);
+      }
+    }
+  }
+}
+
+export function applyStateBasedActions(game: GameState): void {
+  for (const player of game.players) {
+    for (const creature of [...getCreaturesOnBattlefield(player)]) {
+      const { toughness } = getCreatureStats(creature);
+      const hasZeroOrLessToughness = toughness <= 0;
+      const hasLethalDamage =
+        !hasKeyword(creature, "Indestructible") &&
+        (creature.damageMarked >= toughness || creature.deathtouchDamageMarked > 0);
+
+      if (hasZeroOrLessToughness || hasLethalDamage) {
+        moveToGraveyard(game, player, creature);
+        log(game, `${creature.card.name} dies.`);
+      }
+    }
+  }
+}
+
+function setGameOverFromLifeLoss(game: GameState): void {
+  const losers = game.players.filter((player) => player.lifeTotal <= 0);
+
+  if (losers.length === 0) {
+    return;
+  }
+
+  const loserIds =
+    losers.length === game.players.length
+      ? [game.attackingPriorityPlayerId]
+      : losers.map((player) => player.playerId);
+  const winner = game.players.find((player) => !loserIds.includes(player.playerId));
+
+  game.status = "gameOver";
+  game.phase = "gameOver";
+  game.loserIds = loserIds;
+  game.winnerId = winner?.playerId ?? null;
+  log(game, `Game over. Winner: ${game.winnerId ?? "none"}.`);
+}
+
+function getLethalDamageRequired(source: CardInstance, target: CardInstance): number {
+  if (target.damageMarked >= getCreatureStats(target).toughness || target.deathtouchDamageMarked > 0) {
+    return 0;
+  }
+
+  if (hasDeathtouch(source)) {
+    return 1;
+  }
+
+  return Math.max(0, getCreatureStats(target).toughness - target.damageMarked);
+}
+
+function isLethalDamageFor(source: CardInstance, target: CardInstance, damage: number): boolean {
+  if (damage <= 0) {
+    return false;
+  }
+
+  return hasDeathtouch(source) || target.damageMarked + damage >= getCreatureStats(target).toughness;
+}
+
+function gainLifeFromLifelink(game: GameState, source: CardInstance, damage: number): void {
+  if (damage <= 0 || !hasLifelink(source)) {
+    return;
+  }
+
+  const controller = getPlayer(game, source.ownerId);
+  controller.lifeTotal += damage;
+  log(game, `${controller.playerId} gains ${damage} life from ${source.card.name}.`);
+}
+
+function dealDamageToPlayer(game: GameState, source: CardInstance, defendingPlayer: PlayerState, damage: number): void {
+  if (damage <= 0) {
+    return;
+  }
+
+  defendingPlayer.lifeTotal -= damage;
+  gainLifeFromLifelink(game, source, damage);
+  log(game, `${source.card.name} deals ${damage} damage to ${defendingPlayer.playerId}.`);
+  setGameOverFromLifeLoss(game);
+}
+
+function dealDamageToCreature(game: GameState, source: CardInstance, target: CardInstance, damage: number): void {
+  if (damage <= 0) {
+    return;
+  }
+
+  target.damageMarked += damage;
+  if (hasDeathtouch(source)) {
+    target.deathtouchDamageMarked += damage;
+  }
+  gainLifeFromLifelink(game, source, damage);
+}
+
+function dealAttackerDamageToBlockers(
+  game: GameState,
+  attacker: CardInstance,
+  blockers: CardInstance[],
+  defendingPlayer: PlayerState,
+): void {
+  let remainingPower = getCreatureStats(attacker).power;
+  let trampleDamage = 0;
+
+  for (const blocker of blockers) {
+    if (remainingPower <= 0) {
+      break;
+    }
+
+    const lethalDamage = getLethalDamageRequired(attacker, blocker);
+    const damage = Math.min(remainingPower, lethalDamage || remainingPower);
+    const isLethalDamage = isLethalDamageFor(attacker, blocker, damage);
+    dealDamageToCreature(game, attacker, blocker, damage);
+    remainingPower -= damage;
+
+    if (damage > 0 && isLethalDamage) {
+      log(game, `${attacker.card.name} assigns lethal damage to ${blocker.card.name}.`);
+    }
+  }
+
+  if (hasTrample(attacker) && remainingPower > 0) {
+    trampleDamage = remainingPower;
+  }
+
+  dealDamageToPlayer(game, attacker, defendingPlayer, trampleDamage);
+}
+
+function shouldDealDamageInFirstStrikeStep(instance: CardInstance): boolean {
+  return hasFirstStrike(instance) || hasDoubleStrike(instance);
+}
+
+function shouldDealDamageInRegularStep(instance: CardInstance, hasFirstStrikeStep: boolean): boolean {
+  if (!hasFirstStrikeStep) {
+    return true;
+  }
+
+  return !hasFirstStrike(instance) || hasDoubleStrike(instance);
+}
+
+function dealCombatDamageStep(
+  game: GameState,
+  attackingPlayer: PlayerState,
+  defendingPlayer: PlayerState,
+  attacker: CardInstance,
+  blockers: CardInstance[],
+  step: "firstStrike" | "regular",
+  hasFirstStrikeStep: boolean,
+  wasBlocked: boolean,
+): void {
+  const currentAttacker = getBattlefieldCreature(attackingPlayer, attacker.instanceId);
+
+  if (!currentAttacker) {
+    return;
+  }
+
+  const currentBlockers = blockers
+    .map((blocker) => getBattlefieldCreature(defendingPlayer, blocker.instanceId))
+    .filter((blocker): blocker is CardInstance => blocker !== null);
+  const attackerDealsDamage =
+    step === "firstStrike"
+      ? shouldDealDamageInFirstStrikeStep(currentAttacker)
+      : shouldDealDamageInRegularStep(currentAttacker, hasFirstStrikeStep);
+
+  if (attackerDealsDamage) {
+    if (currentBlockers.length === 0) {
+      if (!wasBlocked || hasTrample(currentAttacker)) {
+        dealDamageToPlayer(game, currentAttacker, defendingPlayer, getCreatureStats(currentAttacker).power);
+      }
+    } else {
+      dealAttackerDamageToBlockers(game, currentAttacker, currentBlockers, defendingPlayer);
+    }
+  }
+
+  for (const blocker of currentBlockers) {
+    const blockerDealsDamage =
+      step === "firstStrike"
+        ? shouldDealDamageInFirstStrikeStep(blocker)
+        : shouldDealDamageInRegularStep(blocker, hasFirstStrikeStep);
+
+    if (blockerDealsDamage && getBattlefieldCreature(attackingPlayer, currentAttacker.instanceId)) {
+      dealDamageToCreature(game, blocker, currentAttacker, getCreatureStats(blocker).power);
+    }
+  }
+
+  applyStateBasedActions(game);
+}
+
+function resolvePairing(
+  game: GameState,
+  attackingPlayer: PlayerState,
+  defendingPlayer: PlayerState,
+  pairing: CombatPairing,
+): void {
+  const attacker = getBattlefieldCreature(attackingPlayer, pairing.attackerId);
+
+  if (!attacker) {
+    return;
+  }
+
+  const blockers = pairing.defenderIds
+    .map((defenderId) => getBattlefieldCreature(defendingPlayer, defenderId))
+    .filter((defender): defender is CardInstance => defender !== null);
+
+  if (blockers.length === 0) {
+    const hasFirstStrikeStep = shouldDealDamageInFirstStrikeStep(attacker);
+    dealCombatDamageStep(game, attackingPlayer, defendingPlayer, attacker, [], "firstStrike", hasFirstStrikeStep, false);
+    if (!hasGameEnded(game)) {
+      dealCombatDamageStep(game, attackingPlayer, defendingPlayer, attacker, [], "regular", hasFirstStrikeStep, false);
+    }
+    return;
+  }
+
+  log(
+    game,
+    `${attacker.card.name} is blocked by ${blockers.map((blocker) => blocker.card.name).join(", ")}.`,
+  );
+
+  const hasFirstStrikeStep = [attacker, ...blockers].some(shouldDealDamageInFirstStrikeStep);
+  if (hasFirstStrikeStep) {
+    dealCombatDamageStep(game, attackingPlayer, defendingPlayer, attacker, blockers, "firstStrike", hasFirstStrikeStep, true);
+  }
+
+  if (!hasGameEnded(game)) {
+    dealCombatDamageStep(game, attackingPlayer, defendingPlayer, attacker, blockers, "regular", hasFirstStrikeStep, true);
+  }
+}
+
+function resolveAttack(
+  game: GameState,
+  attackingPlayer: PlayerState,
+  defendingPlayer: PlayerState,
+  attackingPlan: CombatPlan,
+  defendingPlan: CombatPlan,
+): void {
+  const pairings = buildPairings(
+    game,
+    attackingPlayer,
+    defendingPlayer,
+    attackingPlan.attackerIds,
+    defendingPlan.defenderIds,
+  );
+
+  for (const pairing of pairings) {
+    if (game.status === "gameOver") {
+      return;
+    }
+
+    resolvePairing(game, attackingPlayer, defendingPlayer, pairing);
+  }
+}
+
+export function resolveCombatPhase(game: GameState, chooseCombatPlan: ChooseCombatPlan): void {
+  if (game.status === "gameOver") {
+    return;
+  }
+
+  game.phase = "combat";
+  log(game, "Combat phase begins.");
+
+  const plans = new Map<PlayerId, CombatPlan>();
+
+  for (const player of game.players) {
+    const plan = normalizeCombatPlan(game, player.playerId, chooseCombatPlan(game, player.playerId));
+    plans.set(player.playerId, plan);
+
+    for (const attackerId of plan.attackerIds) {
+      const attacker = getBattlefieldCreature(player, attackerId);
+
+      if (attacker && !hasKeyword(attacker, "Vigilance")) {
+        attacker.tapped = true;
+      }
+    }
+
+    log(
+      game,
+      `${player.playerId} positions ${plan.attackerIds.length} attacker(s), ${plan.defenderIds.length} defender(s).`,
+    );
+  }
+
+  const [firstAttackerId, secondAttackerId] = getPriorityOrder(game);
+  const firstAttacker = getPlayer(game, firstAttackerId);
+  const firstDefender = getOpponent(game, firstAttackerId);
+  resolveAttack(game, firstAttacker, firstDefender, plans.get(firstAttackerId)!, plans.get(firstDefender.playerId)!);
+
+  if (!hasGameEnded(game)) {
+    const secondAttacker = getPlayer(game, secondAttackerId);
+    const secondDefender = getOpponent(game, secondAttackerId);
+    resolveAttack(game, secondAttacker, secondDefender, plans.get(secondAttackerId)!, plans.get(secondDefender.playerId)!);
+  }
+}
+
+export function clearCombatDamage(game: GameState): void {
+  for (const player of game.players) {
+    for (const creature of getCreaturesOnBattlefield(player)) {
+      creature.damageMarked = 0;
+      creature.deathtouchDamageMarked = 0;
+      creature.powerModifier = 0;
+      creature.toughnessModifier = 0;
+      creature.temporaryKeywords = [];
+    }
+  }
+}

@@ -1,0 +1,6993 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "excelFile": "foundations_beginner_box_10_decks_textos_adaptados.xlsx",
+    "primarySheet": "Cartas por deck",
+    "textColumn": "Texto juego (adaptado)"
+  },
+  "cards": [
+    {
+      "id": "plains",
+      "name": "Plains",
+      "setCode": "FDN",
+      "collectorNumber": "272",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "",
+      "manaSymbols": [],
+      "manaValue": 0,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Basic Land — Plains",
+      "supertypes": [
+        "Basic"
+      ],
+      "cardTypes": [
+        "Land"
+      ],
+      "subtypes": [
+        "Plains"
+      ],
+      "isLand": true,
+      "isBasicLand": true,
+      "landMana": "W",
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "({T}: Add {W}.)",
+      "gameText": "({T}: Add {W}.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 8,
+          "order": 1
+        },
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 8,
+          "order": 14
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 16
+    },
+    {
+      "id": "savannah_lions",
+      "name": "Savannah Lions",
+      "setCode": "FDN",
+      "collectorNumber": "146",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{W}",
+      "manaSymbols": [
+        "W"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Cat",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Cat"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 1,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "",
+      "gameText": "",
+      "changeApplied": "Sin texto Oracle.",
+      "engineModules": [
+        "none"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 1,
+          "order": 2
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "leonin_skyhunter",
+      "name": "Leonin Skyhunter",
+      "setCode": "FDN",
+      "collectorNumber": "498",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{W}{W}",
+      "manaSymbols": [
+        "W",
+        "W"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Cat Knight",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Cat",
+        "Knight"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [
+        "Flying"
+      ],
+      "keywordIds": [
+        "flying"
+      ],
+      "oracleText": "Flying",
+      "gameText": "Flying",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 1,
+          "order": 3
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "prideful_parent",
+      "name": "Prideful Parent",
+      "setCode": "FDN",
+      "collectorNumber": "21",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{W}",
+      "manaSymbols": [
+        "2",
+        "W"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Cat",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Cat"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [
+        "Vigilance"
+      ],
+      "keywordIds": [
+        "vigilance"
+      ],
+      "oracleText": "Vigilance (Attacking doesn't cause this creature to tap.)\nWhen this creature enters, create a 1/1 white Cat creature token.",
+      "gameText": "Vigilance (Attacking doesn't cause this creature to tap.)\nWhen this creature enters, create a 1/1 white Cat creature token.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 1,
+          "order": 4
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "felidar_savior",
+      "name": "Felidar Savior",
+      "setCode": "FDN",
+      "collectorNumber": "12",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{3}{W}",
+      "manaSymbols": [
+        "3",
+        "W"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Cat Beast",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Cat",
+        "Beast"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 3,
+      "keywords": [
+        "Lifelink"
+      ],
+      "keywordIds": [
+        "lifelink"
+      ],
+      "oracleText": "Lifelink (Damage dealt by this creature also causes you to gain that much life.)\nWhen this creature enters, put a +1/+1 counter on each of up to two other target creatures you control.",
+      "gameText": "Lifelink (Damage dealt by this creature also causes you to gain that much life.)\nWhen this creature enters, put a +1/+1 counter on each of up to two other target creatures you control.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 1,
+          "order": 5
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "angelic_edict",
+      "name": "Angelic Edict",
+      "setCode": "FDN",
+      "collectorNumber": "490",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{4}{W}",
+      "manaSymbols": [
+        "4",
+        "W"
+      ],
+      "manaValue": 5,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Sorcery",
+      "supertypes": [],
+      "cardTypes": [
+        "Sorcery"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Exile target creature or enchantment.",
+      "gameText": "Exile target creature or enchantment.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 1,
+          "order": 6
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "jazal_goldmane",
+      "name": "Jazal Goldmane",
+      "setCode": "FDN",
+      "collectorNumber": "497",
+      "rarity": "rare",
+      "rarityLabelEs": "Rara",
+      "manaCost": "{2}{W}{W}",
+      "manaSymbols": [
+        "2",
+        "W",
+        "W"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Legendary Creature — Cat Warrior",
+      "supertypes": [
+        "Legendary"
+      ],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Cat",
+        "Warrior"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 4,
+      "toughness": 4,
+      "keywords": [
+        "First strike"
+      ],
+      "keywordIds": [
+        "first_strike"
+      ],
+      "oracleText": "First strike (This creature deals combat damage before creatures without first strike.)\n{3}{W}{W}: Attacking creatures you control get +X/+X until end of turn, where X is the number of attacking creatures.",
+      "gameText": "First strike (This creature deals combat damage before creatures without first strike.)\n{3}{W}{W}: Attacking creatures you control get +X/+X until end of turn, where X is the number of attacking creatures.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 1,
+          "order": 7
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "pacifism",
+      "name": "Pacifism",
+      "setCode": "FDN",
+      "collectorNumber": "501",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{W}",
+      "manaSymbols": [
+        "1",
+        "W"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Enchantment — Aura",
+      "supertypes": [],
+      "cardTypes": [
+        "Enchantment"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Enchant"
+      ],
+      "keywordIds": [
+        "enchant"
+      ],
+      "oracleText": "Enchant creature\nEnchanted creature can't attack or block.",
+      "gameText": "Enchant creature\nEnchanted creature can't attack or defend.",
+      "changeApplied": "Restricción de bloqueo adaptada a posición de defensa.",
+      "engineModules": [
+        "cant_attack_or_defend"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 1,
+          "order": 8
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "ingenious_leonin",
+      "name": "Ingenious Leonin",
+      "setCode": "FDN",
+      "collectorNumber": "495",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{4}{W}",
+      "manaSymbols": [
+        "4",
+        "W"
+      ],
+      "manaValue": 5,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Cat Soldier",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Cat",
+        "Soldier"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 4,
+      "toughness": 4,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "{3}{W}: Put a +1/+1 counter on another target attacking creature you control. If that creature is a Cat, it gains first strike until end of turn. (It deals combat damage before creatures without first strike.)",
+      "gameText": "{3}{W}: Put a +1/+1 counter on another target attacking creature you control. If that creature is a Cat, it gains first strike until end of turn. (It deals combat damage before creatures without first strike.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 1,
+          "order": 9
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "helpful_hunter",
+      "name": "Helpful Hunter",
+      "setCode": "FDN",
+      "collectorNumber": "16",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{W}",
+      "manaSymbols": [
+        "1",
+        "W"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Cat",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Cat"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 1,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "When this creature enters, draw a card.",
+      "gameText": "When this creature enters, draw a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 1,
+          "order": 10
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "leonin_vanguard",
+      "name": "Leonin Vanguard",
+      "setCode": "FDN",
+      "collectorNumber": "499",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{W}",
+      "manaSymbols": [
+        "W"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Cat Soldier",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Cat",
+        "Soldier"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 1,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "At the beginning of combat on your turn, if you control three or more creatures, this creature gets +1/+1 until end of turn and you gain 1 life.",
+      "gameText": "At the beginning of combat, if you control three or more creatures, Leonin Vanguard gets +1/+1 until end of turn and you gain 1 life.",
+      "changeApplied": "Texto adaptado: se dispara al comienzo de todos los combates, no solo con prioridad atacante.",
+      "engineModules": [
+        "trigger_beginning_of_combat",
+        "life_gain",
+        "temporary_pt_modifier"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 1,
+          "order": 11
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "moment_of_triumph",
+      "name": "Moment of Triumph",
+      "setCode": "FDN",
+      "collectorNumber": "500",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{W}",
+      "manaSymbols": [
+        "W"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Target creature gets +2/+2 until end of turn. You gain 2 life.",
+      "gameText": "Target creature gets +2/+2 until end of turn. You gain 2 life.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 1,
+          "order": 12
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "elspeths_smite",
+      "name": "Elspeth's Smite",
+      "setCode": "FDN",
+      "collectorNumber": "493",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{W}",
+      "manaSymbols": [
+        "W"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Elspeth's Smite deals 3 damage to target attacking or blocking creature. If that creature would die this turn, exile it instead.",
+      "gameText": "Elspeth's Smite deals 3 damage to target attacking or defending creature. If that creature would die this turn, exile it instead.",
+      "changeApplied": "Objetivo 'blocking' adaptado a criatura en defensa.",
+      "engineModules": [
+        "target_attacking_or_defending"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "cats",
+          "archetypeName": "Cats",
+          "quantity": 1,
+          "order": 13
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "swamp",
+      "name": "Swamp",
+      "setCode": "FDN",
+      "collectorNumber": "276",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "",
+      "manaSymbols": [],
+      "manaValue": 0,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Basic Land — Swamp",
+      "supertypes": [
+        "Basic"
+      ],
+      "cardTypes": [
+        "Land"
+      ],
+      "subtypes": [
+        "Swamp"
+      ],
+      "isLand": true,
+      "isBasicLand": true,
+      "landMana": "B",
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "({T}: Add {B}.)",
+      "gameText": "({T}: Add {B}.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 8,
+          "order": 1
+        },
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 8,
+          "order": 14
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 16
+    },
+    {
+      "id": "vampire_interloper",
+      "name": "Vampire Interloper",
+      "setCode": "FDN",
+      "collectorNumber": "530",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{B}",
+      "manaSymbols": [
+        "1",
+        "B"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Vampire Scout",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Vampire",
+        "Scout"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 1,
+      "keywords": [
+        "Flying"
+      ],
+      "keywordIds": [
+        "flying"
+      ],
+      "oracleText": "Flying\nThis creature can't block.",
+      "gameText": "Flying\nThis creature can't defend.",
+      "changeApplied": "Restricción de bloqueo adaptada a defensa.",
+      "engineModules": [
+        "cant_defend"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 1,
+          "order": 2
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "vampire_spawn",
+      "name": "Vampire Spawn",
+      "setCode": "FDN",
+      "collectorNumber": "532",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{B}",
+      "manaSymbols": [
+        "2",
+        "B"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Vampire",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Vampire"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 3,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "When this creature enters, each opponent loses 2 life and you gain 2 life.",
+      "gameText": "When this creature enters, each opponent loses 2 life and you gain 2 life.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 1,
+          "order": 3
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "moment_of_craving",
+      "name": "Moment of Craving",
+      "setCode": "FDN",
+      "collectorNumber": "524",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{B}",
+      "manaSymbols": [
+        "1",
+        "B"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Target creature gets -2/-2 until end of turn. You gain 2 life.",
+      "gameText": "Target creature gets -2/-2 until end of turn. You gain 2 life.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 1,
+          "order": 4
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "highborn_vampire",
+      "name": "Highborn Vampire",
+      "setCode": "FDN",
+      "collectorNumber": "522",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{3}{B}",
+      "manaSymbols": [
+        "3",
+        "B"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Vampire Warrior",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Vampire",
+        "Warrior"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 4,
+      "toughness": 3,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "",
+      "gameText": "",
+      "changeApplied": "Sin texto Oracle.",
+      "engineModules": [
+        "none"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 1,
+          "order": 5
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "untamed_hunger",
+      "name": "Untamed Hunger",
+      "setCode": "FDN",
+      "collectorNumber": "529",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{B}",
+      "manaSymbols": [
+        "2",
+        "B"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Enchantment — Aura",
+      "supertypes": [],
+      "cardTypes": [
+        "Enchantment"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Enchant"
+      ],
+      "keywordIds": [
+        "enchant"
+      ],
+      "oracleText": "Enchant creature\nEnchanted creature gets +2/+1 and has menace. (It can't be blocked except by two or more creatures.)",
+      "gameText": "Enchant creature\nEnchanted creature gets +2/+1 and has menace. (This creature can't be blocked if the defending opponent has exactly one creature in defense position.)",
+      "changeApplied": "Reminder de menace adaptado al ruling simplificado del juego.",
+      "engineModules": [
+        "menace_custom"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 1,
+          "order": 6
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "bloodtithe_collector",
+      "name": "Bloodtithe Collector",
+      "setCode": "FDN",
+      "collectorNumber": "516",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{4}{B}",
+      "manaSymbols": [
+        "4",
+        "B"
+      ],
+      "manaValue": 5,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Vampire Noble",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Vampire",
+        "Noble"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 3,
+      "toughness": 4,
+      "keywords": [
+        "Flying"
+      ],
+      "keywordIds": [
+        "flying"
+      ],
+      "oracleText": "Flying\nWhen this creature enters, if an opponent lost life this turn, each opponent discards a card.",
+      "gameText": "Flying\nWhen this creature enters, if an opponent lost life this turn, each opponent discards a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 1,
+          "order": 7
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "crossway_troublemakers",
+      "name": "Crossway Troublemakers",
+      "setCode": "FDN",
+      "collectorNumber": "518",
+      "rarity": "rare",
+      "rarityLabelEs": "Rara",
+      "manaCost": "{5}{B}",
+      "manaSymbols": [
+        "5",
+        "B"
+      ],
+      "manaValue": 6,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Vampire",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Vampire"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 5,
+      "toughness": 5,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Attacking Vampires you control have deathtouch and lifelink. (Any amount of damage they deal to a creature is enough to destroy it. Damage dealt by those creatures also causes their controller to gain that much life.)\nWhenever a Vampire you control dies, you may pay 2 life. If you do, draw a card.",
+      "gameText": "Attacking Vampires you control have deathtouch and lifelink. (Any amount of damage they deal to a creature is enough to destroy it. Damage dealt by those creatures also causes their controller to gain that much life.)\nWhenever a Vampire you control dies, you may pay 2 life. If you do, draw a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 1,
+          "order": 8
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "vengeful_bloodwitch",
+      "name": "Vengeful Bloodwitch",
+      "setCode": "FDN",
+      "collectorNumber": "76",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{1}{B}",
+      "manaSymbols": [
+        "1",
+        "B"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Vampire Warlock",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Vampire",
+        "Warlock"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 1,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Whenever this creature or another creature you control dies, target opponent loses 1 life and you gain 1 life.",
+      "gameText": "Whenever this creature or another creature you control dies, target opponent loses 1 life and you gain 1 life.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 1,
+          "order": 9
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "heros_downfall",
+      "name": "Hero's Downfall",
+      "setCode": "FDN",
+      "collectorNumber": "175",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{1}{B}{B}",
+      "manaSymbols": [
+        "1",
+        "B",
+        "B"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Destroy target creature or planeswalker.",
+      "gameText": "Destroy target creature.",
+      "changeApplied": "Referencia a planeswalker eliminada.",
+      "engineModules": [
+        "no_planeswalkers"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 1,
+          "order": 10
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "vampire_neonate",
+      "name": "Vampire Neonate",
+      "setCode": "FDN",
+      "collectorNumber": "531",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{B}",
+      "manaSymbols": [
+        "B"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Vampire",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Vampire"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 0,
+      "toughness": 3,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "{2}, {T}: Each opponent loses 1 life and you gain 1 life.",
+      "gameText": "{2}, {T}: Each opponent loses 1 life and you gain 1 life.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 1,
+          "order": 11
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "offer_immortality",
+      "name": "Offer Immortality",
+      "setCode": "FDN",
+      "collectorNumber": "525",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{B}",
+      "manaSymbols": [
+        "1",
+        "B"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Target creature gains deathtouch and indestructible until end of turn. (Damage and effects that say \"destroy\" don't destroy it.)",
+      "gameText": "Target creature gains deathtouch and indestructible until end of turn. (Damage and effects that say \"destroy\" don't destroy it.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 1,
+          "order": 12
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "stromkirk_bloodthief",
+      "name": "Stromkirk Bloodthief",
+      "setCode": "FDN",
+      "collectorNumber": "185",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{2}{B}",
+      "manaSymbols": [
+        "2",
+        "B"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Vampire Rogue",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Vampire",
+        "Rogue"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "At the beginning of your end step, if an opponent lost life this turn, put a +1/+1 counter on target Vampire you control.",
+      "gameText": "At the beginning of the end step, if an opponent lost life this turn, put a +1/+1 counter on target Vampire you control.",
+      "changeApplied": "Texto adaptado: se dispara al comienzo de la fase final de todos los turnos generales.",
+      "engineModules": [
+        "trigger_beginning_end_step",
+        "opponent_lost_life_this_turn",
+        "plus1_counter",
+        "target_vampire"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "vampires",
+          "archetypeName": "Vampires",
+          "quantity": 1,
+          "order": 13
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "ancestor_dragon",
+      "name": "Ancestor Dragon",
+      "setCode": "FDN",
+      "collectorNumber": "489",
+      "rarity": "rare",
+      "rarityLabelEs": "Rara",
+      "manaCost": "{4}{W}{W}",
+      "manaSymbols": [
+        "4",
+        "W",
+        "W"
+      ],
+      "manaValue": 6,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Dragon",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Dragon"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 5,
+      "toughness": 6,
+      "keywords": [
+        "Flying"
+      ],
+      "keywordIds": [
+        "flying"
+      ],
+      "oracleText": "Flying\nWhenever one or more creatures you control attack, you gain 1 life for each attacking creature.",
+      "gameText": "Flying\nWhenever one or more creatures you control attack, you gain 1 life for each attacking creature.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 1,
+          "order": 1
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "dazzling_angel",
+      "name": "Dazzling Angel",
+      "setCode": "FDN",
+      "collectorNumber": "9",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{W}",
+      "manaSymbols": [
+        "2",
+        "W"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Angel",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Angel"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 3,
+      "keywords": [
+        "Flying"
+      ],
+      "keywordIds": [
+        "flying"
+      ],
+      "oracleText": "Flying\nWhenever another creature you control enters, you gain 1 life.",
+      "gameText": "Flying\nWhenever another creature you control enters, you gain 1 life.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 1,
+          "order": 2
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "quick_draw_katana",
+      "name": "Quick-Draw Katana",
+      "setCode": "FDN",
+      "collectorNumber": "130",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}",
+      "manaSymbols": [
+        "2"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [],
+      "colorNames": [],
+      "typeLine": "Artifact — Equipment",
+      "supertypes": [],
+      "cardTypes": [
+        "Artifact"
+      ],
+      "subtypes": [
+        "Equipment"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Equip"
+      ],
+      "keywordIds": [
+        "equip"
+      ],
+      "oracleText": "During your turn, equipped creature gets +2/+0 and has first strike. (It deals combat damage before creatures without first strike.)\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+      "gameText": "Equipped creature gets +2/+0 and has first strike while it's attacking. (It deals combat damage before creatures without first strike.)\n\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+      "changeApplied": "Texto adaptado: el bonus y first strike solo se aplican si la criatura equipada está en posición de ataque.",
+      "engineModules": [
+        "equipment",
+        "equip",
+        "conditional_attacking_bonus",
+        "first_strike"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 1,
+          "order": 3
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "ajanis_pridemate",
+      "name": "Ajani's Pridemate",
+      "setCode": "FDN",
+      "collectorNumber": "135",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{1}{W}",
+      "manaSymbols": [
+        "1",
+        "W"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Cat Soldier",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Cat",
+        "Soldier"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Whenever you gain life, put a +1/+1 counter on this creature.",
+      "gameText": "Whenever you gain life, put a +1/+1 counter on this creature.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 1,
+          "order": 4
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "adamant_will",
+      "name": "Adamant Will",
+      "setCode": "FDN",
+      "collectorNumber": "488",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{W}",
+      "manaSymbols": [
+        "1",
+        "W"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Target creature gets +2/+2 and gains indestructible until end of turn. (Damage and effects that say \"destroy\" don't destroy it.)",
+      "gameText": "Target creature gets +2/+2 and gains indestructible until end of turn. (Damage and effects that say \"destroy\" don't destroy it.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 1,
+          "order": 5
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "bishops_soldier",
+      "name": "Bishop's Soldier",
+      "setCode": "FDN",
+      "collectorNumber": "491",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{W}",
+      "manaSymbols": [
+        "1",
+        "W"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Vampire Soldier",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Vampire",
+        "Soldier"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [
+        "Lifelink"
+      ],
+      "keywordIds": [
+        "lifelink"
+      ],
+      "oracleText": "Lifelink (Damage dealt by this creature also causes you to gain that much life.)",
+      "gameText": "Lifelink (Damage dealt by this creature also causes you to gain that much life.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 1,
+          "order": 6
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "deadly_riposte",
+      "name": "Deadly Riposte",
+      "setCode": "FDN",
+      "collectorNumber": "492",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{W}",
+      "manaSymbols": [
+        "1",
+        "W"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Deadly Riposte deals 3 damage to target tapped creature and you gain 2 life.",
+      "gameText": "Deadly Riposte deals 3 damage to target tapped creature and you gain 2 life.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 1,
+          "order": 7
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "herald_of_faith",
+      "name": "Herald of Faith",
+      "setCode": "FDN",
+      "collectorNumber": "494",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{3}{W}{W}",
+      "manaSymbols": [
+        "3",
+        "W",
+        "W"
+      ],
+      "manaValue": 5,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Angel",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Angel"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 4,
+      "toughness": 3,
+      "keywords": [
+        "Flying"
+      ],
+      "keywordIds": [
+        "flying"
+      ],
+      "oracleText": "Flying\nWhenever this creature attacks, you gain 2 life.",
+      "gameText": "Flying\nWhenever this creature attacks, you gain 2 life.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 1,
+          "order": 8
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "inspiring_overseer",
+      "name": "Inspiring Overseer",
+      "setCode": "FDN",
+      "collectorNumber": "496",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{W}",
+      "manaSymbols": [
+        "2",
+        "W"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Angel Cleric",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Angel",
+        "Cleric"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 1,
+      "keywords": [
+        "Flying"
+      ],
+      "keywordIds": [
+        "flying"
+      ],
+      "oracleText": "Flying\nWhen this creature enters, you gain 1 life and draw a card.",
+      "gameText": "Flying\nWhen this creature enters, you gain 1 life and draw a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 1,
+          "order": 9
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "prayer_of_binding",
+      "name": "Prayer of Binding",
+      "setCode": "FDN",
+      "collectorNumber": "502",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{3}{W}",
+      "manaSymbols": [
+        "3",
+        "W"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Enchantment",
+      "supertypes": [],
+      "cardTypes": [
+        "Enchantment"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Flash"
+      ],
+      "keywordIds": [
+        "flash"
+      ],
+      "oracleText": "Flash\nWhen this enchantment enters, exile up to one target nonland permanent an opponent controls until this enchantment leaves the battlefield. You gain 2 life.",
+      "gameText": "Flash\nWhen this enchantment enters, exile up to one target nonland permanent an opponent controls until this enchantment leaves the battlefield. You gain 2 life.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 1,
+          "order": 10
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "twinblade_paladin",
+      "name": "Twinblade Paladin",
+      "setCode": "FDN",
+      "collectorNumber": "503",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{3}{W}",
+      "manaSymbols": [
+        "3",
+        "W"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Human Knight",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human",
+        "Knight"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 3,
+      "toughness": 3,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Whenever you gain life, put a +1/+1 counter on this creature.\nAs long as you have 25 or more life, this creature has double strike. (It deals both first-strike and regular combat damage.)",
+      "gameText": "Whenever you gain life, put a +1/+1 counter on this creature.\nAs long as you have 25 or more life, this creature has double strike. (It deals both first-strike and regular combat damage.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 1,
+          "order": 11
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "hinterland_sanctifier",
+      "name": "Hinterland Sanctifier",
+      "setCode": "FDN",
+      "collectorNumber": "730",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{W}",
+      "manaSymbols": [
+        "W"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "W"
+      ],
+      "colorNames": [
+        "White"
+      ],
+      "typeLine": "Creature — Rabbit Cleric",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Rabbit",
+        "Cleric"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Whenever another creature you control enters, you gain 1 life.",
+      "gameText": "Whenever another creature you control enters, you gain 1 life.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "healing",
+          "archetypeName": "Healing",
+          "quantity": 1,
+          "order": 13
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "corsair_captain",
+      "name": "Corsair Captain",
+      "setCode": "FDN",
+      "collectorNumber": "506",
+      "rarity": "rare",
+      "rarityLabelEs": "Rara",
+      "manaCost": "{2}{U}",
+      "manaSymbols": [
+        "2",
+        "U"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Human Pirate",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human",
+        "Pirate"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [
+        "Treasure"
+      ],
+      "keywordIds": [
+        "treasure"
+      ],
+      "oracleText": "When this creature enters, create a Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")\nOther Pirates you control get +1/+1.",
+      "gameText": "When this creature enters, create a Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")\nOther Pirates you control get +1/+1.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 1,
+          "order": 1
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "bigfin_bouncer",
+      "name": "Bigfin Bouncer",
+      "setCode": "FDN",
+      "collectorNumber": "31",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{3}{U}",
+      "manaSymbols": [
+        "3",
+        "U"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Shark Pirate",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Shark",
+        "Pirate"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 3,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "When this creature enters, return target creature an opponent controls to its owner's hand.",
+      "gameText": "When this creature enters, return target creature an opponent controls to its owner's hand.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 1,
+          "order": 2
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "skyship_buccaneer",
+      "name": "Skyship Buccaneer",
+      "setCode": "FDN",
+      "collectorNumber": "50",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{3}{U}{U}",
+      "manaSymbols": [
+        "3",
+        "U",
+        "U"
+      ],
+      "manaValue": 5,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Human Pirate",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human",
+        "Pirate"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 4,
+      "toughness": 3,
+      "keywords": [
+        "Flying",
+        "Raid"
+      ],
+      "keywordIds": [
+        "flying",
+        "raid"
+      ],
+      "oracleText": "Flying\nRaid — When this creature enters, if you attacked this turn, draw a card.",
+      "gameText": "Flying\nRaid — When this creature enters, if you attacked this turn, draw a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 1,
+          "order": 3
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "brineborn_cutthroat",
+      "name": "Brineborn Cutthroat",
+      "setCode": "FDN",
+      "collectorNumber": "152",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{1}{U}",
+      "manaSymbols": [
+        "1",
+        "U"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Merfolk Pirate",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Merfolk",
+        "Pirate"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 1,
+      "keywords": [
+        "Flash"
+      ],
+      "keywordIds": [
+        "flash"
+      ],
+      "oracleText": "Flash (You may cast this spell any time you could cast an instant.)\nWhenever you cast a spell during an opponent's turn, put a +1/+1 counter on this creature.",
+      "gameText": "Flash (You may cast this spell any time you could cast an instant.)\nWhenever you cast an instant spell or a spell with flash, put a +1/+1 counter on Brineborn Cutthroat.",
+      "changeApplied": "Texto adaptado: el contador se obtiene al lanzar instantáneos o hechizos con flash, independientemente de la prioridad atacante.",
+      "engineModules": [
+        "flash",
+        "trigger_cast_instant_or_flash",
+        "plus1_counter"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 1,
+          "order": 4
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "spectral_sailor",
+      "name": "Spectral Sailor",
+      "setCode": "FDN",
+      "collectorNumber": "164",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{U}",
+      "manaSymbols": [
+        "U"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Spirit Pirate",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Spirit",
+        "Pirate"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 1,
+      "keywords": [
+        "Flying",
+        "Flash"
+      ],
+      "keywordIds": [
+        "flying",
+        "flash"
+      ],
+      "oracleText": "Flash (You may cast this spell any time you could cast an instant.)\nFlying\n{3}{U}: Draw a card.",
+      "gameText": "Flash (You may cast this spell any time you could cast an instant.)\nFlying\n{3}{U}: Draw a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 1,
+          "order": 5
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "tolarian_terror",
+      "name": "Tolarian Terror",
+      "setCode": "FDN",
+      "collectorNumber": "167",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{6}{U}",
+      "manaSymbols": [
+        "6",
+        "U"
+      ],
+      "manaValue": 7,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Serpent",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Serpent"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 5,
+      "toughness": 5,
+      "keywords": [
+        "Ward"
+      ],
+      "keywordIds": [
+        "ward"
+      ],
+      "oracleText": "This spell costs {1} less to cast for each instant and sorcery card in your graveyard.\nWard {2} (Whenever this creature becomes the target of a spell or ability an opponent controls, counter it unless that player pays {2}.)",
+      "gameText": "This spell costs {1} less to cast for each instant and sorcery card in your graveyard.\nWard {2} (Spells and abilities your opponents control that target this creature cost {2} more to cast or activate.)",
+      "changeApplied": "Reminder de Ward adaptado: sobrecoste obligatorio, no counter.",
+      "engineModules": [
+        "ward_cost_increase"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 1,
+          "order": 6
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "cancel",
+      "name": "Cancel",
+      "setCode": "FDN",
+      "collectorNumber": "505",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{U}{U}",
+      "manaSymbols": [
+        "1",
+        "U",
+        "U"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Counter target spell.",
+      "gameText": "Counter target spell.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 1,
+          "order": 7
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "eaten_by_piranhas",
+      "name": "Eaten by Piranhas",
+      "setCode": "FDN",
+      "collectorNumber": "507",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{1}{U}",
+      "manaSymbols": [
+        "1",
+        "U"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Enchantment — Aura",
+      "supertypes": [],
+      "cardTypes": [
+        "Enchantment"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Enchant",
+        "Flash"
+      ],
+      "keywordIds": [
+        "enchant",
+        "flash"
+      ],
+      "oracleText": "Flash (You may cast this spell any time you could cast an instant.)\nEnchant creature\nEnchanted creature loses all abilities and is a black Skeleton creature with base power and toughness 1/1. (It loses all other colors, card types, and creature types.)",
+      "gameText": "Flash (You may cast this spell any time you could cast an instant.)\nEnchant creature\nEnchanted creature loses all abilities and has base power and toughness 1/1.",
+      "changeApplied": "Texto simplificado: se descartan cambios de color, tipo y subtipo; mantiene pérdida de habilidades y base 1/1.",
+      "engineModules": [
+        "flash",
+        "aura",
+        "enchant_creature",
+        "lose_abilities",
+        "set_base_power_toughness"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 1,
+          "order": 8
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "kitesail_corsair",
+      "name": "Kitesail Corsair",
+      "setCode": "FDN",
+      "collectorNumber": "510",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{U}",
+      "manaSymbols": [
+        "1",
+        "U"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Human Pirate",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human",
+        "Pirate"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 1,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "This creature has flying as long as it's attacking.",
+      "gameText": "This creature has flying as long as it's attacking.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 1,
+          "order": 9
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "opt",
+      "name": "Opt",
+      "setCode": "FDN",
+      "collectorNumber": "512",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{U}",
+      "manaSymbols": [
+        "U"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Scry"
+      ],
+      "keywordIds": [
+        "scry"
+      ],
+      "oracleText": "Scry 1. (Look at the top card of your library. You may put that card on the bottom.)\nDraw a card.",
+      "gameText": "Scry 1. (Look at the top card of your library. You may put that card on the bottom.)\nDraw a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 1,
+          "order": 10
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "storm_fleet_spy",
+      "name": "Storm Fleet Spy",
+      "setCode": "FDN",
+      "collectorNumber": "515",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{2}{U}",
+      "manaSymbols": [
+        "2",
+        "U"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Human Pirate",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human",
+        "Pirate"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [
+        "Raid"
+      ],
+      "keywordIds": [
+        "raid"
+      ],
+      "oracleText": "Raid — When this creature enters, if you attacked this turn, draw a card.",
+      "gameText": "Raid — When this creature enters, if you attacked this turn, draw a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 1,
+          "order": 11
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "pirates_cutlass",
+      "name": "Pirate's Cutlass",
+      "setCode": "FDN",
+      "collectorNumber": "563",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{3}",
+      "manaSymbols": [
+        "3"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [],
+      "colorNames": [],
+      "typeLine": "Artifact — Equipment",
+      "supertypes": [],
+      "cardTypes": [
+        "Artifact"
+      ],
+      "subtypes": [
+        "Equipment"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Equip"
+      ],
+      "keywordIds": [
+        "equip"
+      ],
+      "oracleText": "When this Equipment enters, attach it to target Pirate you control.\nEquipped creature gets +2/+1.\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+      "gameText": "When this Equipment enters, attach it to target Pirate you control.\nEquipped creature gets +2/+1.\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 1,
+          "order": 12
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "island",
+      "name": "Island",
+      "setCode": "FDN",
+      "collectorNumber": "274",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "",
+      "manaSymbols": [],
+      "manaValue": 0,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Basic Land — Island",
+      "supertypes": [
+        "Basic"
+      ],
+      "cardTypes": [
+        "Land"
+      ],
+      "subtypes": [
+        "Island"
+      ],
+      "isLand": true,
+      "isBasicLand": true,
+      "landMana": "U",
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "({T}: Add {U}.)",
+      "gameText": "({T}: Add {U}.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "pirates",
+          "archetypeName": "Pirates",
+          "quantity": 8,
+          "order": 14
+        },
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 8,
+          "order": 14
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 16
+    },
+    {
+      "id": "mystic_archaeologist",
+      "name": "Mystic Archaeologist",
+      "setCode": "FDN",
+      "collectorNumber": "511",
+      "rarity": "rare",
+      "rarityLabelEs": "Rara",
+      "manaCost": "{1}{U}",
+      "manaSymbols": [
+        "1",
+        "U"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Human Wizard",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human",
+        "Wizard"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 1,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "{3}{U}{U}: Draw two cards.",
+      "gameText": "{3}{U}{U}: Draw two cards.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 1,
+          "order": 1
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "arcane_epiphany",
+      "name": "Arcane Epiphany",
+      "setCode": "FDN",
+      "collectorNumber": "29",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{3}{U}{U}",
+      "manaSymbols": [
+        "3",
+        "U",
+        "U"
+      ],
+      "manaValue": 5,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "This spell costs {1} less to cast if you control a Wizard.\nDraw three cards.",
+      "gameText": "This spell costs {1} less to cast if you control a Wizard.\nDraw three cards.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 1,
+          "order": 2
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "clinquant_skymage",
+      "name": "Clinquant Skymage",
+      "setCode": "FDN",
+      "collectorNumber": "33",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{3}{U}",
+      "manaSymbols": [
+        "3",
+        "U"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Bird Wizard",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Bird",
+        "Wizard"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 1,
+      "keywords": [
+        "Flying"
+      ],
+      "keywordIds": [
+        "flying"
+      ],
+      "oracleText": "Flying\nWhenever you draw a card, put a +1/+1 counter on this creature.",
+      "gameText": "Flying\nWhenever you draw a card, put a +1/+1 counter on this creature.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 1,
+          "order": 3
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "erudite_wizard",
+      "name": "Erudite Wizard",
+      "setCode": "FDN",
+      "collectorNumber": "37",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{U}",
+      "manaSymbols": [
+        "2",
+        "U"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Human Wizard",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human",
+        "Wizard"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 3,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Whenever you draw your second card each turn, put a +1/+1 counter on this creature.",
+      "gameText": "Whenever you draw your second card each turn, put a +1/+1 counter on this creature.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 1,
+          "order": 4
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "icewind_elemental",
+      "name": "Icewind Elemental",
+      "setCode": "FDN",
+      "collectorNumber": "42",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{4}{U}",
+      "manaSymbols": [
+        "4",
+        "U"
+      ],
+      "manaValue": 5,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Elemental",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Elemental"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 3,
+      "toughness": 4,
+      "keywords": [
+        "Flying"
+      ],
+      "keywordIds": [
+        "flying"
+      ],
+      "oracleText": "Flying\nWhen this creature enters, draw a card, then discard a card.",
+      "gameText": "Flying\nWhen this creature enters, draw a card, then discard a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 1,
+          "order": 5
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "mischievous_mystic",
+      "name": "Mischievous Mystic",
+      "setCode": "FDN",
+      "collectorNumber": "47",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{1}{U}",
+      "manaSymbols": [
+        "1",
+        "U"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Human Wizard",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human",
+        "Wizard"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 1,
+      "keywords": [
+        "Flying"
+      ],
+      "keywordIds": [
+        "flying"
+      ],
+      "oracleText": "Flying\nWhenever you draw your second card each turn, create a 1/1 blue Faerie creature token with flying.",
+      "gameText": "Flying\nWhenever you draw your second card each turn, create a 1/1 blue Faerie creature token with flying.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 1,
+          "order": 6
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "fleeting_distraction",
+      "name": "Fleeting Distraction",
+      "setCode": "FDN",
+      "collectorNumber": "155",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{U}",
+      "manaSymbols": [
+        "U"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Target creature gets -1/-0 until end of turn.\nDraw a card.",
+      "gameText": "Target creature gets -1/-0 until end of turn.\nDraw a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 1,
+          "order": 7
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "burrog_befuddler",
+      "name": "Burrog Befuddler",
+      "setCode": "FDN",
+      "collectorNumber": "504",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{U}",
+      "manaSymbols": [
+        "1",
+        "U"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Frog Wizard",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Frog",
+        "Wizard"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 1,
+      "keywords": [
+        "Flash"
+      ],
+      "keywordIds": [
+        "flash"
+      ],
+      "oracleText": "Flash (You may cast this spell any time you could cast an instant.)\nWhen this creature enters, target creature an opponent controls gets -1/-0 until end of turn.",
+      "gameText": "Flash (You may cast this spell any time you could cast an instant.)\nWhen this creature enters, target creature an opponent controls gets -1/-0 until end of turn.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 1,
+          "order": 8
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "exclusion_mage",
+      "name": "Exclusion Mage",
+      "setCode": "FDN",
+      "collectorNumber": "508",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{2}{U}",
+      "manaSymbols": [
+        "2",
+        "U"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Creature — Human Wizard",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human",
+        "Wizard"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "When this creature enters, return target creature an opponent controls to its owner's hand.",
+      "gameText": "When this creature enters, return target creature an opponent controls to its owner's hand.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 1,
+          "order": 9
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "into_the_roil",
+      "name": "Into the Roil",
+      "setCode": "FDN",
+      "collectorNumber": "509",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{U}",
+      "manaSymbols": [
+        "1",
+        "U"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Kicker"
+      ],
+      "keywordIds": [
+        "kicker"
+      ],
+      "oracleText": "Kicker {1}{U} (You may pay an additional {1}{U} as you cast this spell.)\nReturn target nonland permanent to its owner's hand. If this spell was kicked, draw a card.",
+      "gameText": "Kicker {1}{U} (You may pay an additional {1}{U} as you cast this spell.)\nReturn target nonland permanent to its owner's hand. If this spell was kicked, draw a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 1,
+          "order": 10
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "quick_study",
+      "name": "Quick Study",
+      "setCode": "FDN",
+      "collectorNumber": "513",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{U}",
+      "manaSymbols": [
+        "2",
+        "U"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Draw two cards.",
+      "gameText": "Draw two cards.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 1,
+          "order": 11
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "starlight_snare",
+      "name": "Starlight Snare",
+      "setCode": "FDN",
+      "collectorNumber": "514",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{U}",
+      "manaSymbols": [
+        "2",
+        "U"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "U"
+      ],
+      "colorNames": [
+        "Blue"
+      ],
+      "typeLine": "Enchantment — Aura",
+      "supertypes": [],
+      "cardTypes": [
+        "Enchantment"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Enchant"
+      ],
+      "keywordIds": [
+        "enchant"
+      ],
+      "oracleText": "Enchant creature\nWhen this Aura enters, tap enchanted creature.\nEnchanted creature doesn't untap during its controller's untap step.",
+      "gameText": "Enchant creature\nWhen this Aura enters, tap enchanted creature.\nEnchanted creature doesn't untap during its controller's untap step. (The untap step happens during final cleanup.)",
+      "changeApplied": "Aclaración: el untap step queda definido dentro de la limpieza final.",
+      "engineModules": [
+        "aura",
+        "enchant_creature",
+        "tap",
+        "does_not_untap",
+        "final_cleanup_untap_step"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "wizards",
+          "archetypeName": "Wizards",
+          "quantity": 1,
+          "order": 12
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "death_baron",
+      "name": "Death Baron",
+      "setCode": "FDN",
+      "collectorNumber": "521",
+      "rarity": "rare",
+      "rarityLabelEs": "Rara",
+      "manaCost": "{1}{B}{B}",
+      "manaSymbols": [
+        "1",
+        "B",
+        "B"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Zombie Wizard",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Zombie",
+        "Wizard"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Skeletons you control and other Zombies you control get +1/+1 and have deathtouch. (Any amount of damage they deal to a creature is enough to destroy it.)",
+      "gameText": "Skeletons you control and other Zombies you control get +1/+1 and have deathtouch. (Any amount of damage they deal to a creature is enough to destroy it.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 1,
+          "order": 1
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "hungry_ghoul",
+      "name": "Hungry Ghoul",
+      "setCode": "FDN",
+      "collectorNumber": "62",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{B}",
+      "manaSymbols": [
+        "1",
+        "B"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Zombie",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Zombie"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "{1}, Sacrifice another creature: Put a +1/+1 counter on this creature.",
+      "gameText": "{1}, Sacrifice another creature: Put a +1/+1 counter on this creature.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 1,
+          "order": 2
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "diregraf_ghoul",
+      "name": "Diregraf Ghoul",
+      "setCode": "FDN",
+      "collectorNumber": "171",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{B}",
+      "manaSymbols": [
+        "B"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Zombie",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Zombie"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "This creature enters tapped.",
+      "gameText": "This creature enters tapped.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 1,
+          "order": 3
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "eaten_alive",
+      "name": "Eaten Alive",
+      "setCode": "FDN",
+      "collectorNumber": "172",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{B}",
+      "manaSymbols": [
+        "B"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Sorcery",
+      "supertypes": [],
+      "cardTypes": [
+        "Sorcery"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "As an additional cost to cast this spell, sacrifice a creature or pay {3}{B}.\nExile target creature or planeswalker.",
+      "gameText": "As an additional cost to cast this spell, sacrifice a creature or pay {3}{B}.\nExile target creature.",
+      "changeApplied": "Referencia a planeswalker eliminada.",
+      "engineModules": [
+        "no_planeswalkers"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 1,
+          "order": 4
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "reassembling_skeleton",
+      "name": "Reassembling Skeleton",
+      "setCode": "FDN",
+      "collectorNumber": "182",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{1}{B}",
+      "manaSymbols": [
+        "1",
+        "B"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Skeleton Warrior",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Skeleton",
+        "Warrior"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 1,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "{1}{B}: Return this card from your graveyard to the battlefield tapped.",
+      "gameText": "{1}{B}: Return this card from your graveyard to the battlefield tapped.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 1,
+          "order": 5
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "cemetery_recruitment",
+      "name": "Cemetery Recruitment",
+      "setCode": "FDN",
+      "collectorNumber": "517",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{B}",
+      "manaSymbols": [
+        "1",
+        "B"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Sorcery",
+      "supertypes": [],
+      "cardTypes": [
+        "Sorcery"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Return target creature card from your graveyard to your hand. If it's a Zombie card, draw a card.",
+      "gameText": "Return target creature card from your graveyard to your hand. If it's a Zombie card, draw a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 1,
+          "order": 6
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "crow_of_dark_tidings",
+      "name": "Crow of Dark Tidings",
+      "setCode": "FDN",
+      "collectorNumber": "519",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{B}",
+      "manaSymbols": [
+        "2",
+        "B"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Zombie Bird",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Zombie",
+        "Bird"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 1,
+      "keywords": [
+        "Flying",
+        "Mill"
+      ],
+      "keywordIds": [
+        "flying",
+        "mill"
+      ],
+      "oracleText": "Flying\nWhen this creature enters or dies, mill two cards. (Put the top two cards of your library into your graveyard.)",
+      "gameText": "Flying\nWhen this creature enters or dies, mill two cards. (Put the top two cards of your library into your graveyard.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 1,
+          "order": 7
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "deadly_plot",
+      "name": "Deadly Plot",
+      "setCode": "FDN",
+      "collectorNumber": "520",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{3}{B}",
+      "manaSymbols": [
+        "3",
+        "B"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Choose one —\n• Destroy target creature or planeswalker.\n• Return target Zombie creature card from your graveyard to the battlefield tapped.",
+      "gameText": "Choose one —\n• Destroy target creature.\n• Return target Zombie creature card from your graveyard to the battlefield tapped.",
+      "changeApplied": "Referencia a planeswalker eliminada.",
+      "engineModules": [
+        "no_planeswalkers"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 1,
+          "order": 8
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "maalfeld_twins",
+      "name": "Maalfeld Twins",
+      "setCode": "FDN",
+      "collectorNumber": "523",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{5}{B}",
+      "manaSymbols": [
+        "5",
+        "B"
+      ],
+      "manaValue": 6,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Zombie",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Zombie"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 4,
+      "toughness": 4,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "When this creature dies, create two 2/2 black Zombie creature tokens.",
+      "gameText": "When this creature dies, create two 2/2 black Zombie creature tokens.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 1,
+          "order": 9
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "skeleton_archer",
+      "name": "Skeleton Archer",
+      "setCode": "FDN",
+      "collectorNumber": "526",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{3}{B}",
+      "manaSymbols": [
+        "3",
+        "B"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Skeleton Archer",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Skeleton",
+        "Archer"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 3,
+      "toughness": 3,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "When this creature enters, it deals 1 damage to any target.",
+      "gameText": "When this creature enters, it deals 1 damage to any target.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 1,
+          "order": 10
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "suspicious_shambler",
+      "name": "Suspicious Shambler",
+      "setCode": "FDN",
+      "collectorNumber": "527",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{3}{B}",
+      "manaSymbols": [
+        "3",
+        "B"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Creature — Zombie",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Zombie"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 4,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "{4}{B}{B}, Exile this card from your graveyard: Create two 2/2 black Zombie creature tokens. Activate only as a sorcery.",
+      "gameText": "{4}{B}{B}, Exile this card from your graveyard: Create two 2/2 black Zombie creature tokens. Activate only as a sorcery.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 1,
+          "order": 11
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "undying_malice",
+      "name": "Undying Malice",
+      "setCode": "FDN",
+      "collectorNumber": "528",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{B}",
+      "manaSymbols": [
+        "B"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "B"
+      ],
+      "colorNames": [
+        "Black"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Until end of turn, target creature gains \"When this creature dies, return it to the battlefield tapped under its owner's control with a +1/+1 counter on it.\"",
+      "gameText": "Until end of turn, target creature gains \"When this creature dies, return it to the battlefield tapped under its owner's control with a +1/+1 counter on it.\"",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "undead",
+          "archetypeName": "Undead",
+          "quantity": 1,
+          "order": 12
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "dropkick_bomber",
+      "name": "Dropkick Bomber",
+      "setCode": "FDN",
+      "collectorNumber": "537",
+      "rarity": "rare",
+      "rarityLabelEs": "Rara",
+      "manaCost": "{2}{R}",
+      "manaSymbols": [
+        "2",
+        "R"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Goblin Warrior",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Goblin",
+        "Warrior"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 3,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Other Goblins you control get +1/+1.\n{R}: Until end of turn, another target Goblin you control gains flying and \"When this creature deals combat damage, sacrifice it.\"",
+      "gameText": "Other Goblins you control get +1/+1.\n{R}: Until end of turn, another target Goblin you control gains flying and \"When this creature deals combat damage, sacrifice it.\"",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 1,
+          "order": 1
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "incinerating_blast",
+      "name": "Incinerating Blast",
+      "setCode": "FDN",
+      "collectorNumber": "90",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{4}{R}",
+      "manaSymbols": [
+        "4",
+        "R"
+      ],
+      "manaValue": 5,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Sorcery",
+      "supertypes": [],
+      "cardTypes": [
+        "Sorcery"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Incinerating Blast deals 6 damage to target creature.\nYou may discard a card. If you do, draw a card.",
+      "gameText": "Incinerating Blast deals 6 damage to target creature.\nYou may discard a card. If you do, draw a card.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 1,
+          "order": 2
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "frenzied_goblin",
+      "name": "Frenzied Goblin",
+      "setCode": "FDN",
+      "collectorNumber": "199",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{R}",
+      "manaSymbols": [
+        "R"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Goblin Berserker",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Goblin",
+        "Berserker"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 1,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Whenever this creature attacks, you may pay {R}. If you do, target creature can't block this turn.",
+      "gameText": "Whenever this creature attacks, you may pay {R}. If you do, target creature can't be assigned as a blocker this turn.",
+      "changeApplied": "Restricción de bloqueo adaptada a asignación de bloqueador.",
+      "engineModules": [
+        "cant_be_assigned_blocker"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 1,
+          "order": 3
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "battle_rattle_shaman",
+      "name": "Battle-Rattle Shaman",
+      "setCode": "FDN",
+      "collectorNumber": "533",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{3}{R}",
+      "manaSymbols": [
+        "3",
+        "R"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Goblin Shaman",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Goblin",
+        "Shaman"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "At the beginning of combat on your turn, you may have target creature get +2/+0 until end of turn.",
+      "gameText": "At the end of the combat positioning step, target attacking creature you control gets +2/+0 until end of turn.",
+      "changeApplied": "Texto adaptado: disparo obligatorio al final del posicionamiento; solo puede hacer objetivo a una criatura propia en posición de ataque.",
+      "engineModules": [
+        "trigger_end_combat_positioning",
+        "target_attacking_own_creature",
+        "temporary_power_modifier"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 1,
+          "order": 4
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "dragon_fodder",
+      "name": "Dragon Fodder",
+      "setCode": "FDN",
+      "collectorNumber": "535",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{R}",
+      "manaSymbols": [
+        "1",
+        "R"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Sorcery",
+      "supertypes": [],
+      "cardTypes": [
+        "Sorcery"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Create two 1/1 red Goblin creature tokens.",
+      "gameText": "Create two 1/1 red Goblin creature tokens.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 1,
+          "order": 5
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "goblin_oriflamme",
+      "name": "Goblin Oriflamme",
+      "setCode": "FDN",
+      "collectorNumber": "539",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{1}{R}",
+      "manaSymbols": [
+        "1",
+        "R"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Enchantment",
+      "supertypes": [],
+      "cardTypes": [
+        "Enchantment"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Attacking creatures you control get +1/+0.",
+      "gameText": "Attacking creatures you control get +1/+0.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 1,
+          "order": 6
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "goblin_smuggler",
+      "name": "Goblin Smuggler",
+      "setCode": "FDN",
+      "collectorNumber": "540",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{R}",
+      "manaSymbols": [
+        "2",
+        "R"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Goblin Rogue",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Goblin",
+        "Rogue"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [
+        "Haste"
+      ],
+      "keywordIds": [
+        "haste"
+      ],
+      "oracleText": "Haste (This creature can attack and {T} as soon as it comes under your control.)\n{T}: Another target creature with power 2 or less can't be blocked this turn.",
+      "gameText": "Haste (This creature can attack and use {T} abilities even if it entered this turn.)\n{T}: Another target creature with power 2 or less can't be blocked this turn.",
+      "changeApplied": "Reminder de haste adaptado al mareo de invocación del juego.",
+      "engineModules": [
+        "haste"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 1,
+          "order": 7
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "kindled_fury",
+      "name": "Kindled Fury",
+      "setCode": "FDN",
+      "collectorNumber": "542",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{R}",
+      "manaSymbols": [
+        "R"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Target creature gets +1/+0 and gains first strike until end of turn. (It deals combat damage before creatures without first strike.)",
+      "gameText": "Target creature gets +1/+0 and gains first strike until end of turn. (It deals combat damage before creatures without first strike.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 1,
+          "order": 8
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "raging_redcap",
+      "name": "Raging Redcap",
+      "setCode": "FDN",
+      "collectorNumber": "543",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{R}",
+      "manaSymbols": [
+        "2",
+        "R"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Goblin Knight",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Goblin",
+        "Knight"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 2,
+      "keywords": [
+        "Double strike"
+      ],
+      "keywordIds": [
+        "double_strike"
+      ],
+      "oracleText": "Double strike (This creature deals both first-strike and regular combat damage.)",
+      "gameText": "Double strike (This creature deals both first-strike and regular combat damage.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 1,
+          "order": 9
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "swab_goblin",
+      "name": "Swab Goblin",
+      "setCode": "FDN",
+      "collectorNumber": "548",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{R}",
+      "manaSymbols": [
+        "1",
+        "R"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Goblin Pirate",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Goblin",
+        "Pirate"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "",
+      "gameText": "",
+      "changeApplied": "Sin texto Oracle.",
+      "engineModules": [
+        "none"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 1,
+          "order": 10
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "volley_veteran",
+      "name": "Volley Veteran",
+      "setCode": "FDN",
+      "collectorNumber": "550",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{3}{R}",
+      "manaSymbols": [
+        "3",
+        "R"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Goblin Warrior",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Goblin",
+        "Warrior"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 4,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "When this creature enters, it deals damage to target creature an opponent controls equal to the number of Goblins you control.",
+      "gameText": "When this creature enters, it deals damage to target creature an opponent controls equal to the number of Goblins you control.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 1,
+          "order": 11
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "goblin_firebomb",
+      "name": "Goblin Firebomb",
+      "setCode": "FDN",
+      "collectorNumber": "562",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}",
+      "manaSymbols": [
+        "1"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [],
+      "colorNames": [],
+      "typeLine": "Artifact",
+      "supertypes": [],
+      "cardTypes": [
+        "Artifact"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Flash"
+      ],
+      "keywordIds": [
+        "flash"
+      ],
+      "oracleText": "Flash\n{7}, {T}, Sacrifice this artifact: Destroy target permanent.",
+      "gameText": "Flash\n{7}, {T}, Sacrifice this artifact: Destroy target permanent.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 1,
+          "order": 12
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "mountain",
+      "name": "Mountain",
+      "setCode": "FDN",
+      "collectorNumber": "278",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "",
+      "manaSymbols": [],
+      "manaValue": 0,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Basic Land — Mountain",
+      "supertypes": [
+        "Basic"
+      ],
+      "cardTypes": [
+        "Land"
+      ],
+      "subtypes": [
+        "Mountain"
+      ],
+      "isLand": true,
+      "isBasicLand": true,
+      "landMana": "R",
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "({T}: Add {R}.)",
+      "gameText": "({T}: Add {R}.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "goblins",
+          "archetypeName": "Goblins",
+          "quantity": 8,
+          "order": 14
+        },
+        {
+          "archetypeId": "inferno",
+          "archetypeName": "Inferno",
+          "quantity": 9,
+          "order": 13
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 17
+    },
+    {
+      "id": "terror_of_mount_velus",
+      "name": "Terror of Mount Velus",
+      "setCode": "FDN",
+      "collectorNumber": "549",
+      "rarity": "rare",
+      "rarityLabelEs": "Rara",
+      "manaCost": "{5}{R}{R}",
+      "manaSymbols": [
+        "5",
+        "R",
+        "R"
+      ],
+      "manaValue": 7,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Dragon",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Dragon"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 5,
+      "toughness": 5,
+      "keywords": [
+        "Flying",
+        "Double strike"
+      ],
+      "keywordIds": [
+        "flying",
+        "double_strike"
+      ],
+      "oracleText": "Flying\nDouble strike (This creature deals both first-strike and regular combat damage.)\nWhen this creature enters, creatures you control gain double strike until end of turn.",
+      "gameText": "Flying\nDouble strike (This creature deals both first-strike and regular combat damage.)\nWhen this creature enters, creatures you control gain double strike until end of turn.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "inferno",
+          "archetypeName": "Inferno",
+          "quantity": 1,
+          "order": 1
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "fiery_annihilation",
+      "name": "Fiery Annihilation",
+      "setCode": "FDN",
+      "collectorNumber": "86",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{2}{R}",
+      "manaSymbols": [
+        "2",
+        "R"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Fiery Annihilation deals 5 damage to target creature. Exile up to one target Equipment attached to that creature. If that creature would die this turn, exile it instead.",
+      "gameText": "Fiery Annihilation deals 5 damage to target creature. Exile up to one target Equipment attached to that creature. If that creature would die this turn, exile it instead.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "inferno",
+          "archetypeName": "Inferno",
+          "quantity": 1,
+          "order": 2
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "firespitter_whelp",
+      "name": "Firespitter Whelp",
+      "setCode": "FDN",
+      "collectorNumber": "197",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{2}{R}",
+      "manaSymbols": [
+        "2",
+        "R"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Dragon",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Dragon"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [
+        "Flying"
+      ],
+      "keywordIds": [
+        "flying"
+      ],
+      "oracleText": "Flying\nWhenever you cast a noncreature or Dragon spell, this creature deals 1 damage to each opponent.",
+      "gameText": "Flying\nWhenever you cast a noncreature or Dragon spell, this creature deals 1 damage to each opponent.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "inferno",
+          "archetypeName": "Inferno",
+          "quantity": 1,
+          "order": 3
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "carnelian_orb_of_dragonkind",
+      "name": "Carnelian Orb of Dragonkind",
+      "setCode": "FDN",
+      "collectorNumber": "534",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{R}",
+      "manaSymbols": [
+        "2",
+        "R"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Artifact",
+      "supertypes": [],
+      "cardTypes": [
+        "Artifact"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "{T}: Add {R}. If that mana is spent on a Dragon creature spell, it gains haste until end of turn.",
+      "gameText": "{T}: Add {R}. If that mana is spent on a Dragon creature spell, it gains haste until end of turn.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "inferno",
+          "archetypeName": "Inferno",
+          "quantity": 1,
+          "order": 4
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "dragonlords_servant",
+      "name": "Dragonlord's Servant",
+      "setCode": "FDN",
+      "collectorNumber": "536",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{1}{R}",
+      "manaSymbols": [
+        "1",
+        "R"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Goblin Shaman",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Goblin",
+        "Shaman"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 3,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Dragon spells you cast cost {1} less to cast.",
+      "gameText": "Dragon spells you cast cost {1} less to cast.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "inferno",
+          "archetypeName": "Inferno",
+          "quantity": 1,
+          "order": 5
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "fire_elemental",
+      "name": "Fire Elemental",
+      "setCode": "FDN",
+      "collectorNumber": "538",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{3}{R}{R}",
+      "manaSymbols": [
+        "3",
+        "R",
+        "R"
+      ],
+      "manaValue": 5,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Elemental",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Elemental"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 5,
+      "toughness": 4,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "",
+      "gameText": "",
+      "changeApplied": "Sin texto Oracle.",
+      "engineModules": [
+        "none"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "inferno",
+          "archetypeName": "Inferno",
+          "quantity": 1,
+          "order": 6
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "kargan_dragonrider",
+      "name": "Kargan Dragonrider",
+      "setCode": "FDN",
+      "collectorNumber": "541",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{R}",
+      "manaSymbols": [
+        "1",
+        "R"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Human Warrior",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human",
+        "Warrior"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "As long as you control a Dragon, this creature has flying.",
+      "gameText": "As long as you control a Dragon, this creature has flying.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "inferno",
+          "archetypeName": "Inferno",
+          "quantity": 1,
+          "order": 7
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "rapacious_dragon",
+      "name": "Rapacious Dragon",
+      "setCode": "FDN",
+      "collectorNumber": "544",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{4}{R}",
+      "manaSymbols": [
+        "4",
+        "R"
+      ],
+      "manaValue": 5,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Dragon",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Dragon"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 3,
+      "toughness": 3,
+      "keywords": [
+        "Flying",
+        "Treasure"
+      ],
+      "keywordIds": [
+        "flying",
+        "treasure"
+      ],
+      "oracleText": "Flying\nWhen this creature enters, create two Treasure tokens. (They're artifacts with \"{T}, Sacrifice this token: Add one mana of any color.\")",
+      "gameText": "Flying\nWhen this creature enters, create two Treasure tokens. (They're artifacts with \"{T}, Sacrifice this token: Add one mana of any color.\")",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "inferno",
+          "archetypeName": "Inferno",
+          "quantity": 1,
+          "order": 8
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "scorching_dragonfire",
+      "name": "Scorching Dragonfire",
+      "setCode": "FDN",
+      "collectorNumber": "545",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{R}",
+      "manaSymbols": [
+        "1",
+        "R"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Scorching Dragonfire deals 3 damage to target creature or planeswalker. If that creature or planeswalker would die this turn, exile it instead.",
+      "gameText": "Scorching Dragonfire deals 3 damage to target creature. If that creature would die this turn, exile it instead.",
+      "changeApplied": "Referencia a planeswalker eliminada.",
+      "engineModules": [
+        "no_planeswalkers"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "inferno",
+          "archetypeName": "Inferno",
+          "quantity": 1,
+          "order": 9
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "seize_the_spoils",
+      "name": "Seize the Spoils",
+      "setCode": "FDN",
+      "collectorNumber": "546",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{R}",
+      "manaSymbols": [
+        "2",
+        "R"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Sorcery",
+      "supertypes": [],
+      "cardTypes": [
+        "Sorcery"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Treasure"
+      ],
+      "keywordIds": [
+        "treasure"
+      ],
+      "oracleText": "As an additional cost to cast this spell, discard a card.\nDraw two cards and create a Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")",
+      "gameText": "As an additional cost to cast this spell, discard a card.\nDraw two cards and create a Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "inferno",
+          "archetypeName": "Inferno",
+          "quantity": 1,
+          "order": 10
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "skyraker_giant",
+      "name": "Skyraker Giant",
+      "setCode": "FDN",
+      "collectorNumber": "547",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{R}{R}",
+      "manaSymbols": [
+        "2",
+        "R",
+        "R"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "R"
+      ],
+      "colorNames": [
+        "Red"
+      ],
+      "typeLine": "Creature — Giant",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Giant"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 4,
+      "toughness": 3,
+      "keywords": [
+        "Reach"
+      ],
+      "keywordIds": [
+        "reach"
+      ],
+      "oracleText": "Reach (This creature can block creatures with flying.)",
+      "gameText": "Reach (This creature can block creatures with flying.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "inferno",
+          "archetypeName": "Inferno",
+          "quantity": 1,
+          "order": 11
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "elvish_archdruid",
+      "name": "Elvish Archdruid",
+      "setCode": "FDN",
+      "collectorNumber": "219",
+      "rarity": "rare",
+      "rarityLabelEs": "Rara",
+      "manaCost": "{1}{G}{G}",
+      "manaSymbols": [
+        "1",
+        "G",
+        "G"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Elf Druid",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Elf",
+        "Druid"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Other Elf creatures you control get +1/+1.\n{T}: Add {G} for each Elf you control.",
+      "gameText": "Other Elf creatures you control get +1/+1.\n{T}: Add {G} for each Elf you control.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 1,
+          "order": 1
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "beast_kin_ranger",
+      "name": "Beast-Kin Ranger",
+      "setCode": "FDN",
+      "collectorNumber": "100",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{G}",
+      "manaSymbols": [
+        "2",
+        "G"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Elf Ranger",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Elf",
+        "Ranger"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 3,
+      "toughness": 3,
+      "keywords": [
+        "Trample"
+      ],
+      "keywordIds": [
+        "trample"
+      ],
+      "oracleText": "Trample (This creature can deal excess combat damage to the player or planeswalker it's attacking.)\nWhenever another creature you control enters, this creature gets +1/+0 until end of turn.",
+      "gameText": "Trample (This creature can deal excess combat damage to the defending player.)\nWhenever another creature you control enters, this creature gets +1/+0 until end of turn.",
+      "changeApplied": "Referencia a planeswalker eliminada. Reminder de trample adaptado para dañar al jugador defensor.",
+      "engineModules": [
+        "no_planeswalkers",
+        "trample"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 1,
+          "order": 2
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "elvish_regrower",
+      "name": "Elvish Regrower",
+      "setCode": "FDN",
+      "collectorNumber": "104",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{2}{G}{G}",
+      "manaSymbols": [
+        "2",
+        "G",
+        "G"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Elf Druid",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Elf",
+        "Druid"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 4,
+      "toughness": 3,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "When this creature enters, return target permanent card from your graveyard to your hand.",
+      "gameText": "When this creature enters, return target permanent card from your graveyard to your hand.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 1,
+          "order": 3
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "felling_blow",
+      "name": "Felling Blow",
+      "setCode": "FDN",
+      "collectorNumber": "105",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{2}{G}",
+      "manaSymbols": [
+        "2",
+        "G"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Sorcery",
+      "supertypes": [],
+      "cardTypes": [
+        "Sorcery"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Put a +1/+1 counter on target creature you control. Then that creature deals damage equal to its power to target creature an opponent controls.",
+      "gameText": "Put a +1/+1 counter on target creature you control. Then that creature deals damage equal to its power to target creature an opponent controls.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 1,
+          "order": 4
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "broken_wings",
+      "name": "Broken Wings",
+      "setCode": "FDN",
+      "collectorNumber": "214",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{G}",
+      "manaSymbols": [
+        "2",
+        "G"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Destroy target artifact, enchantment, or creature with flying.",
+      "gameText": "Destroy target artifact, enchantment, or creature with flying.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 1,
+          "order": 5
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "dwynens_elite",
+      "name": "Dwynen's Elite",
+      "setCode": "FDN",
+      "collectorNumber": "218",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{G}",
+      "manaSymbols": [
+        "1",
+        "G"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Elf Warrior",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Elf",
+        "Warrior"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "When this creature enters, if you control another Elf, create a 1/1 green Elf Warrior creature token.",
+      "gameText": "When this creature enters, if you control another Elf, create a 1/1 green Elf Warrior creature token.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 1,
+          "order": 6
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "llanowar_elves",
+      "name": "Llanowar Elves",
+      "setCode": "FDN",
+      "collectorNumber": "227",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{G}",
+      "manaSymbols": [
+        "G"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Elf Druid",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Elf",
+        "Druid"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 1,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "{T}: Add {G}.",
+      "gameText": "{T}: Add {G}.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 1,
+          "order": 7
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "snakeskin_veil",
+      "name": "Snakeskin Veil",
+      "setCode": "FDN",
+      "collectorNumber": "233",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{G}",
+      "manaSymbols": [
+        "G"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Put a +1/+1 counter on target creature you control. It gains hexproof until end of turn. (It can't be the target of spells or abilities your opponents control.)",
+      "gameText": "Put a +1/+1 counter on target creature you control. It gains hexproof until end of turn. (It can't be the target of spells or abilities your opponents control.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 1,
+          "order": 8
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "joraga_invocation",
+      "name": "Joraga Invocation",
+      "setCode": "FDN",
+      "collectorNumber": "555",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{4}{G}{G}",
+      "manaSymbols": [
+        "4",
+        "G",
+        "G"
+      ],
+      "manaValue": 6,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Sorcery",
+      "supertypes": [],
+      "cardTypes": [
+        "Sorcery"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Each creature you control gets +3/+3 until end of turn and must be blocked this turn if able.",
+      "gameText": "Each creature you control gets +3/+3 until end of turn and must be assigned a blocker this turn if able.",
+      "changeApplied": "Obligación de bloqueo adaptada al algoritmo de asignación de bloqueadores.",
+      "engineModules": [
+        "must_be_assigned_blocker"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 1,
+          "order": 9
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "tajuru_pathwarden",
+      "name": "Tajuru Pathwarden",
+      "setCode": "FDN",
+      "collectorNumber": "558",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{4}{G}",
+      "manaSymbols": [
+        "4",
+        "G"
+      ],
+      "manaValue": 5,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Elf Warrior Ally",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Elf",
+        "Warrior",
+        "Ally"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 5,
+      "toughness": 4,
+      "keywords": [
+        "Vigilance",
+        "Trample"
+      ],
+      "keywordIds": [
+        "vigilance",
+        "trample"
+      ],
+      "oracleText": "Vigilance (Attacking doesn't cause this creature to tap.)\nTrample (This creature can deal excess combat damage to the player or planeswalker it's attacking.)",
+      "gameText": "Vigilance (Attacking doesn't cause this creature to tap.)\nTrample (This creature can deal excess combat damage to the defending player.)",
+      "changeApplied": "Referencia a planeswalker eliminada. Reminder de trample adaptado para dañar al jugador defensor.",
+      "engineModules": [
+        "no_planeswalkers",
+        "trample"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 1,
+          "order": 10
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "thornweald_archer",
+      "name": "Thornweald Archer",
+      "setCode": "FDN",
+      "collectorNumber": "559",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{G}",
+      "manaSymbols": [
+        "1",
+        "G"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Elf Archer",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Elf",
+        "Archer"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 1,
+      "keywords": [
+        "Reach",
+        "Deathtouch"
+      ],
+      "keywordIds": [
+        "reach",
+        "deathtouch"
+      ],
+      "oracleText": "Reach (This creature can block creatures with flying.)\nDeathtouch (Any amount of damage this deals to a creature is enough to destroy it.)",
+      "gameText": "Reach (This creature can block creatures with flying.)\nDeathtouch (Any amount of damage this deals to a creature is enough to destroy it.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 1,
+          "order": 11
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "wildheart_invoker",
+      "name": "Wildheart Invoker",
+      "setCode": "FDN",
+      "collectorNumber": "561",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{G}{G}",
+      "manaSymbols": [
+        "2",
+        "G",
+        "G"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Elf Shaman",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Elf",
+        "Shaman"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 4,
+      "toughness": 3,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "{8}: Target creature gets +5/+5 and gains trample until end of turn. (It can deal excess combat damage to the player or planeswalker it's attacking.)",
+      "gameText": "{8}: Target creature gets +5/+5 and gains trample until end of turn. (It can deal excess combat damage to the defending player.)",
+      "changeApplied": "Referencia a planeswalker eliminada. Reminder de trample adaptado para dañar al jugador defensor.",
+      "engineModules": [
+        "no_planeswalkers",
+        "trample"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 1,
+          "order": 12
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "forest",
+      "name": "Forest",
+      "setCode": "FDN",
+      "collectorNumber": "280",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "",
+      "manaSymbols": [],
+      "manaValue": 0,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Basic Land — Forest",
+      "supertypes": [
+        "Basic"
+      ],
+      "cardTypes": [
+        "Land"
+      ],
+      "subtypes": [
+        "Forest"
+      ],
+      "isLand": true,
+      "isBasicLand": true,
+      "landMana": "G",
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "({T}: Add {G}.)",
+      "gameText": "({T}: Add {G}.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "elves",
+          "archetypeName": "Elves",
+          "quantity": 8,
+          "order": 14
+        },
+        {
+          "archetypeId": "primal",
+          "archetypeName": "Primal",
+          "quantity": 9,
+          "order": 13
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 17
+    },
+    {
+      "id": "aggressive_mammoth",
+      "name": "Aggressive Mammoth",
+      "setCode": "FDN",
+      "collectorNumber": "551",
+      "rarity": "rare",
+      "rarityLabelEs": "Rara",
+      "manaCost": "{3}{G}{G}{G}",
+      "manaSymbols": [
+        "3",
+        "G",
+        "G",
+        "G"
+      ],
+      "manaValue": 6,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Elephant",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Elephant"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 8,
+      "toughness": 8,
+      "keywords": [
+        "Trample"
+      ],
+      "keywordIds": [
+        "trample"
+      ],
+      "oracleText": "Trample (This creature can deal excess combat damage to the player or planeswalker it's attacking.)\nOther creatures you control have trample.",
+      "gameText": "Trample (This creature can deal excess combat damage to the defending player.)\nOther creatures you control have trample.",
+      "changeApplied": "Referencia a planeswalker eliminada. Reminder de trample adaptado para dañar al jugador defensor.",
+      "engineModules": [
+        "no_planeswalkers",
+        "trample"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "primal",
+          "archetypeName": "Primal",
+          "quantity": 1,
+          "order": 1
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "bite_down",
+      "name": "Bite Down",
+      "setCode": "FDN",
+      "collectorNumber": "212",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{G}",
+      "manaSymbols": [
+        "1",
+        "G"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Target creature you control deals damage equal to its power to target creature or planeswalker you don't control.",
+      "gameText": "Target creature you control deals damage equal to its power to target creature you don't control.",
+      "changeApplied": "Referencia a planeswalker eliminada.",
+      "engineModules": [
+        "no_planeswalkers"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "primal",
+          "archetypeName": "Primal",
+          "quantity": 1,
+          "order": 2
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "giant_growth",
+      "name": "Giant Growth",
+      "setCode": "FDN",
+      "collectorNumber": "223",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{G}",
+      "manaSymbols": [
+        "G"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Instant",
+      "supertypes": [],
+      "cardTypes": [
+        "Instant"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "Target creature gets +3/+3 until end of turn.",
+      "gameText": "Target creature gets +3/+3 until end of turn.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "primal",
+          "archetypeName": "Primal",
+          "quantity": 1,
+          "order": 3
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "mild_mannered_librarian",
+      "name": "Mild-Mannered Librarian",
+      "setCode": "FDN",
+      "collectorNumber": "228",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{G}",
+      "manaSymbols": [
+        "G"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Human",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Human"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 1,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "{3}{G}: This creature becomes a Werewolf. Put two +1/+1 counters on it and you draw a card. Activate only once.",
+      "gameText": "{3}{G}: This creature becomes a Werewolf. Put two +1/+1 counters on it and you draw a card. Activate only once.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "primal",
+          "archetypeName": "Primal",
+          "quantity": 1,
+          "order": 4
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "wildwood_scourge",
+      "name": "Wildwood Scourge",
+      "setCode": "FDN",
+      "collectorNumber": "236",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{X}{G}",
+      "manaSymbols": [
+        "X",
+        "G"
+      ],
+      "manaValue": 1,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Hydra",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Hydra"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 0,
+      "toughness": 0,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "This creature enters with X +1/+1 counters on it.\nWhenever one or more +1/+1 counters are put on another non-Hydra creature you control, put a +1/+1 counter on this creature.",
+      "gameText": "This creature enters with X +1/+1 counters on it.\nWhenever one or more +1/+1 counters are put on another non-Hydra creature you control, put a +1/+1 counter on this creature.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "primal",
+          "archetypeName": "Primal",
+          "quantity": 1,
+          "order": 5
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "bear_cub",
+      "name": "Bear Cub",
+      "setCode": "FDN",
+      "collectorNumber": "552",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{G}",
+      "manaSymbols": [
+        "1",
+        "G"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Bear",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Bear"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 2,
+      "toughness": 2,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "",
+      "gameText": "",
+      "changeApplied": "Sin texto Oracle.",
+      "engineModules": [
+        "none"
+      ],
+      "textStatus": "Texto adaptado",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "primal",
+          "archetypeName": "Primal",
+          "quantity": 1,
+          "order": 6
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "biogenic_upgrade",
+      "name": "Biogenic Upgrade",
+      "setCode": "FDN",
+      "collectorNumber": "553",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{4}{G}{G}",
+      "manaSymbols": [
+        "4",
+        "G",
+        "G"
+      ],
+      "manaValue": 6,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Sorcery",
+      "supertypes": [],
+      "cardTypes": [
+        "Sorcery"
+      ],
+      "subtypes": [],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Double"
+      ],
+      "keywordIds": [
+        "double"
+      ],
+      "oracleText": "Distribute three +1/+1 counters among one, two, or three target creatures, then double the number of +1/+1 counters on each of those creatures.",
+      "gameText": "Distribute three +1/+1 counters among one, two, or three target creatures, then double the number of +1/+1 counters on each of those creatures.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "primal",
+          "archetypeName": "Primal",
+          "quantity": 1,
+          "order": 7
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "druid_of_the_cowl",
+      "name": "Druid of the Cowl",
+      "setCode": "FDN",
+      "collectorNumber": "554",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{1}{G}",
+      "manaSymbols": [
+        "1",
+        "G"
+      ],
+      "manaValue": 2,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Elf Druid",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Elf",
+        "Druid"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 1,
+      "toughness": 3,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "{T}: Add {G}.",
+      "gameText": "{T}: Add {G}.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "primal",
+          "archetypeName": "Primal",
+          "quantity": 1,
+          "order": 8
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "magnigoth_sentry",
+      "name": "Magnigoth Sentry",
+      "setCode": "FDN",
+      "collectorNumber": "556",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{3}{G}",
+      "manaSymbols": [
+        "3",
+        "G"
+      ],
+      "manaValue": 4,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Treefolk",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Treefolk"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 4,
+      "toughness": 4,
+      "keywords": [
+        "Reach"
+      ],
+      "keywordIds": [
+        "reach"
+      ],
+      "oracleText": "Reach (This creature can block creatures with flying.)",
+      "gameText": "Reach (This creature can block creatures with flying.)",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "primal",
+          "archetypeName": "Primal",
+          "quantity": 1,
+          "order": 9
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "new_horizons",
+      "name": "New Horizons",
+      "setCode": "FDN",
+      "collectorNumber": "557",
+      "rarity": "common",
+      "rarityLabelEs": "Común",
+      "manaCost": "{2}{G}",
+      "manaSymbols": [
+        "2",
+        "G"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Enchantment — Aura",
+      "supertypes": [],
+      "cardTypes": [
+        "Enchantment"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": null,
+      "toughness": null,
+      "keywords": [
+        "Enchant"
+      ],
+      "keywordIds": [
+        "enchant"
+      ],
+      "oracleText": "Enchant land\nWhen this Aura enters, put a +1/+1 counter on target creature you control.\nEnchanted land has \"{T}: Add two mana of any one color.\"",
+      "gameText": "Enchant land\nWhen this Aura enters, put a +1/+1 counter on target creature you control.\nEnchanted land has \"{T}: Add two mana of any one color.\"",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "primal",
+          "archetypeName": "Primal",
+          "quantity": 1,
+          "order": 10
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    },
+    {
+      "id": "thrashing_brontodon",
+      "name": "Thrashing Brontodon",
+      "setCode": "FDN",
+      "collectorNumber": "560",
+      "rarity": "uncommon",
+      "rarityLabelEs": "Infrecuente",
+      "manaCost": "{1}{G}{G}",
+      "manaSymbols": [
+        "1",
+        "G",
+        "G"
+      ],
+      "manaValue": 3,
+      "colorIdentity": [
+        "G"
+      ],
+      "colorNames": [
+        "Green"
+      ],
+      "typeLine": "Creature — Dinosaur",
+      "supertypes": [],
+      "cardTypes": [
+        "Creature"
+      ],
+      "subtypes": [
+        "Dinosaur"
+      ],
+      "isLand": false,
+      "isBasicLand": false,
+      "landMana": null,
+      "power": 3,
+      "toughness": 4,
+      "keywords": [],
+      "keywordIds": [],
+      "oracleText": "{1}, Sacrifice this creature: Destroy target artifact or enchantment.",
+      "gameText": "{1}, Sacrifice this creature: Destroy target artifact or enchantment.",
+      "changeApplied": "Sin cambio funcional.",
+      "engineModules": [
+        "oracle_compatible"
+      ],
+      "textStatus": "Sin cambio",
+      "sources": {
+        "list": "https://magic.wizards.com/en/news/feature/foundations-beginner-box-contents",
+        "data": "https://mtgjson.com/api/v5/FDN.json"
+      },
+      "archetypeAppearances": [
+        {
+          "archetypeId": "primal",
+          "archetypeName": "Primal",
+          "quantity": 1,
+          "order": 11
+        }
+      ],
+      "totalCopiesAcrossArchetypes": 1
+    }
+  ]
+}

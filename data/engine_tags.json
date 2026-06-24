@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "keywordsFound": [
+    {
+      "id": "deathtouch",
+      "label": "Deathtouch"
+    },
+    {
+      "id": "double",
+      "label": "Double"
+    },
+    {
+      "id": "double_strike",
+      "label": "Double strike"
+    },
+    {
+      "id": "enchant",
+      "label": "Enchant"
+    },
+    {
+      "id": "equip",
+      "label": "Equip"
+    },
+    {
+      "id": "first_strike",
+      "label": "First strike"
+    },
+    {
+      "id": "flash",
+      "label": "Flash"
+    },
+    {
+      "id": "flying",
+      "label": "Flying"
+    },
+    {
+      "id": "haste",
+      "label": "Haste"
+    },
+    {
+      "id": "kicker",
+      "label": "Kicker"
+    },
+    {
+      "id": "lifelink",
+      "label": "Lifelink"
+    },
+    {
+      "id": "mill",
+      "label": "Mill"
+    },
+    {
+      "id": "raid",
+      "label": "Raid"
+    },
+    {
+      "id": "reach",
+      "label": "Reach"
+    },
+    {
+      "id": "scry",
+      "label": "Scry"
+    },
+    {
+      "id": "trample",
+      "label": "Trample"
+    },
+    {
+      "id": "treasure",
+      "label": "Treasure"
+    },
+    {
+      "id": "vigilance",
+      "label": "Vigilance"
+    },
+    {
+      "id": "ward",
+      "label": "Ward"
+    }
+  ],
+  "engineModulesFound": [
+    {
+      "id": "aura",
+      "label": "aura"
+    },
+    {
+      "id": "cant_attack_or_defend",
+      "label": "cant_attack_or_defend"
+    },
+    {
+      "id": "cant_be_assigned_blocker",
+      "label": "cant_be_assigned_blocker"
+    },
+    {
+      "id": "cant_defend",
+      "label": "cant_defend"
+    },
+    {
+      "id": "conditional_attacking_bonus",
+      "label": "conditional_attacking_bonus"
+    },
+    {
+      "id": "does_not_untap",
+      "label": "does_not_untap"
+    },
+    {
+      "id": "enchant_creature",
+      "label": "enchant_creature"
+    },
+    {
+      "id": "equip",
+      "label": "equip"
+    },
+    {
+      "id": "equipment",
+      "label": "equipment"
+    },
+    {
+      "id": "final_cleanup_untap_step",
+      "label": "final_cleanup_untap_step"
+    },
+    {
+      "id": "first_strike",
+      "label": "first_strike"
+    },
+    {
+      "id": "flash",
+      "label": "flash"
+    },
+    {
+      "id": "haste",
+      "label": "haste"
+    },
+    {
+      "id": "life_gain",
+      "label": "life_gain"
+    },
+    {
+      "id": "lose_abilities",
+      "label": "lose_abilities"
+    },
+    {
+      "id": "menace_custom",
+      "label": "menace_custom"
+    },
+    {
+      "id": "must_be_assigned_blocker",
+      "label": "must_be_assigned_blocker"
+    },
+    {
+      "id": "no_planeswalkers",
+      "label": "no_planeswalkers"
+    },
+    {
+      "id": "none",
+      "label": "none"
+    },
+    {
+      "id": "opponent_lost_life_this_turn",
+      "label": "opponent_lost_life_this_turn"
+    },
+    {
+      "id": "oracle_compatible",
+      "label": "oracle_compatible"
+    },
+    {
+      "id": "plus1_counter",
+      "label": "plus1_counter"
+    },
+    {
+      "id": "set_base_power_toughness",
+      "label": "set_base_power_toughness"
+    },
+    {
+      "id": "tap",
+      "label": "tap"
+    },
+    {
+      "id": "target_attacking_or_defending",
+      "label": "target_attacking_or_defending"
+    },
+    {
+      "id": "target_attacking_own_creature",
+      "label": "target_attacking_own_creature"
+    },
+    {
+      "id": "target_vampire",
+      "label": "target_vampire"
+    },
+    {
+      "id": "temporary_power_modifier",
+      "label": "temporary_power_modifier"
+    },
+    {
+      "id": "temporary_pt_modifier",
+      "label": "temporary_pt_modifier"
+    },
+    {
+      "id": "trample",
+      "label": "trample"
+    },
+    {
+      "id": "trigger_beginning_end_step",
+      "label": "trigger_beginning_end_step"
+    },
+    {
+      "id": "trigger_beginning_of_combat",
+      "label": "trigger_beginning_of_combat"
+    },
+    {
+      "id": "trigger_cast_instant_or_flash",
+      "label": "trigger_cast_instant_or_flash"
+    },
+    {
+      "id": "trigger_end_combat_positioning",
+      "label": "trigger_end_combat_positioning"
+    },
+    {
+      "id": "ward_cost_increase",
+      "label": "ward_cost_increase"
+    }
+  ],
+  "notes": {
+    "ward": "Custom rule: Ward is a mandatory additional cost.",
+    "menace": "Custom rule: A creature with menace can't be blocked if the defending opponent has exactly one creature in defense position.",
+    "untapStep": "The untap step is part of final cleanup."
+  }
+}
