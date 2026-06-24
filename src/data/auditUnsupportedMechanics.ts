@@ -19,7 +19,7 @@ export interface MechanicsAudit {
 
 const unsupportedPatterns: Array<{ label: string; pattern: RegExp }> = [
   { label: "triggered ability", pattern: /\b(when|whenever|at the beginning|at the end)\b/i },
-  { label: "activated ability", pattern: /(?:^|\s)\{[^}]+}[:,]|\{T}[:,]/i },
+  { label: "activated ability", pattern: /(?:^|\s)(?:\{[^}]+})(?:\{[^}]+})*(?:,\s*(?:\{T}|\{[^}]+}|sacrifice [^:]+))*\s*:/i },
   { label: "token creation", pattern: /\bcreate\b.+\btoken/i },
   { label: "return from battlefield/yard", pattern: /\breturn\b.+\b(?:hand|battlefield|graveyard)\b/i },
   { label: "mill", pattern: /\bmill\b/i },
@@ -31,8 +31,16 @@ const unsupportedPatterns: Array<{ label: string; pattern: RegExp }> = [
   { label: "replacement effect", pattern: /\binstead\b/i },
   { label: "until leaves battlefield", pattern: /\buntil .* leaves the battlefield\b/i },
   { label: "static anthem", pattern: /\b(other|attacking|equipped|skeletons|zombies|pirates|goblins|vampires).+get[s]? [+-]\d\/[+-]\d/i },
+  { label: "team pump", pattern: /\b(each|attacking) creatures? you control gets? [+-]\d\/[+-]\d/i },
+  { label: "static keyword grant", pattern: /\b(other )?creatures you control have\b/i },
   { label: "conditional static ability", pattern: /\bas long as\b|\bas long\b|\bwhile it's attacking\b/i },
   { label: "can't be blocked", pattern: /\bcan't be blocked\b/i },
+  { label: "can't defend", pattern: /\bcan't defend\b/i },
+  { label: "enters tapped", pattern: /\benters tapped\b/i },
+  { label: "expanded target removal", pattern: /\bdestroy target (?:artifact|enchantment|creature with flying|artifact, enchantment, or creature with flying)\b/i },
+  { label: "must be blocked", pattern: /\bmust be assigned a blocker\b/i },
+  { label: "counter distribution", pattern: /\bdistribute .* \+1\/\+1 counters\b|\bdouble the number of \+1\/\+1 counters\b/i },
+  { label: "type-changing effect", pattern: /\bbecomes? an? \w+/i },
   { label: "graveyard ability", pattern: /\bfrom your graveyard\b|\bexile this card from your graveyard\b/i },
   { label: "optional payment", pattern: /\byou may pay\b|\byou may discard\b/i },
 ];
