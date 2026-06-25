@@ -13,7 +13,9 @@ type SpellEffect =
   | { type: "exileCreature" }
   | { type: "damageCreature"; amount: number }
   | { type: "modifyCreature"; power: number; toughness: number }
+  | { type: "modifyOwnCreatures"; power: number; toughness: number }
   | { type: "grantKeywords"; keywords: string[] }
+  | { type: "grantKeywordsToOwnCreatures"; keywords: string[] }
   | { type: "gainLife"; amount: number }
   | { type: "drawCards"; amount: number }
   | { type: "addPlusOneCounters"; amount: number }
@@ -145,6 +147,17 @@ export function getSpellProfile(card: Card): SpellProfile | null {
     const toughness = parseSignedNumber(modifyMatch[2]);
     effects.push({ type: "modifyCreature", power, toughness });
     targetMode = power >= 0 && toughness >= 0 ? "ownCreature" : "opponentCreature";
+  }
+
+  const teamPumpMatch = text.match(/Each creature you control gets \+(\d+)\/\+(\d+) and trample until end of turn/i);
+  if (teamPumpMatch) {
+    effects.push({
+      type: "modifyOwnCreatures",
+      power: Number.parseInt(teamPumpMatch[1], 10),
+      toughness: Number.parseInt(teamPumpMatch[2], 10),
+    });
+    effects.push({ type: "grantKeywordsToOwnCreatures", keywords: ["Trample"] });
+    targetMode = "none";
   }
 
   const grantedKeywords = parseGrantedKeywords(text);
@@ -505,9 +518,25 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
       applyStateBasedActions(game);
     }
 
+    if (effect.type === "modifyOwnCreatures") {
+      for (const creature of getCreaturesOnBattlefield(controller)) {
+        creature.powerModifier += effect.power;
+        creature.toughnessModifier += effect.toughness;
+      }
+      log(game, `${stackItem.source.card.name} modifies ${controller.playerId}'s creatures by ${effect.power}/${effect.toughness}.`);
+      applyStateBasedActions(game);
+    }
+
     if (effect.type === "grantKeywords" && target) {
       target.temporaryKeywords.push(...effect.keywords);
       log(game, `${stackItem.source.card.name} grants ${effect.keywords.join(", ")} to ${target.card.name}.`);
+    }
+
+    if (effect.type === "grantKeywordsToOwnCreatures") {
+      for (const creature of getCreaturesOnBattlefield(controller)) {
+        creature.temporaryKeywords.push(...effect.keywords);
+      }
+      log(game, `${stackItem.source.card.name} grants ${effect.keywords.join(", ")} to ${controller.playerId}'s creatures.`);
     }
 
     if (effect.type === "gainLife") {

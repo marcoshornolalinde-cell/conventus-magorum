@@ -465,4 +465,31 @@ describe("noncreature spells", () => {
     expect(getCreatureStats(source)).toEqual({ power: 2, toughness: 2 });
     expect(opponent.graveyard.map((instance) => instance.instanceId)).toContain(target.instanceId);
   });
+
+  it("casts Joraga Invocation as a team pump with trample", () => {
+    const game = createInitialGame(content, {
+      seed: "joraga-invocation",
+      players: [
+        { id: "player1", archetypeIds: ["elves", "primal"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const spell = findPoolCard(player, "joraga_invocation");
+    const first = findPoolCard(player, "llanowar_elves");
+    const second = findPoolCard(player, "bear_cub");
+    setHand(player, [spell]);
+    player.battlefield = [first, second];
+    giveMana(player, "G", 6);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "castSpell");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(getCreatureStats(first)).toEqual({ power: 4, toughness: 4 });
+    expect(getCreatureStats(second)).toEqual({ power: 5, toughness: 5 });
+    expect(hasKeyword(first, "Trample")).toBe(true);
+    expect(hasKeyword(second, "Trample")).toBe(true);
+  });
 });

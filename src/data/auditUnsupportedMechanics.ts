@@ -87,6 +87,10 @@ function supportedLabelsForCard(card: Card): Set<string> {
     labels.add("triggered ability");
   }
 
+  if (spellProfile?.effects.some((effect) => effect.type === "modifyOwnCreatures")) {
+    labels.add("team pump");
+  }
+
   if (supportedTriggers.some((profile) => profile.effects.some((effect) => effect.type === "createToken"))) {
     labels.add("token creation");
   }

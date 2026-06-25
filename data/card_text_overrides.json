@@ -183,11 +183,12 @@
     {
       "cardId": "joraga_invocation",
       "name": "Joraga Invocation",
-      "oracleText": "Each creature you control gets +3/+3 until end of turn and must be blocked this turn if able.",
-      "gameText": "Each creature you control gets +3/+3 until end of turn and must be assigned a blocker this turn if able.",
-      "changeApplied": "Obligación de bloqueo adaptada al algoritmo de asignación de bloqueadores.",
+      "oracleText": "Each creature you control gets +3/+3 and trample until end of turn.",
+      "gameText": "Each creature you control gets +3/+3 and trample until end of turn.",
+      "changeApplied": "Obligación de bloqueo sustituida por trample para ajustarse al motor actual.",
       "engineModules": [
-        "must_be_assigned_blocker"
+        "team_pump",
+        "trample"
       ],
       "changeType": "Generic rules adaptation"
     },
