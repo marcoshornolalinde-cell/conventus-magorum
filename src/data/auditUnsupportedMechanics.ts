@@ -43,6 +43,7 @@ const unsupportedPatterns: Array<{ label: string; pattern: RegExp }> = [
   { label: "type-changing effect", pattern: /\bbecomes? an? \w+/i },
   { label: "graveyard ability", pattern: /\bfrom your graveyard\b|\bexile this card from your graveyard\b/i },
   { label: "optional payment", pattern: /\byou may pay\b|\byou may discard\b/i },
+  { label: "enchanted land mana ability", pattern: /\bEnchanted land has\b/i },
 ];
 
 function normalizeText(card: Card): string {
@@ -66,8 +67,23 @@ function isSupportedNonCreatureSpell(card: Card): boolean {
 function supportedLabelsForCard(card: Card): Set<string> {
   const labels = new Set<string>();
   const supportedTriggers = getTriggeredAbilityProfiles(card);
+  const spellProfile = getSpellProfile(card);
 
   if (supportedTriggers.length > 0) {
+    labels.add("triggered ability");
+  }
+
+  if (
+    spellProfile?.effects.some((effect) => effect.type === "attachPersistent") &&
+    /\bWhen this (?:Aura|Equipment) enters\b/i.test(normalizeText(card))
+  ) {
+    labels.add("triggered ability");
+  }
+
+  if (
+    spellProfile?.effects.some((effect) => effect.type === "addPlusOneCounters") &&
+    /\bWhen this Aura enters, put a \+1\/\+1 counter\b/i.test(normalizeText(card))
+  ) {
     labels.add("triggered ability");
   }
 

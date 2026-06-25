@@ -68,6 +68,7 @@ export function expandArchetypePool(
           losesAbilities: false,
           cannotAttack: false,
           cannotDefend: false,
+          temporaryCannotDefend: false,
           attachedToId: null,
           doesNotUntap: false,
           enteredTurn: null,

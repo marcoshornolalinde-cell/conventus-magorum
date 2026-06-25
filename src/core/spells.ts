@@ -290,6 +290,7 @@ function movePermanentToGraveyard(game: GameState, instanceId: string): void {
   permanent.losesAbilities = false;
   permanent.cannotAttack = false;
   permanent.cannotDefend = false;
+  permanent.temporaryCannotDefend = false;
   permanent.attachedToId = null;
   permanent.doesNotUntap = false;
   controller.graveyard.push(permanent);
@@ -330,6 +331,7 @@ function movePermanentToExile(game: GameState, instanceId: string): void {
   permanent.losesAbilities = false;
   permanent.cannotAttack = false;
   permanent.cannotDefend = false;
+  permanent.temporaryCannotDefend = false;
   permanent.attachedToId = null;
   permanent.doesNotUntap = false;
   controller.exile.push(permanent);
@@ -437,6 +439,28 @@ function log(game: GameState, message: string): void {
   });
 }
 
+function addPlusOneCounters(
+  game: GameState,
+  controller: PlayerState,
+  target: CardInstance,
+  amount: number,
+  source: CardInstance,
+): void {
+  if (amount <= 0) {
+    return;
+  }
+
+  target.plusOneCounters += amount;
+  dispatchGameEvent(game, {
+    type: "plusOneCountersAdded",
+    playerId: controller.playerId,
+    sourceId: source.instanceId,
+    targetId: target.instanceId,
+    amount,
+    details: { spellSourceId: source.instanceId },
+  });
+}
+
 export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): void {
   const controller = getPlayer(game, stackItem.controllerId);
   const profile = getSpellProfile(stackItem.source.card);
@@ -503,7 +527,7 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
     }
 
     if (effect.type === "addPlusOneCounters" && target) {
-      target.plusOneCounters += effect.amount;
+      addPlusOneCounters(game, controller, target, effect.amount, stackItem.source);
       log(game, `${stackItem.source.card.name} puts ${effect.amount} +1/+1 counter(s) on ${target.card.name}.`);
       applyStateBasedActions(game);
     }

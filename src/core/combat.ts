@@ -83,7 +83,7 @@ export function canAttack(instance: CardInstance, currentTurn: number): boolean 
 }
 
 export function canDefend(instance: CardInstance): boolean {
-  return isCreature(instance) && !instance.tapped && !instance.cannotDefend;
+  return isCreature(instance) && !instance.tapped && !instance.cannotDefend && !instance.temporaryCannotDefend;
 }
 
 export function canBlock(attacker: CardInstance, defender: CardInstance): boolean {
@@ -241,6 +241,7 @@ function moveToGraveyard(game: GameState, player: PlayerState, instance: CardIns
   instance.losesAbilities = false;
   instance.cannotAttack = false;
   instance.cannotDefend = false;
+  instance.temporaryCannotDefend = false;
   instance.attachedToId = null;
   instance.doesNotUntap = false;
   player.graveyard.push(instance);
@@ -616,6 +617,7 @@ export function clearCombatDamage(game: GameState): void {
       creature.powerModifier = 0;
       creature.toughnessModifier = 0;
       creature.temporaryKeywords = [];
+      creature.temporaryCannotDefend = false;
     }
   }
 }

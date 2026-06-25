@@ -36,6 +36,7 @@ function resetInstance(instance: CardInstance): void {
   instance.losesAbilities = false;
   instance.cannotAttack = false;
   instance.cannotDefend = false;
+  instance.temporaryCannotDefend = false;
   instance.attachedToId = null;
   instance.doesNotUntap = false;
   instance.enteredTurn = 0;
@@ -510,5 +511,86 @@ describe("trigger engine", () => {
     expect(player.hand.map((instance) => instance.instanceId)).toContain(target.instanceId);
     expect(player.graveyard.map((instance) => instance.instanceId)).not.toContain(target.instanceId);
     expect(game.events.map((event) => event.type)).toContain("cardReturnedToHand");
+  });
+
+  it("pays life and draws when a controlled Vampire dies", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-crossway",
+      players: [
+        { id: "player1", archetypeIds: ["vampires", "cats"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const crossway = findPoolCard(player, "crossway_troublemakers");
+    const vampire = findPoolCard(player, "vampire_spawn");
+    const expectedDraw = player.spellDeck[0].instanceId;
+    player.battlefield = [crossway, vampire];
+    vampire.damageMarked = 99;
+    game.phase = "combat";
+
+    applyStateBasedActions(game);
+
+    expect(player.lifeTotal).toBe(18);
+    expect(player.hand.map((instance) => instance.instanceId)).toContain(expectedDraw);
+    expect(game.events.map((event) => event.type)).toEqual(expect.arrayContaining(["lifePaid", "cardDrawn"]));
+  });
+
+  it("pays red mana to prevent a creature from blocking from an attack trigger", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-frenzied",
+      players: [
+        { id: "player1", archetypeIds: ["goblins", "inferno"] },
+        { id: "player2", archetypeIds: ["cats", "vampires"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const goblin = findPoolCard(player, "frenzied_goblin");
+    const blocker = findPoolCard(opponent, "savannah_lions");
+    player.battlefield = [goblin];
+    opponent.battlefield = [blocker];
+    player.manaPool.R = 1;
+    game.turnNumber = 3;
+    game.attackingPriorityPlayerId = player.playerId;
+    game.activePlayerId = player.playerId;
+
+    resolveCombatPhase(game, (_game, playerId) => ({
+      playerId,
+      attackerIds: playerId === player.playerId ? [goblin.instanceId] : [],
+      defenderIds: playerId === opponent.playerId ? [blocker.instanceId] : [],
+    }));
+
+    expect(player.manaPool.R).toBe(0);
+    expect(blocker.temporaryCannotDefend).toBe(true);
+    expect(opponent.lifeTotal).toBe(19);
+  });
+
+  it("triggers Wildwood Scourge when counters are put on another non-Hydra creature", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-wildwood",
+      players: [
+        { id: "player1", archetypeIds: ["elves", "primal"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const wildwood = findPoolCard(player, "wildwood_scourge");
+    const target = findPoolCard(player, "llanowar_elves");
+    const spell = findPoolCard(player, "snakeskin_veil");
+    player.battlefield = [wildwood, target];
+    setHand(player, [spell]);
+    giveMana(player, "G", 1);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.targetIds[0] === target.instanceId,
+    );
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(target.plusOneCounters).toBe(1);
+    expect(wildwood.plusOneCounters).toBe(1);
+    expect(game.events.filter((event) => event.type === "plusOneCountersAdded")).toHaveLength(2);
   });
 });

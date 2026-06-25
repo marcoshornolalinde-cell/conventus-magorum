@@ -47,6 +47,7 @@ function findPoolCard(player: PlayerState, cardId: string): CardInstance {
   source.losesAbilities = false;
   source.cannotAttack = false;
   source.cannotDefend = false;
+  source.temporaryCannotDefend = false;
   source.attachedToId = null;
   source.doesNotUntap = false;
   source.enteredTurn = 0;

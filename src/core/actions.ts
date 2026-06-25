@@ -182,6 +182,7 @@ function payAdditionalCosts(game: GameState, player: PlayerState, source: CardIn
       sacrificed.losesAbilities = false;
       sacrificed.cannotAttack = false;
       sacrificed.cannotDefend = false;
+      sacrificed.temporaryCannotDefend = false;
       sacrificed.attachedToId = null;
       sacrificed.doesNotUntap = false;
       detachAttachmentsFromPermanent(game, sacrificed.instanceId);
@@ -316,6 +317,7 @@ export function resolveTopOfStack(game: GameState): void {
     stackItem.source.losesAbilities = false;
     stackItem.source.cannotAttack = false;
     stackItem.source.cannotDefend = false;
+    stackItem.source.temporaryCannotDefend = false;
     stackItem.source.attachedToId = null;
     stackItem.source.doesNotUntap = false;
     controller.battlefield.push(stackItem.source);

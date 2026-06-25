@@ -102,6 +102,7 @@ export interface CardInstance {
   losesAbilities: boolean;
   cannotAttack: boolean;
   cannotDefend: boolean;
+  temporaryCannotDefend: boolean;
   attachedToId: string | null;
   doesNotUntap: boolean;
   enteredTurn: number | null;
@@ -149,6 +150,7 @@ export type GameEventType =
   | "combatPositioningEnded"
   | "landEntered"
   | "manaProduced"
+  | "manaSpent"
   | "cardDrawn"
   | "spellCast"
   | "spellResolved"
@@ -162,9 +164,11 @@ export type GameEventType =
   | "permanentAttached"
   | "damageDealt"
   | "lifeGained"
+  | "lifePaid"
   | "cardDiscarded"
   | "cardMilled"
   | "cardReturnedToHand"
+  | "plusOneCountersAdded"
   | "creatureSacrificed"
   | "tokenCreated"
   | "gameEnded";

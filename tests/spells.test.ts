@@ -51,6 +51,7 @@ function resetInstance(instance: CardInstance): void {
   instance.losesAbilities = false;
   instance.cannotAttack = false;
   instance.cannotDefend = false;
+  instance.temporaryCannotDefend = false;
   instance.attachedToId = null;
   instance.doesNotUntap = false;
   instance.enteredTurn = 0;

@@ -64,6 +64,7 @@ function putTopLandOntoBattlefield(player: PlayerState, turnNumber: number): Car
   land.losesAbilities = false;
   land.cannotAttack = false;
   land.cannotDefend = false;
+  land.temporaryCannotDefend = false;
   land.attachedToId = null;
   land.doesNotUntap = false;
   player.battlefield.push(land);

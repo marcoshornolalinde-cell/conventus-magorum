@@ -10,6 +10,8 @@ type TriggerCondition =
   | { type: "thisEntersOrDies" }
   | { type: "thisDies" }
   | { type: "creatureYouControlDies" }
+  | { type: "creatureYouControlSubtypeDies"; subtype: string }
+  | { type: "plusOneCountersPutOnAnotherNonSubtype"; subtype: string }
   | { type: "youControlAnotherSubtype"; subtype: string }
   | { type: "thisEntersIfYouAttackedThisTurn" }
   | { type: "youCastInstantOrFlash" }
@@ -24,6 +26,7 @@ type TriggerCondition =
 export type TriggerEffect =
   | { type: "drawCards"; amount: number }
   | { type: "drawThenDiscard" }
+  | { type: "payLifeThenDraw"; life: number; draw: number }
   | { type: "millCards"; amount: number }
   | { type: "gainLife"; amount: number }
   | { type: "eachOpponentLosesLife"; amount: number }
@@ -32,6 +35,7 @@ export type TriggerEffect =
   | { type: "addPlusOneCounters"; amount: number; target: "source" | "upToTwoOtherOwnCreatures" | "ownSubtype"; subtype?: string }
   | { type: "modifyCreature"; power: number; toughness: number; target: "source" | "opponentCreature" | "ownAttackingCreature" }
   | { type: "damageTarget"; amount: number; target: "opponentCreatureOrPlayer" | "opponentCreature"; amountSource?: "ownSubtypeCount"; subtype?: string }
+  | { type: "payManaThenPreventBlock"; mana: "R"; target: "opponentCreature" }
   | { type: "grantKeywords"; keywords: string[]; target: "ownCreatures" }
   | { type: "returnToHand"; target: "opponentCreature" }
   | { type: "returnOwnPermanentFromGraveyardToHand" }
@@ -360,6 +364,19 @@ export function getTriggeredAbilityProfiles(card: Card): TriggeredAbilityProfile
     });
   }
 
+  if (
+    /\bWhenever this creature attacks, you may pay \{R}. If you do, target creature can't be assigned as a blocker this turn\b/i.test(
+      text,
+    )
+  ) {
+    profiles.push({
+      sourceText:
+        "Whenever this creature attacks, you may pay {R}. If you do, target creature can't be assigned as a blocker this turn.",
+      condition: { type: "thisAttacks" },
+      effects: [{ type: "payManaThenPreventBlock", mana: "R", target: "opponentCreature" }],
+    });
+  }
+
   if (/\bWhenever this creature deals combat damage to a player, put a \+1\/\+1 counter on it\b/i.test(text)) {
     profiles.push({
       sourceText: "Whenever this creature deals combat damage to a player, put a +1/+1 counter on it.",
@@ -397,6 +414,14 @@ export function getTriggeredAbilityProfiles(card: Card): TriggeredAbilityProfile
     });
   }
 
+  if (/\bWhenever a Vampire you control dies, you may pay 2 life. If you do, draw a card\b/i.test(text)) {
+    profiles.push({
+      sourceText: "Whenever a Vampire you control dies, you may pay 2 life. If you do, draw a card.",
+      condition: { type: "creatureYouControlSubtypeDies", subtype: "Vampire" },
+      effects: [{ type: "payLifeThenDraw", life: 2, draw: 1 }],
+    });
+  }
+
   if (/\bWhenever one or more creatures you control attack, you gain 1 life for each attacking creature\b/i.test(text)) {
     profiles.push({
       sourceText: "Whenever one or more creatures you control attack, you gain 1 life for each attacking creature.",
@@ -428,6 +453,19 @@ export function getTriggeredAbilityProfiles(card: Card): TriggeredAbilityProfile
       sourceText: "When this creature enters, creatures you control gain double strike until end of turn.",
       condition: { type: "thisEnters" },
       effects: [{ type: "grantKeywords", keywords: ["Double strike"], target: "ownCreatures" }],
+    });
+  }
+
+  if (
+    /\bWhenever one or more \+1\/\+1 counters are put on another non-Hydra creature you control, put a \+1\/\+1 counter on this creature\b/i.test(
+      text,
+    )
+  ) {
+    profiles.push({
+      sourceText:
+        "Whenever one or more +1/+1 counters are put on another non-Hydra creature you control, put a +1/+1 counter on this creature.",
+      condition: { type: "plusOneCountersPutOnAnotherNonSubtype", subtype: "Hydra" },
+      effects: [{ type: "addPlusOneCounters", amount: 1, target: "source" }],
     });
   }
 
@@ -522,6 +560,10 @@ function getBattlefieldCreature(player: PlayerState, instanceId: string): CardIn
   ) ?? null;
 }
 
+function hasSubtype(instance: CardInstance, subtype: string): boolean {
+  return instance.card.typeLine.toLowerCase().includes(subtype.toLowerCase());
+}
+
 function battlefieldTriggerSources(game: GameState): Array<{ controller: PlayerState; source: CardInstance }> {
   return game.players.flatMap((controller) =>
     controller.battlefield.map((source) => ({
@@ -589,6 +631,28 @@ function conditionMatches(
   if (condition.type === "creatureYouControlDies") {
     const diedPermanent = event.sourceId ? findInstance(game, event.sourceId) : null;
     return event.type === "permanentDied" && diedPermanent?.ownerId === controller.playerId;
+  }
+
+  if (condition.type === "creatureYouControlSubtypeDies") {
+    const diedPermanent = event.sourceId ? findInstance(game, event.sourceId) : null;
+    return (
+      event.type === "permanentDied" &&
+      diedPermanent?.ownerId === controller.playerId &&
+      diedPermanent.card.cardTypes.includes("Creature") &&
+      hasSubtype(diedPermanent, condition.subtype)
+    );
+  }
+
+  if (condition.type === "plusOneCountersPutOnAnotherNonSubtype") {
+    const target = event.targetId ? findInstance(game, event.targetId) : null;
+    return (
+      event.type === "plusOneCountersAdded" &&
+      event.playerId === controller.playerId &&
+      target !== null &&
+      target.instanceId !== source.instanceId &&
+      target.card.cardTypes.includes("Creature") &&
+      !hasSubtype(target, condition.subtype)
+    );
   }
 
   if (condition.type === "youControlAnotherSubtype") {
@@ -698,6 +762,7 @@ function resetPermanentForHiddenZone(instance: CardInstance): void {
   instance.losesAbilities = false;
   instance.cannotAttack = false;
   instance.cannotDefend = false;
+  instance.temporaryCannotDefend = false;
   instance.attachedToId = null;
   instance.doesNotUntap = false;
   instance.enteredTurn = null;
@@ -893,6 +958,7 @@ function createToken(game: GameState, controller: PlayerState, source: CardInsta
       losesAbilities: false,
       cannotAttack: false,
       cannotDefend: false,
+      temporaryCannotDefend: false,
       attachedToId: null,
       doesNotUntap: false,
       enteredTurn: game.turnNumber,
@@ -930,6 +996,79 @@ function gainLife(game: GameState, player: PlayerState, amount: number, source: 
     sourceId: source.instanceId,
     amount,
     details: { triggerSourceId: source.instanceId },
+  });
+}
+
+function addPlusOneCounters(
+  game: GameState,
+  controller: PlayerState,
+  target: CardInstance,
+  amount: number,
+  source: CardInstance,
+): void {
+  if (amount <= 0) {
+    return;
+  }
+
+  target.plusOneCounters += amount;
+  dispatchGameEvent(game, {
+    type: "plusOneCountersAdded",
+    playerId: controller.playerId,
+    sourceId: source.instanceId,
+    targetId: target.instanceId,
+    amount,
+    details: { triggerSourceId: source.instanceId },
+  });
+}
+
+function payLifeThenDraw(
+  game: GameState,
+  controller: PlayerState,
+  source: CardInstance,
+  life: number,
+  drawAmount: number,
+): void {
+  if (life <= 0 || controller.lifeTotal <= life) {
+    return;
+  }
+
+  controller.lifeTotal -= life;
+  dispatchGameEvent(game, {
+    type: "lifePaid",
+    playerId: controller.playerId,
+    sourceId: source.instanceId,
+    amount: life,
+    details: { triggerSourceId: source.instanceId },
+  });
+  drawCards(game, controller, drawAmount, source);
+}
+
+function payManaThenPreventBlock(
+  game: GameState,
+  controller: PlayerState,
+  source: CardInstance,
+  mana: "R",
+): void {
+  if (controller.manaPool[mana] <= 0) {
+    return;
+  }
+
+  const target = getOpponent(game, controller.playerId).battlefield.find((candidate) =>
+    candidate.card.cardTypes.includes("Creature"),
+  );
+
+  if (!target) {
+    return;
+  }
+
+  controller.manaPool[mana] -= 1;
+  target.temporaryCannotDefend = true;
+  dispatchGameEvent(game, {
+    type: "manaSpent",
+    playerId: controller.playerId,
+    sourceId: source.instanceId,
+    amount: 1,
+    details: { spent: mana, triggerSourceId: source.instanceId },
   });
 }
 
@@ -989,6 +1128,7 @@ function resetPermanentForGraveyard(instance: CardInstance): void {
   instance.losesAbilities = false;
   instance.cannotAttack = false;
   instance.cannotDefend = false;
+  instance.temporaryCannotDefend = false;
   instance.attachedToId = null;
   instance.doesNotUntap = false;
 }
@@ -1112,6 +1252,10 @@ function applyTriggerEffect(
     discardCards(game, controller, 1, source);
   }
 
+  if (effect.type === "payLifeThenDraw") {
+    payLifeThenDraw(game, controller, source, effect.life, effect.draw);
+  }
+
   if (effect.type === "millCards") {
     millCards(game, controller, effect.amount, source);
   }
@@ -1153,7 +1297,7 @@ function applyTriggerEffect(
       ?.battlefield.find((candidate) => candidate.instanceId === source.instanceId);
 
     if (currentSource) {
-      currentSource.plusOneCounters += effect.amount;
+      addPlusOneCounters(game, controller, currentSource, effect.amount, source);
     }
   }
 
@@ -1163,7 +1307,7 @@ function applyTriggerEffect(
       .slice(0, 2);
 
     for (const target of targets) {
-      target.plusOneCounters += effect.amount;
+      addPlusOneCounters(game, controller, target, effect.amount, source);
     }
   }
 
@@ -1175,7 +1319,7 @@ function applyTriggerEffect(
     );
 
     if (target) {
-      target.plusOneCounters += effect.amount;
+      addPlusOneCounters(game, controller, target, effect.amount, source);
     }
   }
 
@@ -1217,6 +1361,10 @@ function applyTriggerEffect(
 
   if (effect.type === "damageTarget") {
     resolveDamageTarget(game, controller, source, effect);
+  }
+
+  if (effect.type === "payManaThenPreventBlock") {
+    payManaThenPreventBlock(game, controller, source, effect.mana);
   }
 
   if (effect.type === "grantKeywords" && effect.target === "ownCreatures") {
