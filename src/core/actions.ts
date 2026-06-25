@@ -17,6 +17,14 @@ function isCreature(instance: CardInstance): boolean {
   return instance.card.cardTypes.includes("Creature");
 }
 
+function entersTapped(instance: CardInstance): boolean {
+  return /\benters tapped\b/i.test(instance.card.gameText);
+}
+
+function cannotDefend(instance: CardInstance): boolean {
+  return /\bcan't defend\b/i.test(instance.card.gameText);
+}
+
 export function getPlayer(game: GameState, playerId: PlayerId): PlayerState {
   const player = game.players.find((candidate) => candidate.playerId === playerId);
 
@@ -303,7 +311,7 @@ export function resolveTopOfStack(game: GameState): void {
   if (stackItem.kind === "creatureSpell") {
     const controller = getPlayer(game, stackItem.controllerId);
     stackItem.source.enteredTurn = game.turnNumber;
-    stackItem.source.tapped = false;
+    stackItem.source.tapped = entersTapped(stackItem.source);
     stackItem.source.damageMarked = 0;
     stackItem.source.deathtouchDamageMarked = 0;
     stackItem.source.powerModifier = 0;
@@ -316,7 +324,7 @@ export function resolveTopOfStack(game: GameState): void {
     stackItem.source.temporaryKeywords = [];
     stackItem.source.losesAbilities = false;
     stackItem.source.cannotAttack = false;
-    stackItem.source.cannotDefend = false;
+    stackItem.source.cannotDefend = cannotDefend(stackItem.source);
     stackItem.source.temporaryCannotDefend = false;
     stackItem.source.attachedToId = null;
     stackItem.source.doesNotUntap = false;

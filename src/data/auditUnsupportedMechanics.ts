@@ -91,6 +91,18 @@ function supportedLabelsForCard(card: Card): Set<string> {
     labels.add("team pump");
   }
 
+  if (spellProfile?.effects.some((effect) => effect.type === "createToken")) {
+    labels.add("token creation");
+  }
+
+  if (card.cardTypes.includes("Creature") && /\bcan't defend\b/i.test(normalizeText(card))) {
+    labels.add("can't defend");
+  }
+
+  if (card.cardTypes.includes("Creature") && /\benters tapped\b/i.test(normalizeText(card))) {
+    labels.add("enters tapped");
+  }
+
   if (supportedTriggers.some((profile) => profile.effects.some((effect) => effect.type === "createToken"))) {
     labels.add("token creation");
   }

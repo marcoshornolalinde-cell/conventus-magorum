@@ -19,6 +19,19 @@ type SpellEffect =
   | { type: "gainLife"; amount: number }
   | { type: "drawCards"; amount: number }
   | { type: "addPlusOneCounters"; amount: number }
+  | {
+      type: "createToken";
+      count: number;
+      token: {
+        name: string;
+        color: string;
+        cardTypes: string[];
+        subtypes: string[];
+        power: string | null;
+        toughness: string | null;
+        keywords?: string[];
+      };
+    }
   | { type: "ownCreatureDealsPowerDamage" }
   | { type: "counterSpell" }
   | { type: "attachPersistent" };
@@ -174,6 +187,36 @@ export function getSpellProfile(card: Card): SpellProfile | null {
   const drawCards = parseDrawAmount(text);
   if (drawCards > 0) {
     effects.push({ type: "drawCards", amount: drawCards });
+  }
+
+  if (/Create two 1\/1 red Goblin creature tokens/i.test(text)) {
+    effects.push({
+      type: "createToken",
+      count: 2,
+      token: {
+        name: "Goblin Token",
+        color: "Red",
+        cardTypes: ["Creature"],
+        subtypes: ["Goblin"],
+        power: "1",
+        toughness: "1",
+      },
+    });
+  }
+
+  if (/create a Treasure token/i.test(text)) {
+    effects.push({
+      type: "createToken",
+      count: 1,
+      token: {
+        name: "Treasure Token",
+        color: "Colorless",
+        cardTypes: ["Artifact"],
+        subtypes: ["Treasure"],
+        power: null,
+        toughness: null,
+      },
+    });
   }
 
   if (/Put a \+1\/\+1 counter on target creature you control/i.test(text)) {
@@ -474,6 +517,79 @@ function addPlusOneCounters(
   });
 }
 
+function createToken(
+  game: GameState,
+  controller: PlayerState,
+  source: CardInstance,
+  effect: Extract<SpellEffect, { type: "createToken" }>,
+): void {
+  for (let index = 0; index < effect.count; index += 1) {
+    const tokenCard = {
+      id: `token:${effect.token.name.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`,
+      name: effect.token.name,
+      manaCost: "",
+      manaValue: 0,
+      colorIdentity: effect.token.color === "Colorless" ? [] : [effect.token.color],
+      colorNames: effect.token.color === "Colorless" ? [] : [effect.token.color],
+      typeLine: `Token ${effect.token.cardTypes.join(" ")}${effect.token.subtypes.length > 0 ? ` - ${effect.token.subtypes.join(" ")}` : ""}`,
+      cardTypes: effect.token.cardTypes,
+      isLand: false,
+      isBasicLand: false,
+      landMana: null,
+      power: effect.token.power,
+      toughness: effect.token.toughness,
+      keywords: effect.token.keywords ?? [],
+      keywordIds: [],
+      oracleText: "",
+      gameText: "",
+    };
+    const token: CardInstance = {
+      instanceId: `${source.instanceId}:token:${game.events.length}:${index}`,
+      ownerId: controller.playerId,
+      sourceArchetypeId: source.sourceArchetypeId,
+      card: tokenCard,
+      isToken: true,
+      tapped: false,
+      damageMarked: 0,
+      deathtouchDamageMarked: 0,
+      powerModifier: 0,
+      toughnessModifier: 0,
+      staticPowerModifier: 0,
+      staticToughnessModifier: 0,
+      basePowerOverride: null,
+      baseToughnessOverride: null,
+      plusOneCounters: 0,
+      staticKeywords: [],
+      temporaryKeywords: [],
+      losesAbilities: false,
+      cannotAttack: false,
+      cannotDefend: false,
+      temporaryCannotDefend: false,
+      attachedToId: null,
+      doesNotUntap: false,
+      enteredTurn: game.turnNumber,
+    };
+
+    controller.battlefield.push(token);
+    dispatchGameEvent(game, {
+      type: "tokenCreated",
+      playerId: controller.playerId,
+      sourceId: source.instanceId,
+      targetId: token.instanceId,
+      details: { tokenName: effect.token.name },
+    });
+
+    if (token.card.cardTypes.includes("Creature")) {
+      dispatchGameEvent(game, {
+        type: "creatureEntered",
+        playerId: controller.playerId,
+        sourceId: token.instanceId,
+        details: { cardId: token.card.id, token: true },
+      });
+    }
+  }
+}
+
 export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): void {
   const controller = getPlayer(game, stackItem.controllerId);
   const profile = getSpellProfile(stackItem.source.card);
@@ -559,6 +675,11 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
       addPlusOneCounters(game, controller, target, effect.amount, stackItem.source);
       log(game, `${stackItem.source.card.name} puts ${effect.amount} +1/+1 counter(s) on ${target.card.name}.`);
       applyStateBasedActions(game);
+    }
+
+    if (effect.type === "createToken") {
+      createToken(game, controller, stackItem.source, effect);
+      log(game, `${stackItem.source.card.name} creates ${effect.count} token(s).`);
     }
 
     if (effect.type === "ownCreatureDealsPowerDamage" && target && secondTarget) {

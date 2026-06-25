@@ -68,6 +68,44 @@ function giveMana(player: PlayerState, color: "W" | "U" | "B" | "R" | "G" | "C",
 }
 
 describe("noncreature spells", () => {
+  it("resolves creatures with static entry restrictions", () => {
+    const game = createInitialGame(content, { seed: "creature-entry-restrictions", players: defaultPlayers });
+    const player = game.players[0];
+    const vampire = findPoolCard(player, "vampire_interloper");
+    setHand(player, [vampire]);
+    giveMana(player, "B", 2);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(vampire.cannotDefend).toBe(true);
+    expect(canDefend(vampire)).toBe(false);
+  });
+
+  it("resolves creatures that enter tapped", () => {
+    const game = createInitialGame(content, {
+      seed: "creature-enters-tapped",
+      players: [
+        { id: "player1", archetypeIds: ["undead", "vampires"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const ghoul = findPoolCard(player, "diregraf_ghoul");
+    setHand(player, [ghoul]);
+    giveMana(player, "B", 1);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(ghoul.tapped).toBe(true);
+    expect(canDefend(ghoul)).toBe(false);
+  });
+
   it("casts destroy removal and moves the target creature to graveyard", () => {
     const game = createInitialGame(content, { seed: "spell-destroy", players: defaultPlayers });
     const player = game.players[0];
@@ -381,6 +419,59 @@ describe("noncreature spells", () => {
       expect.arrayContaining([spell.instanceId, discard.instanceId]),
     );
     expect(player.hand.length).toBe(2);
+  });
+
+  it("creates creature tokens from Dragon Fodder", () => {
+    const game = createInitialGame(content, {
+      seed: "dragon-fodder",
+      players: [
+        { id: "player1", archetypeIds: ["goblins", "inferno"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const spell = findPoolCard(player, "dragon_fodder");
+    setHand(player, [spell]);
+    giveMana(player, "R", 2);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "castSpell");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    const tokens = player.battlefield.filter((instance) => instance.isToken);
+    expect(tokens).toHaveLength(2);
+    expect(tokens.every((token) => token.card.name === "Goblin Token")).toBe(true);
+    expect(tokens.every((token) => getCreatureStats(token).power === 1 && getCreatureStats(token).toughness === 1)).toBe(true);
+    expect(game.events.filter((event) => event.type === "tokenCreated")).toHaveLength(2);
+    expect(game.events.filter((event) => event.type === "creatureEntered")).toHaveLength(2);
+  });
+
+  it("creates a Treasure token from Seize the Spoils", () => {
+    const game = createInitialGame(content, {
+      seed: "seize-treasure",
+      players: [
+        { id: "player1", archetypeIds: ["goblins", "inferno"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const spell = findPoolCard(player, "seize_the_spoils");
+    const discard = findPoolCard(player, "goblin_oriflamme");
+    setHand(player, [spell, discard]);
+    giveMana(player, "R", 3);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "castSpell");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    const tokens = player.battlefield.filter((instance) => instance.isToken);
+    expect(tokens).toHaveLength(1);
+    expect(tokens[0].card.name).toBe("Treasure Token");
+    expect(tokens[0].card.cardTypes).toContain("Artifact");
+    expect(player.hand).toHaveLength(2);
+    expect(game.events.map((event) => event.type)).toEqual(expect.arrayContaining(["cardDiscarded", "cardDrawn", "tokenCreated"]));
   });
 
   it("resolves Bite Down with an own creature and an opposing creature target", () => {
