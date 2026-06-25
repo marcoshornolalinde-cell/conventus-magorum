@@ -144,6 +144,9 @@ export interface StackItem {
 export type GameEventType =
   | "gameCreated"
   | "turnStarted"
+  | "endStepStarted"
+  | "combatStarted"
+  | "combatPositioningEnded"
   | "landEntered"
   | "manaProduced"
   | "cardDrawn"
@@ -151,6 +154,8 @@ export type GameEventType =
   | "spellResolved"
   | "spellCountered"
   | "creatureEntered"
+  | "creatureAttacked"
+  | "creaturesAttacked"
   | "permanentDied"
   | "permanentExiled"
   | "permanentReturnedToHand"
@@ -158,6 +163,8 @@ export type GameEventType =
   | "damageDealt"
   | "lifeGained"
   | "cardDiscarded"
+  | "cardMilled"
+  | "cardReturnedToHand"
   | "creatureSacrificed"
   | "tokenCreated"
   | "gameEnded";

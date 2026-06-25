@@ -264,6 +264,10 @@ export function cleanupGeneralTurn(game: GameState): void {
   }
 
   game.phase = "final";
+  dispatchGameEvent(game, {
+    type: "endStepStarted",
+    playerId: game.attackingPriorityPlayerId,
+  });
 
   for (const player of game.players) {
     player.manaPool = createEmptyManaPool();

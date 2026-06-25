@@ -75,6 +75,19 @@ function supportedLabelsForCard(card: Card): Set<string> {
     labels.add("token creation");
   }
 
+  if (supportedTriggers.some((profile) => profile.effects.some((effect) => effect.type === "millCards"))) {
+    labels.add("mill");
+  }
+
+  if (
+    supportedTriggers.some((profile) =>
+      profile.effects.some((effect) => effect.type === "returnOwnPermanentFromGraveyardToHand"),
+    )
+  ) {
+    labels.add("return from battlefield/yard");
+    labels.add("graveyard ability");
+  }
+
   return labels;
 }
 

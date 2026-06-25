@@ -3,7 +3,9 @@ import { describe, expect, it } from "vitest";
 import { getLegalActions, performAction, resolveTopOfStack } from "../src/core/actions.js";
 import { createInitialGame } from "../src/core/gameState.js";
 import { applyStateBasedActions, getCreatureStats } from "../src/core/combat.js";
+import { resolveCombatPhase } from "../src/core/combat.js";
 import { dispatchGameEvent, getTriggeredAbilityProfiles } from "../src/core/triggerEngine.js";
+import { cleanupGeneralTurn } from "../src/core/turn.js";
 import type { CardInstance, ContentBundle, PlayerState } from "../src/core/types.js";
 import { loadContentBundle } from "../src/data/loadContent.js";
 
@@ -275,5 +277,238 @@ describe("trigger engine", () => {
     expect(tokens).toHaveLength(2);
     expect(tokens.every((token) => token.card.name === "Zombie Token")).toBe(true);
     expect(player.graveyard.map((instance) => instance.instanceId)).toContain(twins.instanceId);
+  });
+
+  it("resolves attack and one-or-more-attack life gain triggers", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-attacks",
+      players: [
+        { id: "player1", archetypeIds: ["healing", "inferno"] },
+        { id: "player2", archetypeIds: ["cats", "vampires"] },
+      ],
+    });
+    const player = game.players[0];
+    const herald = findPoolCard(player, "herald_of_faith");
+    const ancestorDragon = findPoolCard(player, "ancestor_dragon");
+    player.battlefield = [herald, ancestorDragon];
+    game.turnNumber = 3;
+    game.attackingPriorityPlayerId = player.playerId;
+    game.activePlayerId = player.playerId;
+
+    resolveCombatPhase(game, (_game, playerId) => ({
+      playerId,
+      attackerIds: playerId === player.playerId ? [herald.instanceId] : [],
+      defenderIds: [],
+    }));
+
+    expect(player.lifeTotal).toBe(23);
+    expect(game.events.map((event) => event.type)).toEqual(expect.arrayContaining(["creatureAttacked", "creaturesAttacked"]));
+  });
+
+  it("resolves beginning and positioning combat triggers before damage", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-combat-step",
+      players: [
+        { id: "player1", archetypeIds: ["cats", "goblins"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const vanguard = findPoolCard(player, "leonin_vanguard");
+    const shaman = findPoolCard(player, "battle_rattle_shaman");
+    const attacker = findPoolCard(player, "savannah_lions");
+    player.battlefield = [vanguard, shaman, attacker];
+    opponent.battlefield = [];
+    game.turnNumber = 3;
+    game.attackingPriorityPlayerId = player.playerId;
+    game.activePlayerId = player.playerId;
+
+    resolveCombatPhase(game, (_game, playerId) => ({
+      playerId,
+      attackerIds: playerId === player.playerId ? [attacker.instanceId] : [],
+      defenderIds: [],
+    }));
+
+    expect(player.lifeTotal).toBe(21);
+    expect(getCreatureStats(vanguard)).toEqual({ power: 2, toughness: 2 });
+    expect(opponent.lifeTotal).toBe(16);
+  });
+
+  it("grants double strike to own creatures from an enter trigger", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-double-strike",
+      players: [
+        { id: "player1", archetypeIds: ["inferno", "goblins"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const terror = findPoolCard(player, "terror_of_mount_velus");
+    const target = findPoolCard(player, "dragonlords_servant");
+    player.battlefield = [target];
+    setHand(player, [terror]);
+    giveMana(player, "R", 7);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(target.temporaryKeywords).toContain("Double strike");
+    expect(terror.temporaryKeywords).toContain("Double strike");
+  });
+
+  it("resolves raid draw triggers when you attacked this turn", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-raid",
+      players: [
+        { id: "player1", archetypeIds: ["pirates", "wizards"] },
+        { id: "player2", archetypeIds: ["cats", "vampires"] },
+      ],
+    });
+    const player = game.players[0];
+    const spy = findPoolCard(player, "storm_fleet_spy");
+    setHand(player, [spy]);
+    giveMana(player, "U", 3);
+    game.phase = "main2";
+    dispatchGameEvent(game, {
+      type: "creatureAttacked",
+      playerId: player.playerId,
+      sourceId: "test-attacker",
+    });
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(player.hand).toHaveLength(1);
+    expect(game.events.map((event) => event.type)).toContain("cardDrawn");
+  });
+
+  it("resolves spell-cast triggers for instant/flash and noncreature-or-Dragon spells", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-spell-cast",
+      players: [
+        { id: "player1", archetypeIds: ["pirates", "inferno"] },
+        { id: "player2", archetypeIds: ["cats", "vampires"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const brineborn = findPoolCard(player, "brineborn_cutthroat");
+    const firespitter = findPoolCard(player, "firespitter_whelp");
+    const opt = findPoolCard(player, "opt");
+    player.battlefield = [brineborn, firespitter];
+    setHand(player, [opt]);
+    giveMana(player, "U", 1);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "castSpell");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(brineborn.plusOneCounters).toBe(1);
+    expect(opponent.lifeTotal).toBe(19);
+  });
+
+  it("resolves enter damage triggers and state-based deaths", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-etb-damage",
+      players: [
+        { id: "player1", archetypeIds: ["undead", "vampires"] },
+        { id: "player2", archetypeIds: ["elves", "primal"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const archer = findPoolCard(player, "skeleton_archer");
+    const target = findPoolCard(opponent, "llanowar_elves");
+    opponent.battlefield = [target];
+    setHand(player, [archer]);
+    giveMana(player, "B", 4);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(opponent.graveyard.map((instance) => instance.instanceId)).toContain(target.instanceId);
+    expect(game.events.map((event) => event.type)).toEqual(expect.arrayContaining(["damageDealt", "permanentDied"]));
+  });
+
+  it("resolves beginning-of-end-step triggers that check opponent life loss", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-end-step",
+      players: [
+        { id: "player1", archetypeIds: ["vampires", "cats"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const bloodthief = findPoolCard(player, "stromkirk_bloodthief");
+    player.battlefield = [bloodthief];
+    game.phase = "main2";
+    dispatchGameEvent(game, {
+      type: "damageDealt",
+      playerId: player.playerId,
+      targetId: opponent.playerId,
+      amount: 1,
+      details: { targetType: "player" },
+    });
+
+    cleanupGeneralTurn(game);
+
+    expect(bloodthief.plusOneCounters).toBe(1);
+    expect(game.events.map((event) => event.type)).toContain("endStepStarted");
+  });
+
+  it("mills cards from an enters-or-dies trigger", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-mill",
+      players: [
+        { id: "player1", archetypeIds: ["undead", "vampires"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const crow = findPoolCard(player, "crow_of_dark_tidings");
+    const milledIds = player.spellDeck.slice(0, 2).map((instance) => instance.instanceId);
+    setHand(player, [crow]);
+    giveMana(player, "B", 3);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(player.graveyard.map((instance) => instance.instanceId)).toEqual(expect.arrayContaining(milledIds));
+    expect(game.events.filter((event) => event.type === "cardMilled")).toHaveLength(2);
+  });
+
+  it("returns a permanent card from graveyard to hand from an enter trigger", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-regrow",
+      players: [
+        { id: "player1", archetypeIds: ["elves", "primal"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const regrower = findPoolCard(player, "elvish_regrower");
+    const target = findPoolCard(player, "llanowar_elves");
+    setHand(player, [regrower]);
+    player.graveyard = [target, ...player.graveyard];
+    giveMana(player, "G", 4);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(player.hand.map((instance) => instance.instanceId)).toContain(target.instanceId);
+    expect(player.graveyard.map((instance) => instance.instanceId)).not.toContain(target.instanceId);
+    expect(game.events.map((event) => event.type)).toContain("cardReturnedToHand");
   });
 });

@@ -360,7 +360,7 @@ function dealDamageToPlayer(game: GameState, source: CardInstance, defendingPlay
     sourceId: source.instanceId,
     targetId: defendingPlayer.playerId,
     amount: damage,
-    details: { targetType: "player" },
+    details: { targetType: "player", combat: true },
   });
   log(game, `${source.card.name} deals ${damage} damage to ${defendingPlayer.playerId}.`);
   setGameOverFromLifeLoss(game);
@@ -382,7 +382,7 @@ function dealDamageToCreature(game: GameState, source: CardInstance, target: Car
     sourceId: source.instanceId,
     targetId: target.instanceId,
     amount: damage,
-    details: { targetType: "creature" },
+    details: { targetType: "creature", combat: true },
   });
 }
 
@@ -549,6 +549,10 @@ export function resolveCombatPhase(game: GameState, chooseCombatPlan: ChooseComb
 
   game.phase = "combat";
   log(game, "Combat phase begins.");
+  dispatchGameEvent(game, {
+    type: "combatStarted",
+    playerId: game.attackingPriorityPlayerId,
+  });
 
   const plans = new Map<PlayerId, CombatPlan>();
 
@@ -559,9 +563,26 @@ export function resolveCombatPhase(game: GameState, chooseCombatPlan: ChooseComb
     for (const attackerId of plan.attackerIds) {
       const attacker = getBattlefieldCreature(player, attackerId);
 
-      if (attacker && !hasKeyword(attacker, "Vigilance")) {
-        attacker.tapped = true;
+      if (attacker) {
+        if (!hasKeyword(attacker, "Vigilance")) {
+          attacker.tapped = true;
+        }
+
+        dispatchGameEvent(game, {
+          type: "creatureAttacked",
+          playerId: player.playerId,
+          sourceId: attacker.instanceId,
+          details: { cardId: attacker.card.id },
+        });
       }
+    }
+
+    if (plan.attackerIds.length > 0) {
+      dispatchGameEvent(game, {
+        type: "creaturesAttacked",
+        playerId: player.playerId,
+        amount: plan.attackerIds.length,
+      });
     }
 
     log(
@@ -569,6 +590,11 @@ export function resolveCombatPhase(game: GameState, chooseCombatPlan: ChooseComb
       `${player.playerId} positions ${plan.attackerIds.length} attacker(s), ${plan.defenderIds.length} defender(s).`,
     );
   }
+
+  dispatchGameEvent(game, {
+    type: "combatPositioningEnded",
+    playerId: game.attackingPriorityPlayerId,
+  });
 
   const [firstAttackerId, secondAttackerId] = getPriorityOrder(game);
   const firstAttacker = getPlayer(game, firstAttackerId);

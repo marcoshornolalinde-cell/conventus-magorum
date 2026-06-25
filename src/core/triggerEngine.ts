@@ -7,19 +7,34 @@ type TriggerCondition =
   | { type: "youGainLife" }
   | { type: "youDrawCard" }
   | { type: "youDrawSecondCard" }
+  | { type: "thisEntersOrDies" }
   | { type: "thisDies" }
   | { type: "creatureYouControlDies" }
-  | { type: "youControlAnotherSubtype"; subtype: string };
+  | { type: "youControlAnotherSubtype"; subtype: string }
+  | { type: "thisEntersIfYouAttackedThisTurn" }
+  | { type: "youCastInstantOrFlash" }
+  | { type: "youCastNoncreatureOrSubtype"; subtype: string }
+  | { type: "thisDealsCombatDamageToPlayer" }
+  | { type: "thisAttacks" }
+  | { type: "oneOrMoreCreaturesYouControlAttack" }
+  | { type: "beginningOfCombat"; minCreatures?: number }
+  | { type: "beginningEndStepIfOpponentLostLifeThisTurn" }
+  | { type: "combatPositioningEnded"; hasAttackingCreature?: boolean };
 
 export type TriggerEffect =
   | { type: "drawCards"; amount: number }
   | { type: "drawThenDiscard" }
+  | { type: "millCards"; amount: number }
   | { type: "gainLife"; amount: number }
   | { type: "eachOpponentLosesLife"; amount: number }
+  | { type: "eachOpponentDamage"; amount: number }
   | { type: "eachOpponentDiscards"; amount: number; condition?: "opponentLostLifeThisTurn" }
-  | { type: "addPlusOneCounters"; amount: number; target: "source" | "upToTwoOtherOwnCreatures" }
-  | { type: "modifyCreature"; power: number; toughness: number; target: "opponentCreature" }
+  | { type: "addPlusOneCounters"; amount: number; target: "source" | "upToTwoOtherOwnCreatures" | "ownSubtype"; subtype?: string }
+  | { type: "modifyCreature"; power: number; toughness: number; target: "source" | "opponentCreature" | "ownAttackingCreature" }
+  | { type: "damageTarget"; amount: number; target: "opponentCreatureOrPlayer" | "opponentCreature"; amountSource?: "ownSubtypeCount"; subtype?: string }
+  | { type: "grantKeywords"; keywords: string[]; target: "ownCreatures" }
   | { type: "returnToHand"; target: "opponentCreature" }
+  | { type: "returnOwnPermanentFromGraveyardToHand" }
   | {
       type: "createToken";
       count: number;
@@ -76,6 +91,35 @@ export function getTriggeredAbilityProfiles(card: Card): TriggeredAbilityProfile
       effects: [
         { type: "eachOpponentLosesLife", amount: Number.parseInt(entersDrain[1], 10) },
         { type: "gainLife", amount: Number.parseInt(entersDrain[2], 10) },
+      ],
+    });
+  }
+
+  if (/\bWhen this creature enters, it deals 1 damage to any target\b/i.test(text)) {
+    profiles.push({
+      sourceText: "When this creature enters, it deals 1 damage to any target.",
+      condition: { type: "thisEnters" },
+      effects: [{ type: "damageTarget", amount: 1, target: "opponentCreatureOrPlayer" }],
+    });
+  }
+
+  if (
+    /\bWhen this creature enters, it deals damage to target creature an opponent controls equal to the number of Goblins you control\b/i.test(
+      text,
+    )
+  ) {
+    profiles.push({
+      sourceText:
+        "When this creature enters, it deals damage to target creature an opponent controls equal to the number of Goblins you control.",
+      condition: { type: "thisEnters" },
+      effects: [
+        {
+          type: "damageTarget",
+          amount: 0,
+          target: "opponentCreature",
+          amountSource: "ownSubtypeCount",
+          subtype: "Goblin",
+        },
       ],
     });
   }
@@ -150,6 +194,34 @@ export function getTriggeredAbilityProfiles(card: Card): TriggeredAbilityProfile
       sourceText: "When this creature enters, draw a card, then discard a card.",
       condition: { type: "thisEnters" },
       effects: [{ type: "drawThenDiscard" }],
+    });
+  }
+
+  const entersOrDiesMill = text.match(/\bWhen this creature enters or dies, mill (\w+) cards?\b/i);
+  if (entersOrDiesMill) {
+    const millAmount =
+      entersOrDiesMill[1].toLowerCase() === "two" ? 2 : Number.parseInt(entersOrDiesMill[1], 10);
+
+    profiles.push({
+      sourceText: entersOrDiesMill[0],
+      condition: { type: "thisEntersOrDies" },
+      effects: [{ type: "millCards", amount: millAmount }],
+    });
+  }
+
+  if (/\bWhen this creature enters, return target permanent card from your graveyard to your hand\b/i.test(text)) {
+    profiles.push({
+      sourceText: "When this creature enters, return target permanent card from your graveyard to your hand.",
+      condition: { type: "thisEnters" },
+      effects: [{ type: "returnOwnPermanentFromGraveyardToHand" }],
+    });
+  }
+
+  if (/\bWhen this creature enters, if you attacked this turn, draw a card\b/i.test(text)) {
+    profiles.push({
+      sourceText: "When this creature enters, if you attacked this turn, draw a card.",
+      condition: { type: "thisEntersIfYouAttackedThisTurn" },
+      effects: [{ type: "drawCards", amount: 1 }],
     });
   }
 
@@ -242,6 +314,123 @@ export function getTriggeredAbilityProfiles(card: Card): TriggeredAbilityProfile
     });
   }
 
+  const anotherCreatureEntersPumpThis = text.match(
+    /\bWhenever another creature you control enters, this creature gets \+(\d+)\/\+(\d+) until end of turn\b/i,
+  );
+  if (anotherCreatureEntersPumpThis) {
+    profiles.push({
+      sourceText: anotherCreatureEntersPumpThis[0],
+      condition: { type: "anotherCreatureYouControlEnters" },
+      effects: [
+        {
+          type: "modifyCreature",
+          power: Number.parseInt(anotherCreatureEntersPumpThis[1], 10),
+          toughness: Number.parseInt(anotherCreatureEntersPumpThis[2], 10),
+          target: "source",
+        },
+      ],
+    });
+  }
+
+  const beginningCombatVanguard = text.match(
+    /\bAt the beginning of combat, if you control three or more creatures, .* gets \+(\d+)\/\+(\d+) until end of turn and you gain (\d+) life\b/i,
+  );
+  if (beginningCombatVanguard) {
+    profiles.push({
+      sourceText: beginningCombatVanguard[0],
+      condition: { type: "beginningOfCombat", minCreatures: 3 },
+      effects: [
+        {
+          type: "modifyCreature",
+          power: Number.parseInt(beginningCombatVanguard[1], 10),
+          toughness: Number.parseInt(beginningCombatVanguard[2], 10),
+          target: "source",
+        },
+        { type: "gainLife", amount: Number.parseInt(beginningCombatVanguard[3], 10) },
+      ],
+    });
+  }
+
+  const attacksGainLife = text.match(/\bWhenever this creature attacks, you gain (\d+) life\b/i);
+  if (attacksGainLife) {
+    profiles.push({
+      sourceText: attacksGainLife[0],
+      condition: { type: "thisAttacks" },
+      effects: [{ type: "gainLife", amount: Number.parseInt(attacksGainLife[1], 10) }],
+    });
+  }
+
+  if (/\bWhenever this creature deals combat damage to a player, put a \+1\/\+1 counter on it\b/i.test(text)) {
+    profiles.push({
+      sourceText: "Whenever this creature deals combat damage to a player, put a +1/+1 counter on it.",
+      condition: { type: "thisDealsCombatDamageToPlayer" },
+      effects: [{ type: "addPlusOneCounters", amount: 1, target: "source" }],
+    });
+  }
+
+  if (/\bWhenever you cast an instant spell or a spell with flash, put a \+1\/\+1 counter on Brineborn Cutthroat\b/i.test(text)) {
+    profiles.push({
+      sourceText: "Whenever you cast an instant spell or a spell with flash, put a +1/+1 counter on Brineborn Cutthroat.",
+      condition: { type: "youCastInstantOrFlash" },
+      effects: [{ type: "addPlusOneCounters", amount: 1, target: "source" }],
+    });
+  }
+
+  if (/\bWhenever you cast a noncreature or Dragon spell, this creature deals 1 damage to each opponent\b/i.test(text)) {
+    profiles.push({
+      sourceText: "Whenever you cast a noncreature or Dragon spell, this creature deals 1 damage to each opponent.",
+      condition: { type: "youCastNoncreatureOrSubtype", subtype: "Dragon" },
+      effects: [{ type: "eachOpponentDamage", amount: 1 }],
+    });
+  }
+
+  if (
+    /\bAt the beginning of the end step, if an opponent lost life this turn, put a \+1\/\+1 counter on target Vampire you control\b/i.test(
+      text,
+    )
+  ) {
+    profiles.push({
+      sourceText:
+        "At the beginning of the end step, if an opponent lost life this turn, put a +1/+1 counter on target Vampire you control.",
+      condition: { type: "beginningEndStepIfOpponentLostLifeThisTurn" },
+      effects: [{ type: "addPlusOneCounters", amount: 1, target: "ownSubtype", subtype: "Vampire" }],
+    });
+  }
+
+  if (/\bWhenever one or more creatures you control attack, you gain 1 life for each attacking creature\b/i.test(text)) {
+    profiles.push({
+      sourceText: "Whenever one or more creatures you control attack, you gain 1 life for each attacking creature.",
+      condition: { type: "oneOrMoreCreaturesYouControlAttack" },
+      effects: [{ type: "gainLife", amount: -1 }],
+    });
+  }
+
+  const combatPositioningPump = text.match(
+    /\bAt the end of the combat positioning step, target attacking creature you control gets \+(\d+)\/\+(\d+) until end of turn\b/i,
+  );
+  if (combatPositioningPump) {
+    profiles.push({
+      sourceText: combatPositioningPump[0],
+      condition: { type: "combatPositioningEnded", hasAttackingCreature: true },
+      effects: [
+        {
+          type: "modifyCreature",
+          power: Number.parseInt(combatPositioningPump[1], 10),
+          toughness: Number.parseInt(combatPositioningPump[2], 10),
+          target: "ownAttackingCreature",
+        },
+      ],
+    });
+  }
+
+  if (/\bWhen this creature enters, creatures you control gain double strike until end of turn\b/i.test(text)) {
+    profiles.push({
+      sourceText: "When this creature enters, creatures you control gain double strike until end of turn.",
+      condition: { type: "thisEnters" },
+      effects: [{ type: "grantKeywords", keywords: ["Double strike"], target: "ownCreatures" }],
+    });
+  }
+
   if (/\bWhenever you gain life, put a \+1\/\+1 counter on this creature\b/i.test(text)) {
     profiles.push({
       sourceText: "Whenever you gain life, put a +1/+1 counter on this creature.",
@@ -304,8 +493,14 @@ function getOpponent(game: GameState, playerId: PlayerId): PlayerState {
 }
 
 function findInstance(game: GameState, instanceId: string): CardInstance | null {
+  const stackSource = game.stack.find((item) => item.source.instanceId === instanceId)?.source;
+
+  if (stackSource) {
+    return stackSource;
+  }
+
   for (const player of game.players) {
-    const instance = [...player.battlefield, ...player.graveyard, ...player.exile].find(
+    const instance = [...player.battlefield, ...player.graveyard, ...player.exile, ...player.hand].find(
       (candidate) => candidate.instanceId === instanceId,
     );
 
@@ -380,6 +575,13 @@ function conditionMatches(
     return event.type === "cardDrawn" && event.playerId === controller.playerId && controller.cardsDrawnThisTurn === 2;
   }
 
+  if (condition.type === "thisEntersOrDies") {
+    return (
+      (event.type === "creatureEntered" || event.type === "permanentDied") &&
+      event.sourceId === source.instanceId
+    );
+  }
+
   if (condition.type === "thisDies") {
     return event.type === "permanentDied" && event.sourceId === source.instanceId;
   }
@@ -400,6 +602,74 @@ function conditionMatches(
           candidate.card.typeLine.toLowerCase().includes(condition.subtype.toLowerCase()),
       )
     );
+  }
+
+  if (condition.type === "thisEntersIfYouAttackedThisTurn") {
+    return (
+      event.type === "creatureEntered" &&
+      event.sourceId === source.instanceId &&
+      game.events.some(
+        (candidate) =>
+          candidate.turn === game.turnNumber &&
+          candidate.type === "creatureAttacked" &&
+          candidate.playerId === controller.playerId,
+      )
+    );
+  }
+
+  if (condition.type === "youCastInstantOrFlash") {
+    const castSource = event.sourceId ? findInstance(game, event.sourceId) : null;
+    return (
+      event.type === "spellCast" &&
+      event.playerId === controller.playerId &&
+      castSource !== null &&
+      (castSource.card.cardTypes.includes("Instant") || castSource.card.keywords.includes("Flash"))
+    );
+  }
+
+  if (condition.type === "youCastNoncreatureOrSubtype") {
+    const castSource = event.sourceId ? findInstance(game, event.sourceId) : null;
+    return (
+      event.type === "spellCast" &&
+      event.playerId === controller.playerId &&
+      castSource !== null &&
+      (!castSource.card.cardTypes.includes("Creature") ||
+        castSource.card.typeLine.toLowerCase().includes(condition.subtype.toLowerCase()))
+    );
+  }
+
+  if (condition.type === "thisDealsCombatDamageToPlayer") {
+    return (
+      event.type === "damageDealt" &&
+      event.sourceId === source.instanceId &&
+      event.details?.targetType === "player" &&
+      event.details.combat === true
+    );
+  }
+
+  if (condition.type === "thisAttacks") {
+    return event.type === "creatureAttacked" && event.sourceId === source.instanceId;
+  }
+
+  if (condition.type === "oneOrMoreCreaturesYouControlAttack") {
+    return event.type === "creaturesAttacked" && event.playerId === controller.playerId && (event.amount ?? 0) > 0;
+  }
+
+  if (condition.type === "beginningOfCombat") {
+    const minCreatures = condition.minCreatures ?? 0;
+    const creatureCount = controller.battlefield.filter((candidate) => candidate.card.cardTypes.includes("Creature")).length;
+    return event.type === "combatStarted" && creatureCount >= minCreatures;
+  }
+
+  if (condition.type === "beginningEndStepIfOpponentLostLifeThisTurn") {
+    return event.type === "endStepStarted" && opponentLostLifeThisTurn(game, controller);
+  }
+
+  if (condition.type === "combatPositioningEnded") {
+    const hasAttackingCreature = game.events.some(
+      (candidate) => candidate.turn === game.turnNumber && candidate.type === "creatureAttacked" && candidate.playerId === controller.playerId,
+    );
+    return event.type === "combatPositioningEnded" && (!condition.hasAttackingCreature || hasAttackingCreature);
   }
 
   return false;
@@ -532,6 +802,55 @@ function discardCards(game: GameState, player: PlayerState, amount: number, sour
   }
 }
 
+function millCards(game: GameState, player: PlayerState, amount: number, source: CardInstance): void {
+  for (let index = 0; index < amount; index += 1) {
+    const [milled, ...remainingDeck] = player.spellDeck;
+
+    if (!milled) {
+      return;
+    }
+
+    player.spellDeck = remainingDeck;
+    resetPermanentForHiddenZone(milled);
+    player.graveyard.push(milled);
+    dispatchGameEvent(game, {
+      type: "cardMilled",
+      playerId: player.playerId,
+      sourceId: source.instanceId,
+      targetId: milled.instanceId,
+      details: { cardId: milled.card.id, triggerSourceId: source.instanceId },
+    });
+  }
+}
+
+function isPermanentCard(instance: CardInstance): boolean {
+  return (
+    instance.card.isLand ||
+    instance.card.cardTypes.includes("Creature") ||
+    instance.card.cardTypes.includes("Artifact") ||
+    instance.card.cardTypes.includes("Enchantment")
+  );
+}
+
+function returnOwnPermanentFromGraveyardToHand(game: GameState, player: PlayerState, source: CardInstance): void {
+  const targetIndex = player.graveyard.findIndex(isPermanentCard);
+
+  if (targetIndex === -1) {
+    return;
+  }
+
+  const [returned] = player.graveyard.splice(targetIndex, 1);
+  resetPermanentForHiddenZone(returned);
+  player.hand.push(returned);
+  dispatchGameEvent(game, {
+    type: "cardReturnedToHand",
+    playerId: player.playerId,
+    sourceId: source.instanceId,
+    targetId: returned.instanceId,
+    details: { cardId: returned.card.id, from: "graveyard", triggerSourceId: source.instanceId },
+  });
+}
+
 function createToken(game: GameState, controller: PlayerState, source: CardInstance, effect: Extract<TriggerEffect, { type: "createToken" }>): void {
   for (let index = 0; index < effect.count; index += 1) {
     const tokenCard = {
@@ -638,6 +957,146 @@ function eachOpponentLosesLife(game: GameState, controller: PlayerState, amount:
   setGameOverFromLifeLoss(game);
 }
 
+function hasKeyword(instance: CardInstance, keyword: string): boolean {
+  const printedKeywords = instance.losesAbilities ? [] : instance.card.keywords;
+  return [...printedKeywords, ...instance.staticKeywords, ...instance.temporaryKeywords].some(
+    (candidate) => candidate.toLowerCase() === keyword.toLowerCase(),
+  );
+}
+
+function getCreatureStats(instance: CardInstance): { power: number; toughness: number } {
+  const basePower = instance.basePowerOverride ?? (Number.parseInt(instance.card.power ?? "0", 10) || 0);
+  const baseToughness = instance.baseToughnessOverride ?? (Number.parseInt(instance.card.toughness ?? "0", 10) || 0);
+
+  return {
+    power: basePower + instance.plusOneCounters + instance.staticPowerModifier + instance.powerModifier,
+    toughness: baseToughness + instance.plusOneCounters + instance.staticToughnessModifier + instance.toughnessModifier,
+  };
+}
+
+function resetPermanentForGraveyard(instance: CardInstance): void {
+  instance.tapped = false;
+  instance.damageMarked = 0;
+  instance.deathtouchDamageMarked = 0;
+  instance.powerModifier = 0;
+  instance.toughnessModifier = 0;
+  instance.staticPowerModifier = 0;
+  instance.staticToughnessModifier = 0;
+  instance.basePowerOverride = null;
+  instance.baseToughnessOverride = null;
+  instance.staticKeywords = [];
+  instance.temporaryKeywords = [];
+  instance.losesAbilities = false;
+  instance.cannotAttack = false;
+  instance.cannotDefend = false;
+  instance.attachedToId = null;
+  instance.doesNotUntap = false;
+}
+
+function moveCreatureToGraveyardFromTrigger(game: GameState, controller: PlayerState, creature: CardInstance): void {
+  controller.battlefield = controller.battlefield.filter((candidate) => candidate.instanceId !== creature.instanceId);
+  detachAttachmentsFromPermanent(game, creature.instanceId);
+  resetPermanentForGraveyard(creature);
+  controller.graveyard.push(creature);
+  dispatchGameEvent(game, {
+    type: "permanentDied",
+    playerId: controller.playerId,
+    sourceId: creature.instanceId,
+    details: { cardId: creature.card.id },
+  });
+}
+
+function applyLifelinkFromTriggerDamage(game: GameState, source: CardInstance, amount: number): void {
+  if (amount <= 0 || !hasKeyword(source, "Lifelink")) {
+    return;
+  }
+
+  gainLife(game, getPlayer(game, source.ownerId), amount, source);
+}
+
+function dealTriggerDamageToCreature(game: GameState, source: CardInstance, target: CardInstance, amount: number): void {
+  if (amount <= 0) {
+    return;
+  }
+
+  const controller = getBattlefieldController(game, target.instanceId);
+
+  if (!controller) {
+    return;
+  }
+
+  target.damageMarked += amount;
+  if (hasKeyword(source, "Deathtouch")) {
+    target.deathtouchDamageMarked += amount;
+  }
+  applyLifelinkFromTriggerDamage(game, source, amount);
+  dispatchGameEvent(game, {
+    type: "damageDealt",
+    playerId: source.ownerId,
+    sourceId: source.instanceId,
+    targetId: target.instanceId,
+    amount,
+    details: { targetType: "creature" },
+  });
+
+  const lethal =
+    !hasKeyword(target, "Indestructible") &&
+    (target.damageMarked >= getCreatureStats(target).toughness || target.deathtouchDamageMarked > 0);
+  if (lethal) {
+    moveCreatureToGraveyardFromTrigger(game, controller, target);
+  }
+}
+
+function dealTriggerDamageToPlayer(game: GameState, source: CardInstance, target: PlayerState, amount: number): void {
+  if (amount <= 0) {
+    return;
+  }
+
+  target.lifeTotal -= amount;
+  applyLifelinkFromTriggerDamage(game, source, amount);
+  dispatchGameEvent(game, {
+    type: "damageDealt",
+    playerId: source.ownerId,
+    sourceId: source.instanceId,
+    targetId: target.playerId,
+    amount,
+    details: { targetType: "player" },
+  });
+  setGameOverFromLifeLoss(game);
+}
+
+function countOwnSubtype(controller: PlayerState, subtype: string): number {
+  return controller.battlefield.filter(
+    (candidate) =>
+      candidate.card.cardTypes.includes("Creature") &&
+      candidate.card.typeLine.toLowerCase().includes(subtype.toLowerCase()),
+  ).length;
+}
+
+function resolveDamageTarget(
+  game: GameState,
+  controller: PlayerState,
+  source: CardInstance,
+  effect: Extract<TriggerEffect, { type: "damageTarget" }>,
+): void {
+  const amount =
+    effect.amountSource === "ownSubtypeCount" && effect.subtype
+      ? countOwnSubtype(controller, effect.subtype)
+      : effect.amount;
+
+  const opponent = getOpponent(game, controller.playerId);
+  const targetCreature = opponent.battlefield.find((candidate) => candidate.card.cardTypes.includes("Creature"));
+
+  if (targetCreature) {
+    dealTriggerDamageToCreature(game, source, targetCreature, amount);
+    return;
+  }
+
+  if (effect.target === "opponentCreatureOrPlayer") {
+    dealTriggerDamageToPlayer(game, source, opponent, amount);
+  }
+}
+
 function applyTriggerEffect(
   game: GameState,
   controller: PlayerState,
@@ -653,12 +1112,28 @@ function applyTriggerEffect(
     discardCards(game, controller, 1, source);
   }
 
+  if (effect.type === "millCards") {
+    millCards(game, controller, effect.amount, source);
+  }
+
   if (effect.type === "gainLife") {
-    gainLife(game, controller, effect.amount, source);
+    const attackEvent = [...game.events]
+      .reverse()
+      .find((event) => event.turn === game.turnNumber && event.type === "creaturesAttacked" && event.playerId === controller.playerId);
+    const amount = effect.amount === -1 ? Math.max(0, attackEvent?.amount ?? 0) : effect.amount;
+    gainLife(game, controller, amount, source);
   }
 
   if (effect.type === "eachOpponentLosesLife") {
     eachOpponentLosesLife(game, controller, effect.amount, source);
+  }
+
+  if (effect.type === "eachOpponentDamage") {
+    for (const player of game.players) {
+      if (player.playerId !== controller.playerId) {
+        dealTriggerDamageToPlayer(game, source, player, effect.amount);
+      }
+    }
   }
 
   if (effect.type === "eachOpponentDiscards") {
@@ -692,6 +1167,28 @@ function applyTriggerEffect(
     }
   }
 
+  if (effect.type === "addPlusOneCounters" && effect.target === "ownSubtype" && effect.subtype) {
+    const target = controller.battlefield.find(
+      (candidate) =>
+        candidate.card.cardTypes.includes("Creature") &&
+        candidate.card.typeLine.toLowerCase().includes(effect.subtype!.toLowerCase()),
+    );
+
+    if (target) {
+      target.plusOneCounters += effect.amount;
+    }
+  }
+
+  if (effect.type === "modifyCreature" && effect.target === "source") {
+    const currentSource = getBattlefieldController(game, source.instanceId)
+      ?.battlefield.find((candidate) => candidate.instanceId === source.instanceId);
+
+    if (currentSource) {
+      currentSource.powerModifier += effect.power;
+      currentSource.toughnessModifier += effect.toughness;
+    }
+  }
+
   if (effect.type === "modifyCreature" && effect.target === "opponentCreature") {
     const target = getOpponent(game, controller.playerId).battlefield.find((candidate) =>
       candidate.card.cardTypes.includes("Creature"),
@@ -700,6 +1197,31 @@ function applyTriggerEffect(
     if (target) {
       target.powerModifier += effect.power;
       target.toughnessModifier += effect.toughness;
+    }
+  }
+
+  if (effect.type === "modifyCreature" && effect.target === "ownAttackingCreature") {
+    const attackingIds = new Set(
+      game.events
+        .filter((event) => event.turn === game.turnNumber && event.type === "creatureAttacked" && event.playerId === controller.playerId)
+        .map((event) => event.sourceId)
+        .filter((sourceId): sourceId is string => typeof sourceId === "string"),
+    );
+    const target = controller.battlefield.find((candidate) => attackingIds.has(candidate.instanceId));
+
+    if (target) {
+      target.powerModifier += effect.power;
+      target.toughnessModifier += effect.toughness;
+    }
+  }
+
+  if (effect.type === "damageTarget") {
+    resolveDamageTarget(game, controller, source, effect);
+  }
+
+  if (effect.type === "grantKeywords" && effect.target === "ownCreatures") {
+    for (const creature of controller.battlefield.filter((candidate) => candidate.card.cardTypes.includes("Creature"))) {
+      creature.temporaryKeywords.push(...effect.keywords);
     }
   }
 
@@ -722,6 +1244,10 @@ function applyTriggerEffect(
       targetId: target.instanceId,
       details: { triggerSourceId: source.instanceId },
     });
+  }
+
+  if (effect.type === "returnOwnPermanentFromGraveyardToHand") {
+    returnOwnPermanentFromGraveyardToHand(game, controller, source);
   }
 
   if (effect.type === "createToken") {
