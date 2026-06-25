@@ -48,7 +48,8 @@ function validatePlayerZones(game: GameState, player: PlayerState, errors: strin
 
   const expectedOwnedCount = player.pool.length;
   const actualOwnedCount =
-    zones.length + game.stack.filter((stackItem) => stackItem.source.ownerId === player.playerId).length;
+    zones.filter(({ instance }) => !instance.isToken).length +
+    game.stack.filter((stackItem) => stackItem.source.ownerId === player.playerId && !stackItem.source.isToken).length;
 
   if (actualOwnedCount !== expectedOwnedCount) {
     errors.push(`${player.playerId} owns ${expectedOwnedCount} cards but ${actualOwnedCount} are in zones/stack.`);

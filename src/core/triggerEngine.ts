@@ -8,13 +8,31 @@ type TriggerCondition =
   | { type: "youDrawCard" }
   | { type: "youDrawSecondCard" }
   | { type: "thisDies" }
-  | { type: "creatureYouControlDies" };
+  | { type: "creatureYouControlDies" }
+  | { type: "youControlAnotherSubtype"; subtype: string };
 
-type TriggerEffect =
+export type TriggerEffect =
   | { type: "drawCards"; amount: number }
+  | { type: "drawThenDiscard" }
   | { type: "gainLife"; amount: number }
   | { type: "eachOpponentLosesLife"; amount: number }
-  | { type: "addPlusOneCounters"; amount: number; target: "source" };
+  | { type: "eachOpponentDiscards"; amount: number; condition?: "opponentLostLifeThisTurn" }
+  | { type: "addPlusOneCounters"; amount: number; target: "source" | "upToTwoOtherOwnCreatures" }
+  | { type: "modifyCreature"; power: number; toughness: number; target: "opponentCreature" }
+  | { type: "returnToHand"; target: "opponentCreature" }
+  | {
+      type: "createToken";
+      count: number;
+      token: {
+        name: string;
+        color: string;
+        cardTypes: string[];
+        subtypes: string[];
+        power: string | null;
+        toughness: string | null;
+        keywords?: string[];
+      };
+    };
 
 export interface TriggeredAbilityProfile {
   sourceText: string;
@@ -30,7 +48,7 @@ export function getTriggeredAbilityProfiles(card: Card): TriggeredAbilityProfile
   const profiles: TriggeredAbilityProfile[] = [];
   const text = normalizeText(card);
 
-  if (/\bWhen this creature enters, draw a card\b/i.test(text)) {
+  if (/\bWhen this creature enters, draw a card\b(?!,\s*then discard)/i.test(text)) {
     profiles.push({
       sourceText: "When this creature enters, draw a card.",
       condition: { type: "thisEnters" },
@@ -59,6 +77,159 @@ export function getTriggeredAbilityProfiles(card: Card): TriggeredAbilityProfile
         { type: "eachOpponentLosesLife", amount: Number.parseInt(entersDrain[1], 10) },
         { type: "gainLife", amount: Number.parseInt(entersDrain[2], 10) },
       ],
+    });
+  }
+
+  if (
+    /\bWhen this creature enters, put a \+1\/\+1 counter on each of up to two other target creatures you control\b/i.test(
+      text,
+    )
+  ) {
+    profiles.push({
+      sourceText: "When this creature enters, put a +1/+1 counter on each of up to two other target creatures you control.",
+      condition: { type: "thisEnters" },
+      effects: [{ type: "addPlusOneCounters", amount: 1, target: "upToTwoOtherOwnCreatures" }],
+    });
+  }
+
+  if (/\bWhen this creature enters, create a 1\/1 white Cat creature token\b/i.test(text)) {
+    profiles.push({
+      sourceText: "When this creature enters, create a 1/1 white Cat creature token.",
+      condition: { type: "thisEnters" },
+      effects: [
+        {
+          type: "createToken",
+          count: 1,
+          token: {
+            name: "Cat Token",
+            color: "White",
+            cardTypes: ["Creature"],
+            subtypes: ["Cat"],
+            power: "1",
+            toughness: "1",
+          },
+        },
+      ],
+    });
+  }
+
+  const treasureMatch = text.match(/\bWhen this creature enters, create (?:a|two) Treasure tokens?\b/i);
+  if (treasureMatch) {
+    profiles.push({
+      sourceText: treasureMatch[0],
+      condition: { type: "thisEnters" },
+      effects: [
+        {
+          type: "createToken",
+          count: /\btwo\b/i.test(treasureMatch[0]) ? 2 : 1,
+          token: {
+            name: "Treasure Token",
+            color: "Colorless",
+            cardTypes: ["Artifact"],
+            subtypes: ["Treasure"],
+            power: null,
+            toughness: null,
+          },
+        },
+      ],
+    });
+  }
+
+  if (
+    /\bWhen this creature enters, if an opponent lost life this turn, each opponent discards a card\b/i.test(text)
+  ) {
+    profiles.push({
+      sourceText: "When this creature enters, if an opponent lost life this turn, each opponent discards a card.",
+      condition: { type: "thisEnters" },
+      effects: [{ type: "eachOpponentDiscards", amount: 1, condition: "opponentLostLifeThisTurn" }],
+    });
+  }
+
+  if (/\bWhen this creature enters, draw a card, then discard a card\b/i.test(text)) {
+    profiles.push({
+      sourceText: "When this creature enters, draw a card, then discard a card.",
+      condition: { type: "thisEnters" },
+      effects: [{ type: "drawThenDiscard" }],
+    });
+  }
+
+  if (/\bWhen this creature dies, create two 2\/2 black Zombie creature tokens\b/i.test(text)) {
+    profiles.push({
+      sourceText: "When this creature dies, create two 2/2 black Zombie creature tokens.",
+      condition: { type: "thisDies" },
+      effects: [
+        {
+          type: "createToken",
+          count: 2,
+          token: {
+            name: "Zombie Token",
+            color: "Black",
+            cardTypes: ["Creature"],
+            subtypes: ["Zombie"],
+            power: "2",
+            toughness: "2",
+          },
+        },
+      ],
+    });
+  }
+
+  if (/\bWhenever you draw your second card each turn, create a 1\/1 blue Faerie creature token with flying\b/i.test(text)) {
+    profiles.push({
+      sourceText: "Whenever you draw your second card each turn, create a 1/1 blue Faerie creature token with flying.",
+      condition: { type: "youDrawSecondCard" },
+      effects: [
+        {
+          type: "createToken",
+          count: 1,
+          token: {
+            name: "Faerie Token",
+            color: "Blue",
+            cardTypes: ["Creature"],
+            subtypes: ["Faerie"],
+            power: "1",
+            toughness: "1",
+            keywords: ["Flying"],
+          },
+        },
+      ],
+    });
+  }
+
+  if (/\bWhen this creature enters, if you control another Elf, create a 1\/1 green Elf Warrior creature token\b/i.test(text)) {
+    profiles.push({
+      sourceText: "When this creature enters, if you control another Elf, create a 1/1 green Elf Warrior creature token.",
+      condition: { type: "youControlAnotherSubtype", subtype: "Elf" },
+      effects: [
+        {
+          type: "createToken",
+          count: 1,
+          token: {
+            name: "Elf Warrior Token",
+            color: "Green",
+            cardTypes: ["Creature"],
+            subtypes: ["Elf", "Warrior"],
+            power: "1",
+            toughness: "1",
+          },
+        },
+      ],
+    });
+  }
+
+  if (/\bWhen this creature enters, target creature an opponent controls gets -1\/-0 until end of turn\b/i.test(text)) {
+    profiles.push({
+      sourceText: "When this creature enters, target creature an opponent controls gets -1/-0 until end of turn.",
+      condition: { type: "thisEnters" },
+      effects: [{ type: "modifyCreature", power: -1, toughness: 0, target: "opponentCreature" }],
+    });
+  }
+
+  if (/\bWhen this creature enters, return target creature an opponent controls to its owner's hand\b/i.test(text)) {
+    profiles.push({
+      sourceText: "When this creature enters, return target creature an opponent controls to its owner's hand.",
+      condition: { type: "thisEnters" },
+      effects: [{ type: "returnToHand", target: "opponentCreature" }],
     });
   }
 
@@ -150,6 +321,12 @@ function getBattlefieldController(game: GameState, instanceId: string): PlayerSt
   return game.players.find((player) => player.battlefield.some((instance) => instance.instanceId === instanceId)) ?? null;
 }
 
+function getBattlefieldCreature(player: PlayerState, instanceId: string): CardInstance | null {
+  return player.battlefield.find(
+    (instance) => instance.instanceId === instanceId && instance.card.cardTypes.includes("Creature"),
+  ) ?? null;
+}
+
 function battlefieldTriggerSources(game: GameState): Array<{ controller: PlayerState; source: CardInstance }> {
   return game.players.flatMap((controller) =>
     controller.battlefield.map((source) => ({
@@ -212,6 +389,19 @@ function conditionMatches(
     return event.type === "permanentDied" && diedPermanent?.ownerId === controller.playerId;
   }
 
+  if (condition.type === "youControlAnotherSubtype") {
+    return (
+      event.type === "creatureEntered" &&
+      event.sourceId === source.instanceId &&
+      controller.battlefield.some(
+        (candidate) =>
+          candidate.instanceId !== source.instanceId &&
+          candidate.card.cardTypes.includes("Creature") &&
+          candidate.card.typeLine.toLowerCase().includes(condition.subtype.toLowerCase()),
+      )
+    );
+  }
+
   return false;
 }
 
@@ -220,6 +410,55 @@ function logTrigger(game: GameState, source: CardInstance): void {
     turn: game.turnNumber,
     phase: game.phase,
     message: `${source.card.name} trigger resolves.`,
+  });
+}
+
+function resetPermanentForHiddenZone(instance: CardInstance): void {
+  instance.tapped = false;
+  instance.damageMarked = 0;
+  instance.deathtouchDamageMarked = 0;
+  instance.powerModifier = 0;
+  instance.toughnessModifier = 0;
+  instance.staticPowerModifier = 0;
+  instance.staticToughnessModifier = 0;
+  instance.basePowerOverride = null;
+  instance.baseToughnessOverride = null;
+  instance.staticKeywords = [];
+  instance.temporaryKeywords = [];
+  instance.losesAbilities = false;
+  instance.cannotAttack = false;
+  instance.cannotDefend = false;
+  instance.attachedToId = null;
+  instance.doesNotUntap = false;
+  instance.enteredTurn = null;
+}
+
+function detachAttachmentsFromPermanent(game: GameState, permanentId: string): void {
+  for (const player of game.players) {
+    for (const attachment of [...player.battlefield]) {
+      if (attachment.attachedToId !== permanentId) {
+        continue;
+      }
+
+      attachment.attachedToId = null;
+
+      if (attachment.card.cardTypes.includes("Enchantment")) {
+        player.battlefield = player.battlefield.filter((candidate) => candidate.instanceId !== attachment.instanceId);
+        resetPermanentForHiddenZone(attachment);
+        player.graveyard.push(attachment);
+      }
+    }
+  }
+}
+
+function opponentLostLifeThisTurn(game: GameState, controller: PlayerState): boolean {
+  return game.events.some((event) => {
+    if (event.turn !== game.turnNumber || event.type !== "damageDealt" || event.amount === undefined || event.amount <= 0) {
+      return false;
+    }
+
+    const targetId = event.targetId;
+    return typeof targetId === "string" && targetId !== controller.playerId && game.players.some((player) => player.playerId === targetId);
   });
 }
 
@@ -273,6 +512,93 @@ function drawCards(game: GameState, player: PlayerState, amount: number, source:
   }
 }
 
+function discardCards(game: GameState, player: PlayerState, amount: number, source: CardInstance): void {
+  for (let index = 0; index < amount; index += 1) {
+    const [discarded] = player.hand.splice(0, 1);
+
+    if (!discarded) {
+      return;
+    }
+
+    resetPermanentForHiddenZone(discarded);
+    player.graveyard.push(discarded);
+    dispatchGameEvent(game, {
+      type: "cardDiscarded",
+      playerId: player.playerId,
+      sourceId: source.instanceId,
+      targetId: discarded.instanceId,
+      details: { triggerSourceId: source.instanceId },
+    });
+  }
+}
+
+function createToken(game: GameState, controller: PlayerState, source: CardInstance, effect: Extract<TriggerEffect, { type: "createToken" }>): void {
+  for (let index = 0; index < effect.count; index += 1) {
+    const tokenCard = {
+      id: `token:${effect.token.name.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`,
+      name: effect.token.name,
+      manaCost: "",
+      manaValue: 0,
+      colorIdentity: effect.token.color === "Colorless" ? [] : [effect.token.color],
+      colorNames: effect.token.color === "Colorless" ? [] : [effect.token.color],
+      typeLine: `Token ${effect.token.cardTypes.join(" ")}${effect.token.subtypes.length > 0 ? ` - ${effect.token.subtypes.join(" ")}` : ""}`,
+      cardTypes: effect.token.cardTypes,
+      isLand: false,
+      isBasicLand: false,
+      landMana: null,
+      power: effect.token.power,
+      toughness: effect.token.toughness,
+      keywords: effect.token.keywords ?? [],
+      keywordIds: [],
+      oracleText: "",
+      gameText: "",
+    };
+    const token: CardInstance = {
+      instanceId: `${source.instanceId}:token:${game.events.length}:${index}`,
+      ownerId: controller.playerId,
+      sourceArchetypeId: source.sourceArchetypeId,
+      card: tokenCard,
+      isToken: true,
+      tapped: false,
+      damageMarked: 0,
+      deathtouchDamageMarked: 0,
+      powerModifier: 0,
+      toughnessModifier: 0,
+      staticPowerModifier: 0,
+      staticToughnessModifier: 0,
+      basePowerOverride: null,
+      baseToughnessOverride: null,
+      plusOneCounters: 0,
+      staticKeywords: [],
+      temporaryKeywords: [],
+      losesAbilities: false,
+      cannotAttack: false,
+      cannotDefend: false,
+      attachedToId: null,
+      doesNotUntap: false,
+      enteredTurn: game.turnNumber,
+    };
+
+    controller.battlefield.push(token);
+    dispatchGameEvent(game, {
+      type: "tokenCreated",
+      playerId: controller.playerId,
+      sourceId: source.instanceId,
+      targetId: token.instanceId,
+      details: { tokenName: effect.token.name },
+    });
+
+    if (token.card.cardTypes.includes("Creature")) {
+      dispatchGameEvent(game, {
+        type: "creatureEntered",
+        playerId: controller.playerId,
+        sourceId: token.instanceId,
+        details: { cardId: token.card.id, token: true },
+      });
+    }
+  }
+}
+
 function gainLife(game: GameState, player: PlayerState, amount: number, source: CardInstance): void {
   if (amount <= 0) {
     return;
@@ -322,12 +648,29 @@ function applyTriggerEffect(
     drawCards(game, controller, effect.amount, source);
   }
 
+  if (effect.type === "drawThenDiscard") {
+    drawCards(game, controller, 1, source);
+    discardCards(game, controller, 1, source);
+  }
+
   if (effect.type === "gainLife") {
     gainLife(game, controller, effect.amount, source);
   }
 
   if (effect.type === "eachOpponentLosesLife") {
     eachOpponentLosesLife(game, controller, effect.amount, source);
+  }
+
+  if (effect.type === "eachOpponentDiscards") {
+    if (effect.condition === "opponentLostLifeThisTurn" && !opponentLostLifeThisTurn(game, controller)) {
+      return;
+    }
+
+    for (const player of game.players) {
+      if (player.playerId !== controller.playerId) {
+        discardCards(game, player, effect.amount, source);
+      }
+    }
   }
 
   if (effect.type === "addPlusOneCounters" && effect.target === "source") {
@@ -337,6 +680,52 @@ function applyTriggerEffect(
     if (currentSource) {
       currentSource.plusOneCounters += effect.amount;
     }
+  }
+
+  if (effect.type === "addPlusOneCounters" && effect.target === "upToTwoOtherOwnCreatures") {
+    const targets = controller.battlefield
+      .filter((candidate) => candidate.instanceId !== source.instanceId && candidate.card.cardTypes.includes("Creature"))
+      .slice(0, 2);
+
+    for (const target of targets) {
+      target.plusOneCounters += effect.amount;
+    }
+  }
+
+  if (effect.type === "modifyCreature" && effect.target === "opponentCreature") {
+    const target = getOpponent(game, controller.playerId).battlefield.find((candidate) =>
+      candidate.card.cardTypes.includes("Creature"),
+    );
+
+    if (target) {
+      target.powerModifier += effect.power;
+      target.toughnessModifier += effect.toughness;
+    }
+  }
+
+  if (effect.type === "returnToHand" && effect.target === "opponentCreature") {
+    const opponent = getOpponent(game, controller.playerId);
+    const target = opponent.battlefield.find((candidate) => candidate.card.cardTypes.includes("Creature"));
+
+    if (!target || !getBattlefieldCreature(opponent, target.instanceId)) {
+      return;
+    }
+
+    opponent.battlefield = opponent.battlefield.filter((candidate) => candidate.instanceId !== target.instanceId);
+    detachAttachmentsFromPermanent(game, target.instanceId);
+    resetPermanentForHiddenZone(target);
+    opponent.hand.push(target);
+    dispatchGameEvent(game, {
+      type: "permanentReturnedToHand",
+      playerId: opponent.playerId,
+      sourceId: source.instanceId,
+      targetId: target.instanceId,
+      details: { triggerSourceId: source.instanceId },
+    });
+  }
+
+  if (effect.type === "createToken") {
+    createToken(game, controller, source, effect);
   }
 }
 

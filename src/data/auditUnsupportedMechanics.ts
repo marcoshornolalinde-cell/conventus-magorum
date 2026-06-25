@@ -63,6 +63,21 @@ function isSupportedNonCreatureSpell(card: Card): boolean {
   return getSpellProfile(card) !== null;
 }
 
+function supportedLabelsForCard(card: Card): Set<string> {
+  const labels = new Set<string>();
+  const supportedTriggers = getTriggeredAbilityProfiles(card);
+
+  if (supportedTriggers.length > 0) {
+    labels.add("triggered ability");
+  }
+
+  if (supportedTriggers.some((profile) => profile.effects.some((effect) => effect.type === "createToken"))) {
+    labels.add("token creation");
+  }
+
+  return labels;
+}
+
 export function auditUnsupportedMechanics(bundle: ContentBundle): MechanicsAudit {
   const unsupportedCards: UnsupportedMechanicFinding[] = [];
   const unsupportedCounts: Record<string, number> = {};
@@ -74,15 +89,15 @@ export function auditUnsupportedMechanics(bundle: ContentBundle): MechanicsAudit
       continue;
     }
 
-    const supportedTriggers = getTriggeredAbilityProfiles(card);
+    const supportedLabels = supportedLabelsForCard(card);
     const unsupported = unsupportedPatterns
       .filter(({ pattern }) => pattern.test(text))
       .map(({ label }) => label)
-      .filter((label) => label !== "triggered ability" || supportedTriggers.length === 0);
+      .filter((label) => !supportedLabels.has(label));
 
     if (
       unsupported.length === 0 &&
-      (hasOnlySupportedPrintedKeywords(card, text) || isSupportedNonCreatureSpell(card) || supportedTriggers.length > 0)
+      (hasOnlySupportedPrintedKeywords(card, text) || isSupportedNonCreatureSpell(card) || supportedLabels.size > 0)
     ) {
       continue;
     }

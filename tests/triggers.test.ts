@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 
 import { getLegalActions, performAction, resolveTopOfStack } from "../src/core/actions.js";
 import { createInitialGame } from "../src/core/gameState.js";
-import { getCreatureStats } from "../src/core/combat.js";
-import { getTriggeredAbilityProfiles } from "../src/core/triggerEngine.js";
+import { applyStateBasedActions, getCreatureStats } from "../src/core/combat.js";
+import { dispatchGameEvent, getTriggeredAbilityProfiles } from "../src/core/triggerEngine.js";
 import type { CardInstance, ContentBundle, PlayerState } from "../src/core/types.js";
 import { loadContentBundle } from "../src/data/loadContent.js";
 
@@ -120,5 +120,160 @@ describe("trigger engine", () => {
     expect(ajani.plusOneCounters).toBe(2);
     expect(getCreatureStats(ajani)).toEqual({ power: 4, toughness: 4 });
     expect(game.events.filter((event) => event.type === "lifeGained")).toHaveLength(2);
+  });
+
+  it("puts counters on up to two other creatures from an enter trigger", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-felidar",
+      players: [
+        { id: "player1", archetypeIds: ["cats", "vampires"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const felidar = findPoolCard(player, "felidar_savior");
+    const firstTarget = findPoolCard(player, "savannah_lions");
+    const secondTarget = findPoolCard(player, "leonin_vanguard");
+    player.battlefield = [firstTarget, secondTarget];
+    setHand(player, [felidar]);
+    giveMana(player, "W", 4);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(firstTarget.plusOneCounters).toBe(1);
+    expect(secondTarget.plusOneCounters).toBe(1);
+    expect(felidar.plusOneCounters).toBe(0);
+  });
+
+  it("returns an opposing creature to hand from an enter trigger", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-bounce",
+      players: [
+        { id: "player1", archetypeIds: ["pirates", "wizards"] },
+        { id: "player2", archetypeIds: ["cats", "vampires"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const bouncer = findPoolCard(player, "bigfin_bouncer");
+    const target = findPoolCard(opponent, "savannah_lions");
+    opponent.battlefield = [target];
+    setHand(player, [bouncer]);
+    giveMana(player, "U", 4);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(opponent.battlefield.map((instance) => instance.instanceId)).not.toContain(target.instanceId);
+    expect(opponent.hand.map((instance) => instance.instanceId)).toContain(target.instanceId);
+    expect(game.events.map((event) => event.type)).toContain("permanentReturnedToHand");
+  });
+
+  it("draws then discards from an enter trigger", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-draw-discard",
+      players: [
+        { id: "player1", archetypeIds: ["wizards", "pirates"] },
+        { id: "player2", archetypeIds: ["cats", "vampires"] },
+      ],
+    });
+    const player = game.players[0];
+    const elemental = findPoolCard(player, "icewind_elemental");
+    setHand(player, [elemental]);
+    giveMana(player, "U", 5);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(player.cardsDrawnThisTurn).toBe(1);
+    expect(player.hand).toHaveLength(0);
+    expect(game.events.map((event) => event.type)).toEqual(expect.arrayContaining(["cardDrawn", "cardDiscarded"]));
+  });
+
+  it("discards from each opponent when its condition was met this turn", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-conditional-discard",
+      players: [
+        { id: "player1", archetypeIds: ["vampires", "cats"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const collector = findPoolCard(player, "bloodtithe_collector");
+    const discarded = findPoolCard(opponent, "opt");
+    setHand(player, [collector]);
+    setHand(opponent, [discarded]);
+    giveMana(player, "B", 5);
+    game.phase = "main1";
+    dispatchGameEvent(game, {
+      type: "damageDealt",
+      playerId: player.playerId,
+      targetId: opponent.playerId,
+      amount: 1,
+      details: { targetType: "player", lossOfLife: true },
+    });
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(opponent.hand).toHaveLength(0);
+    expect(opponent.graveyard.map((instance) => instance.instanceId)).toContain(discarded.instanceId);
+  });
+
+  it("creates creature tokens from an enter trigger", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-token-enter",
+      players: [
+        { id: "player1", archetypeIds: ["cats", "vampires"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const pridefulParent = findPoolCard(player, "prideful_parent");
+    setHand(player, [pridefulParent]);
+    giveMana(player, "W", 3);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    const tokens = player.battlefield.filter((instance) => instance.isToken);
+    expect(tokens).toHaveLength(1);
+    expect(tokens[0].card.name).toBe("Cat Token");
+    expect(tokens[0].card.power).toBe("1");
+    expect(tokens[0].card.toughness).toBe("1");
+    expect(game.events.map((event) => event.type)).toEqual(expect.arrayContaining(["tokenCreated", "creatureEntered"]));
+  });
+
+  it("creates creature tokens from a dies trigger", () => {
+    const game = createInitialGame(content, {
+      seed: "trigger-token-dies",
+      players: [
+        { id: "player1", archetypeIds: ["undead", "vampires"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const twins = findPoolCard(player, "maalfeld_twins");
+    player.battlefield = [twins];
+    twins.damageMarked = 99;
+    game.phase = "combat";
+
+    applyStateBasedActions(game);
+
+    const tokens = player.battlefield.filter((instance) => instance.isToken);
+    expect(tokens).toHaveLength(2);
+    expect(tokens.every((token) => token.card.name === "Zombie Token")).toBe(true);
+    expect(player.graveyard.map((instance) => instance.instanceId)).toContain(twins.instanceId);
   });
 });

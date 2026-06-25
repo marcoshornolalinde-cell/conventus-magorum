@@ -86,6 +86,7 @@ export interface CardInstance {
   ownerId: PlayerId;
   sourceArchetypeId: ArchetypeId;
   card: Card;
+  isToken?: boolean;
   tapped: boolean;
   damageMarked: number;
   deathtouchDamageMarked: number;
@@ -152,11 +153,13 @@ export type GameEventType =
   | "creatureEntered"
   | "permanentDied"
   | "permanentExiled"
+  | "permanentReturnedToHand"
   | "permanentAttached"
   | "damageDealt"
   | "lifeGained"
   | "cardDiscarded"
   | "creatureSacrificed"
+  | "tokenCreated"
   | "gameEnded";
 
 export interface GameEvent {
