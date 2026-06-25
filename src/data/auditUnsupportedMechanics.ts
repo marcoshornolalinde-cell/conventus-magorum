@@ -1,6 +1,7 @@
 import type { Card, ContentBundle } from "../core/types.js";
 import { getSpellProfile } from "../core/spells.js";
 import { getTriggeredAbilityProfiles } from "../core/triggerEngine.js";
+import { getStaticAbilityProfile } from "../core/staticEffects.js";
 
 export interface UnsupportedMechanicFinding {
   cardId: string;
@@ -68,6 +69,7 @@ function supportedLabelsForCard(card: Card): Set<string> {
   const labels = new Set<string>();
   const supportedTriggers = getTriggeredAbilityProfiles(card);
   const spellProfile = getSpellProfile(card);
+  const staticProfile = getStaticAbilityProfile(card);
 
   if (supportedTriggers.length > 0) {
     labels.add("triggered ability");
@@ -93,6 +95,37 @@ function supportedLabelsForCard(card: Card): Set<string> {
 
   if (spellProfile?.effects.some((effect) => effect.type === "createToken")) {
     labels.add("token creation");
+  }
+
+  if (staticProfile?.effects.some((effect) => effect.type === "anthem" || effect.type === "attachmentBonus")) {
+    labels.add("static anthem");
+  }
+
+  if (
+    staticProfile?.effects.some(
+      (effect) =>
+        ((effect.type === "anthem" || effect.type === "attachmentBonus") && (effect.keywords?.length ?? 0) > 0) ||
+        effect.type === "selfKeywordIfControlSubtype" ||
+        effect.type === "selfKeywordIfLifeAtLeast",
+    )
+  ) {
+    labels.add("static keyword grant");
+  }
+
+  if (
+    staticProfile?.effects.some(
+      (effect) => effect.type === "selfKeywordIfControlSubtype" || effect.type === "selfKeywordIfLifeAtLeast",
+    )
+  ) {
+    labels.add("conditional static ability");
+  }
+
+  if (
+    /\bDragon spells you cast cost \{1} less to cast\b/i.test(normalizeText(card)) ||
+    /\bThis spell costs \{1} less to cast for each instant and sorcery card in your graveyard\b/i.test(normalizeText(card)) ||
+    /\bThis spell costs \{1} less to cast if you control a Wizard\b/i.test(normalizeText(card))
+  ) {
+    labels.add("cost reduction");
   }
 
   if (card.cardTypes.includes("Creature") && /\bcan't defend\b/i.test(normalizeText(card))) {

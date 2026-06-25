@@ -2,12 +2,13 @@ import type { CardInstance, GamePhase, GameState, LegalAction, PlayerId, PlayerS
 import { canPayManaCost, spendManaCost } from "./mana.js";
 import {
   getAdditionalCostOptions,
-  getManaCostForPayment,
+  getEffectiveManaCost,
   hasPayableAdditionalCosts,
 } from "./costs.js";
 import { getSpellTargetOptions, resolveNonCreatureSpell } from "./spells.js";
 import { assertGameStateIsValid } from "./validateGameState.js";
 import { dispatchGameEvent } from "./triggerEngine.js";
+import { applyContinuousEffects } from "./staticEffects.js";
 
 function isMainPhase(phase: GamePhase): boolean {
   return phase === "main1" || phase === "main2";
@@ -59,7 +60,7 @@ function createCastSpellActions(game: GameState, player: PlayerState, cardInstan
   const actions: LegalAction[] = [];
 
   for (const additionalCosts of getAdditionalCostOptions(player, cardInstance)) {
-    if (!canPayManaCost(player.manaPool, getManaCostForPayment(cardInstance.card, additionalCosts))) {
+    if (!canPayManaCost(player.manaPool, getEffectiveManaCost(player, cardInstance, additionalCosts))) {
       continue;
     }
 
@@ -99,7 +100,7 @@ export function getLegalActions(game: GameState, playerId: PlayerId): LegalActio
 
   if (isMainPhase(game.phase) && game.stack.length === 0) {
     for (const cardInstance of player.hand) {
-      if (isCreature(cardInstance) && canPayManaCost(player.manaPool, cardInstance.card.manaCost)) {
+      if (isCreature(cardInstance) && canPayManaCost(player.manaPool, getEffectiveManaCost(player, cardInstance))) {
         actions.push({
           type: "playCreature",
           playerId,
@@ -272,7 +273,7 @@ export function performAction(game: GameState, action: LegalAction): void {
   const card = removeFromHand(player, action.cardInstanceId);
   player.manaPool = spendManaCost(
     player.manaPool,
-    action.type === "castSpell" ? getManaCostForPayment(card.card, action.additionalCosts) : card.card.manaCost,
+    action.type === "castSpell" ? getEffectiveManaCost(player, card, action.additionalCosts) : getEffectiveManaCost(player, card),
   );
   payAdditionalCosts(game, player, card, action);
   if (action.type === "playCreature") {
@@ -345,6 +346,7 @@ export function resolveTopOfStack(game: GameState): void {
     resolveNonCreatureSpell(game, stackItem);
   }
 
+  applyContinuousEffects(game);
   dispatchGameEvent(game, {
     type: "spellResolved",
     playerId: stackItem.controllerId,

@@ -1,6 +1,7 @@
 import type { CardInstance, CombatPairing, CombatPlan, GameState, PlayerId, PlayerState } from "./types.js";
 import { getOpponent, getPlayer, getPriorityOrder } from "./actions.js";
 import { dispatchGameEvent } from "./triggerEngine.js";
+import { applyContinuousEffects } from "./staticEffects.js";
 
 export type ChooseCombatPlan = (game: GameState, playerId: PlayerId) => CombatPlan;
 
@@ -265,6 +266,8 @@ export function detachFromPermanent(game: GameState, permanentId: string): void 
 }
 
 export function applyStateBasedActions(game: GameState): void {
+  applyContinuousEffects(game);
+
   for (const player of game.players) {
     for (const creature of [...getCreaturesOnBattlefield(player)]) {
       const { toughness } = getCreatureStats(creature);
@@ -285,6 +288,8 @@ export function applyStateBasedActions(game: GameState): void {
       }
     }
   }
+
+  applyContinuousEffects(game);
 }
 
 function setGameOverFromLifeLoss(game: GameState): void {
@@ -548,6 +553,7 @@ export function resolveCombatPhase(game: GameState, chooseCombatPlan: ChooseComb
     return;
   }
 
+  applyContinuousEffects(game);
   game.phase = "combat";
   log(game, "Combat phase begins.");
   dispatchGameEvent(game, {

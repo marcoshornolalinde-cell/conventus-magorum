@@ -16,7 +16,49 @@ export function requiresAdditionalDiscard(card: Card): boolean {
 }
 
 export function canPayFullManaPath(player: PlayerState, card: CardInstance): boolean {
-  return canPayManaCost(player.manaPool, `${card.card.manaCost}${getOptionalAdditionalManaCost(card.card)}`);
+  return canPayManaCost(player.manaPool, getEffectiveManaCost(player, card, [{ type: "mana", manaCost: getOptionalAdditionalManaCost(card.card) }]));
+}
+
+function hasSubtype(instance: CardInstance, subtype: string): boolean {
+  return new RegExp(`\\b${subtype}\\b`, "i").test(instance.card.typeLine);
+}
+
+function isInstantOrSorcery(instance: CardInstance): boolean {
+  return instance.card.cardTypes.includes("Instant") || instance.card.cardTypes.includes("Sorcery");
+}
+
+function reduceGenericManaCost(manaCost: string, reduction: number): string {
+  if (reduction <= 0) {
+    return manaCost;
+  }
+
+  const genericMatch = manaCost.match(/\{(\d+)}/);
+
+  if (!genericMatch) {
+    return manaCost;
+  }
+
+  const generic = Number.parseInt(genericMatch[1], 10);
+  const nextGeneric = Math.max(0, generic - reduction);
+  return manaCost.replace(genericMatch[0], nextGeneric > 0 ? `{${nextGeneric}}` : "");
+}
+
+function getGenericCostReduction(player: PlayerState, card: CardInstance): number {
+  let reduction = 0;
+
+  if (hasSubtype(card, "Dragon")) {
+    reduction += player.battlefield.filter((permanent) => permanent.card.id === "dragonlords_servant").length;
+  }
+
+  if (card.card.id === "tolarian_terror") {
+    reduction += player.graveyard.filter(isInstantOrSorcery).length;
+  }
+
+  if (card.card.id === "arcane_epiphany" && player.battlefield.some((permanent) => hasSubtype(permanent, "Wizard"))) {
+    reduction += 1;
+  }
+
+  return reduction;
 }
 
 export function getAdditionalCostOptions(player: PlayerState, card: CardInstance): AdditionalCostPayment[][] {
@@ -57,6 +99,18 @@ export function getManaCostForPayment(card: Card, additionalCosts: AdditionalCos
     .join("")}`;
 }
 
+export function getEffectiveManaCost(
+  player: PlayerState,
+  card: CardInstance,
+  additionalCosts: AdditionalCostPayment[] = [],
+): string {
+  const reducedBaseCost = reduceGenericManaCost(card.card.manaCost, getGenericCostReduction(player, card));
+  return `${reducedBaseCost}${additionalCosts
+    .filter((cost): cost is { type: "mana"; manaCost: string } => cost.type === "mana" && cost.manaCost.length > 0)
+    .map((cost) => cost.manaCost)
+    .join("")}`;
+}
+
 export function hasPayableAdditionalCosts(player: PlayerState, card: CardInstance): boolean {
-  return getAdditionalCostOptions(player, card).some((costs) => canPayManaCost(player.manaPool, getManaCostForPayment(card.card, costs)));
+  return getAdditionalCostOptions(player, card).some((costs) => canPayManaCost(player.manaPool, getEffectiveManaCost(player, card, costs)));
 }

@@ -284,6 +284,214 @@ describe("noncreature spells", () => {
     expect(equipment.attachedToId).toBe(target.instanceId);
   });
 
+  it("applies tribal anthem effects from Corsair Captain", () => {
+    const game = createInitialGame(content, {
+      seed: "corsair-anthem",
+      players: [
+        { id: "player1", archetypeIds: ["pirates", "healing"] },
+        { id: "player2", archetypeIds: ["cats", "vampires"] },
+      ],
+    });
+    const player = game.players[0];
+    const captain = findPoolCard(player, "corsair_captain");
+    const pirate = findPoolCard(player, "kitesail_corsair");
+    setHand(player, [captain]);
+    player.battlefield = [pirate];
+    giveMana(player, "U", 3);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(getCreatureStats(captain)).toEqual({ power: 2, toughness: 2 });
+    expect(getCreatureStats(pirate)).toEqual({ power: 3, toughness: 2 });
+  });
+
+  it("applies Death Baron to skeletons and other zombies", () => {
+    const game = createInitialGame(content, {
+      seed: "death-baron-anthem",
+      players: [
+        { id: "player1", archetypeIds: ["undead", "vampires"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const baron = findPoolCard(player, "death_baron");
+    const zombie = findPoolCard(player, "diregraf_ghoul");
+    const skeleton = findPoolCard(player, "reassembling_skeleton");
+    setHand(player, [baron]);
+    player.battlefield = [zombie, skeleton];
+    giveMana(player, "B", 3);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(getCreatureStats(baron)).toEqual({ power: 2, toughness: 2 });
+    expect(getCreatureStats(zombie)).toEqual({ power: 3, toughness: 3 });
+    expect(getCreatureStats(skeleton)).toEqual({ power: 2, toughness: 2 });
+    expect(hasKeyword(zombie, "Deathtouch")).toBe(true);
+    expect(hasKeyword(skeleton, "Deathtouch")).toBe(true);
+  });
+
+  it("grants trample to other creatures from Aggressive Mammoth", () => {
+    const game = createInitialGame(content, {
+      seed: "mammoth-trample",
+      players: [
+        { id: "player1", archetypeIds: ["primal", "elves"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const mammoth = findPoolCard(player, "aggressive_mammoth");
+    const bear = findPoolCard(player, "bear_cub");
+    setHand(player, [mammoth]);
+    player.battlefield = [bear];
+    giveMana(player, "G", 6);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "playCreature");
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(hasKeyword(mammoth, "Trample")).toBe(true);
+    expect(hasKeyword(bear, "Trample")).toBe(true);
+  });
+
+  it("reduces Dragon spell costs with Dragonlord's Servant", () => {
+    const game = createInitialGame(content, {
+      seed: "dragon-cost-reduction",
+      players: [
+        { id: "player1", archetypeIds: ["inferno", "goblins"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const servant = findPoolCard(player, "dragonlords_servant");
+    const dragon = findPoolCard(player, "rapacious_dragon");
+    setHand(player, [dragon]);
+    player.battlefield = [servant];
+    giveMana(player, "R", 1);
+    giveMana(player, "C", 3);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "playCreature" && candidate.cardInstanceId === dragon.instanceId,
+    );
+    expect(action).toBeDefined();
+    performAction(game, action!);
+
+    expect(player.manaPool.R).toBe(0);
+    expect(player.manaPool.C).toBe(0);
+  });
+
+  it("reduces Tolarian Terror for instant and sorcery cards in graveyard", () => {
+    const game = createInitialGame(content, {
+      seed: "terror-cost-reduction",
+      players: [
+        { id: "player1", archetypeIds: ["pirates", "wizards"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const terror = findPoolCard(player, "tolarian_terror");
+    const graveyardCards = ["opt", "cancel", "quick_study", "fleeting_distraction"].map((cardId) =>
+      findPoolCard(player, cardId),
+    );
+    player.hand.push(terror);
+    player.graveyard.push(...graveyardCards);
+    giveMana(player, "U", 1);
+    giveMana(player, "C", 2);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "playCreature" && candidate.cardInstanceId === terror.instanceId,
+    );
+    expect(action).toBeDefined();
+    performAction(game, action!);
+
+    expect(player.manaPool.U).toBe(0);
+    expect(player.manaPool.C).toBe(0);
+  });
+
+  it("reduces Arcane Epiphany if its controller has a Wizard", () => {
+    const game = createInitialGame(content, {
+      seed: "epiphany-cost-reduction",
+      players: [
+        { id: "player1", archetypeIds: ["wizards", "pirates"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const spell = findPoolCard(player, "arcane_epiphany");
+    const wizard = findPoolCard(player, "erudite_wizard");
+    setHand(player, [spell]);
+    player.battlefield = [wizard];
+    giveMana(player, "U", 2);
+    giveMana(player, "C", 2);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.cardInstanceId === spell.instanceId,
+    );
+    expect(action).toBeDefined();
+    performAction(game, action!);
+
+    expect(player.manaPool.U).toBe(0);
+    expect(player.manaPool.C).toBe(0);
+  });
+
+  it("grants flying to Kargan Dragonrider while controlling a Dragon", () => {
+    const game = createInitialGame(content, {
+      seed: "kargan-conditional",
+      players: [
+        { id: "player1", archetypeIds: ["inferno", "goblins"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const dragonrider = findPoolCard(player, "kargan_dragonrider");
+    const dragon = findPoolCard(player, "rapacious_dragon");
+    setHand(player, [dragonrider]);
+    player.battlefield = [dragon];
+    giveMana(player, "R", 2);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "playCreature" && candidate.cardInstanceId === dragonrider.instanceId,
+    );
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(hasKeyword(dragonrider, "Flying")).toBe(true);
+  });
+
+  it("grants double strike to Twinblade Paladin at 25 life", () => {
+    const game = createInitialGame(content, {
+      seed: "twinblade-conditional",
+      players: [
+        { id: "player1", archetypeIds: ["healing", "cats"] },
+        { id: "player2", archetypeIds: ["goblins", "inferno"] },
+      ],
+    });
+    const player = game.players[0];
+    const paladin = findPoolCard(player, "twinblade_paladin");
+    player.lifeTotal = 25;
+    setHand(player, [paladin]);
+    giveMana(player, "W", 4);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "playCreature" && candidate.cardInstanceId === paladin.instanceId,
+    );
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(hasKeyword(paladin, "Double strike")).toBe(true);
+  });
+
   it("puts +1/+1 counters on creatures permanently", () => {
     const game = createInitialGame(content, {
       seed: "counter",
