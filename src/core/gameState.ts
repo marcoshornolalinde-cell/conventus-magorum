@@ -80,6 +80,7 @@ export function createInitialGame(content: ContentBundle, options: CreateInitial
     stack: [],
     winnerId: null,
     loserIds: [],
+    exileOnDeathUntilEndOfTurn: [],
     log: [
       {
         turn: 0,

@@ -265,6 +265,7 @@ export function cleanupGeneralTurn(game: GameState): void {
   }
 
   game.phase = "final";
+  game.exileOnDeathUntilEndOfTurn = [];
   dispatchGameEvent(game, {
     type: "endStepStarted",
     playerId: game.attackingPriorityPlayerId,

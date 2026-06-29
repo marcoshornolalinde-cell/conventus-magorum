@@ -115,10 +115,6 @@ export function getStaticAbilityProfile(card: Card): StaticAbilityProfile | null
     effects.push({ type: "attachmentBonus", power: 2, toughness: 1, keywords: ["Menace"] });
   }
 
-  if (card.id === "quick_draw_katana") {
-    effects.push({ type: "attachmentBonus", power: 2, toughness: 0, keywords: ["First strike"] });
-  }
-
   if (card.id === "pirates_cutlass") {
     effects.push({ type: "attachmentBonus", power: 2, toughness: 1 });
   }

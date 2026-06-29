@@ -229,6 +229,7 @@ function pushCreatureSpell(game: GameState, player: PlayerState, card: CardInsta
     source: card,
     kind: "creatureSpell",
     targetIds: [],
+    additionalCosts: [],
   };
 
   game.stack.push(stackItem);
@@ -285,6 +286,7 @@ export function performAction(game: GameState, action: LegalAction): void {
       source: card,
       kind: "nonCreatureSpell",
       targetIds: action.targetIds,
+      additionalCosts: action.additionalCosts,
     });
   }
 

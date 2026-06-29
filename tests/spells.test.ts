@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { getLegalActions, performAction, resolveTopOfStack } from "../src/core/actions.js";
-import { canAttack, canDefend, getCreatureStats, hasKeyword } from "../src/core/combat.js";
+import { canAttack, canDefend, getCreatureStats, hasKeyword, resolveCombatPhase } from "../src/core/combat.js";
 import { createInitialGame } from "../src/core/gameState.js";
 import type { InitialPlayerConfig } from "../src/core/gameState.js";
 import type { CardInstance, ContentBundle, PlayerState } from "../src/core/types.js";
@@ -265,7 +265,7 @@ describe("noncreature spells", () => {
     expect(hasKeyword(target, "Flying")).toBe(false);
   });
 
-  it("attaches equipment with persistent combat stats", () => {
+  it("attaches Quick-Draw Katana and applies its bonus while attacking", () => {
     const game = createInitialGame(content, { seed: "equipment", players: defaultPlayers });
     const player = game.players[1];
     const equipment = findPoolCard(player, "quick_draw_katana");
@@ -279,9 +279,45 @@ describe("noncreature spells", () => {
     performAction(game, action!);
     resolveTopOfStack(game);
 
+    expect(getCreatureStats(target)).toEqual({ power: 1, toughness: 2 });
+    expect(hasKeyword(target, "First strike")).toBe(false);
+    expect(equipment.attachedToId).toBe(target.instanceId);
+
+    game.turnNumber = 2;
+    game.attackingPriorityPlayerId = player.playerId;
+    resolveCombatPhase(game, (currentGame, playerId) => ({
+      playerId,
+      attackerIds: playerId === player.playerId ? [target.instanceId] : [],
+      defenderIds: [],
+    }));
+
     expect(getCreatureStats(target)).toEqual({ power: 3, toughness: 2 });
     expect(hasKeyword(target, "First strike")).toBe(true);
-    expect(equipment.attachedToId).toBe(target.instanceId);
+  });
+
+  it("grants flying to Kitesail Corsair while attacking", () => {
+    const game = createInitialGame(content, {
+      seed: "kitesail-attacking",
+      players: [
+        { id: "player1", archetypeIds: ["pirates", "wizards"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const corsair = findPoolCard(player, "kitesail_corsair");
+    player.battlefield = [corsair];
+    game.turnNumber = 2;
+    game.attackingPriorityPlayerId = player.playerId;
+
+    expect(hasKeyword(corsair, "Flying")).toBe(false);
+
+    resolveCombatPhase(game, (currentGame, playerId) => ({
+      playerId,
+      attackerIds: playerId === player.playerId ? [corsair.instanceId] : [],
+      defenderIds: [],
+    }));
+
+    expect(hasKeyword(corsair, "Flying")).toBe(true);
   });
 
   it("applies tribal anthem effects from Corsair Captain", () => {
@@ -541,6 +577,117 @@ describe("noncreature spells", () => {
     expect(caster.battlefield).toHaveLength(0);
     expect(caster.graveyard.map((instance) => instance.instanceId)).toContain(creature.instanceId);
     expect(responder.graveyard.map((instance) => instance.instanceId)).toContain(cancel.instanceId);
+  });
+
+  it("returns a nonland permanent with Into the Roil without kicker", () => {
+    const game = createInitialGame(content, {
+      seed: "into-the-roil",
+      players: [
+        { id: "player1", archetypeIds: ["wizards", "pirates"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const spell = findPoolCard(player, "into_the_roil");
+    const target = findPoolCard(opponent, "savannah_lions");
+    setHand(player, [spell]);
+    opponent.battlefield = [target];
+    giveMana(player, "U", 2);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.additionalCosts.length === 0,
+    );
+    expect(action).toBeDefined();
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(opponent.battlefield.map((instance) => instance.instanceId)).not.toContain(target.instanceId);
+    expect(opponent.hand.map((instance) => instance.instanceId)).toContain(target.instanceId);
+    expect(player.hand).toHaveLength(0);
+  });
+
+  it("draws a card when Into the Roil is kicked", () => {
+    const game = createInitialGame(content, {
+      seed: "into-the-roil-kicked",
+      players: [
+        { id: "player1", archetypeIds: ["wizards", "pirates"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const spell = findPoolCard(player, "into_the_roil");
+    const target = findPoolCard(opponent, "savannah_lions");
+    setHand(player, [spell]);
+    opponent.battlefield = [target];
+    giveMana(player, "U", 4);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.additionalCosts.some((cost) => cost.type === "mana"),
+    );
+    expect(action).toBeDefined();
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(opponent.hand.map((instance) => instance.instanceId)).toContain(target.instanceId);
+    expect(player.hand).toHaveLength(1);
+    expect(game.events.map((event) => event.type)).toEqual(expect.arrayContaining(["permanentReturnedToHand", "cardDrawn"]));
+  });
+
+  it("destroys an artifact, enchantment, or flying creature with Broken Wings", () => {
+    const game = createInitialGame(content, {
+      seed: "broken-wings",
+      players: [
+        { id: "player1", archetypeIds: ["elves", "primal"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const spell = findPoolCard(player, "broken_wings");
+    const target = findPoolCard(opponent, "leonin_skyhunter");
+    setHand(player, [spell]);
+    opponent.battlefield = [target];
+    giveMana(player, "G", 3);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "castSpell");
+    expect(action).toBeDefined();
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(opponent.graveyard.map((instance) => instance.instanceId)).toContain(target.instanceId);
+    expect(player.graveyard.map((instance) => instance.instanceId)).toContain(spell.instanceId);
+  });
+
+  it("exiles a creature that would die from replacement damage this turn", () => {
+    const game = createInitialGame(content, {
+      seed: "replacement-exile",
+      players: [
+        { id: "player1", archetypeIds: ["inferno", "goblins"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const spell = findPoolCard(player, "scorching_dragonfire");
+    const target = findPoolCard(opponent, "savannah_lions");
+    setHand(player, [spell]);
+    opponent.battlefield = [target];
+    giveMana(player, "R", 2);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "castSpell");
+    expect(action).toBeDefined();
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(opponent.graveyard.map((instance) => instance.instanceId)).not.toContain(target.instanceId);
+    expect(opponent.exile.map((instance) => instance.instanceId)).toContain(target.instanceId);
+    expect(game.events.map((event) => event.type)).toContain("permanentExiled");
   });
 
   it("requires additional mana costs before casting Eaten Alive", () => {

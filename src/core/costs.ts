@@ -11,6 +11,12 @@ export function getOptionalAdditionalManaCost(card: Card): string {
   return payMatch?.[1] ?? "";
 }
 
+function getKickerManaCost(card: Card): string {
+  const text = normalizeText(card);
+  const kickerMatch = text.match(/\bKicker ((?:\{[^}]+})+)/i);
+  return kickerMatch?.[1] ?? "";
+}
+
 export function requiresAdditionalDiscard(card: Card): boolean {
   return /As an additional cost to cast this spell, discard a card/i.test(normalizeText(card));
 }
@@ -64,6 +70,7 @@ function getGenericCostReduction(player: PlayerState, card: CardInstance): numbe
 export function getAdditionalCostOptions(player: PlayerState, card: CardInstance): AdditionalCostPayment[][] {
   const options: AdditionalCostPayment[][] = [[]];
   const optionalManaCost = getOptionalAdditionalManaCost(card.card);
+  const kickerManaCost = getKickerManaCost(card.card);
 
   if (/As an additional cost to cast this spell, sacrifice a creature or pay/i.test(normalizeText(card.card))) {
     const sacrificeOptions: AdditionalCostPayment[][] = player.battlefield
@@ -87,6 +94,14 @@ export function getAdditionalCostOptions(player: PlayerState, card: CardInstance
 
   if (optionalManaCost) {
     return [[{ type: "mana", manaCost: optionalManaCost }]];
+  }
+
+  if (kickerManaCost) {
+    if (canPayManaCost(player.manaPool, getEffectiveManaCost(player, card, [{ type: "mana", manaCost: kickerManaCost }]))) {
+      options.push([{ type: "mana", manaCost: kickerManaCost }]);
+    }
+
+    return options;
   }
 
   return options;

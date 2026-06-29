@@ -10,14 +10,17 @@ import { dispatchGameEvent } from "./triggerEngine.js";
 
 type SpellEffect =
   | { type: "destroyCreature" }
+  | { type: "destroyPermanent" }
   | { type: "exileCreature" }
   | { type: "damageCreature"; amount: number }
+  | { type: "exileIfWouldDieThisTurn" }
   | { type: "modifyCreature"; power: number; toughness: number }
   | { type: "modifyOwnCreatures"; power: number; toughness: number }
   | { type: "grantKeywords"; keywords: string[] }
   | { type: "grantKeywordsToOwnCreatures"; keywords: string[] }
   | { type: "gainLife"; amount: number }
   | { type: "drawCards"; amount: number }
+  | { type: "drawCardsIfAdditionalManaPaid"; amount: number }
   | { type: "addPlusOneCounters"; amount: number }
   | {
       type: "createToken";
@@ -34,6 +37,7 @@ type SpellEffect =
     }
   | { type: "ownCreatureDealsPowerDamage" }
   | { type: "counterSpell" }
+  | { type: "returnPermanentToHand" }
   | { type: "attachPersistent" };
 
 export interface SpellProfile {
@@ -42,6 +46,8 @@ export interface SpellProfile {
     | "ownCreature"
     | "opponentCreature"
     | "anyCreature"
+    | "opponentNonlandPermanent"
+    | "opponentArtifactEnchantmentOrFlyingCreature"
     | "stackSpell"
     | "ownCreatureAndOpponentCreature";
   effects: SpellEffect[];
@@ -143,6 +149,11 @@ export function getSpellProfile(card: Card): SpellProfile | null {
     targetMode = "opponentCreature";
   }
 
+  if (/Destroy target artifact, enchantment, or creature with flying/i.test(text)) {
+    effects.push({ type: "destroyPermanent" });
+    targetMode = "opponentArtifactEnchantmentOrFlyingCreature";
+  }
+
   if (/Exile target creature/i.test(text)) {
     effects.push({ type: "exileCreature" });
     targetMode = "opponentCreature";
@@ -150,6 +161,9 @@ export function getSpellProfile(card: Card): SpellProfile | null {
 
   const damageMatch = text.match(/deals (\d+) damage to target .*creature/i);
   if (damageMatch) {
+    if (/If that creature would die this turn, exile it instead/i.test(text)) {
+      effects.push({ type: "exileIfWouldDieThisTurn" });
+    }
     effects.push({ type: "damageCreature", amount: Number.parseInt(damageMatch[1], 10) });
     targetMode = "opponentCreature";
   }
@@ -184,9 +198,18 @@ export function getSpellProfile(card: Card): SpellProfile | null {
     effects.push({ type: "gainLife", amount: gainLife });
   }
 
-  const drawCards = parseDrawAmount(text);
+  const drawCards = /If this spell was kicked, draw a card/i.test(text) ? 0 : parseDrawAmount(text);
   if (drawCards > 0) {
     effects.push({ type: "drawCards", amount: drawCards });
+  }
+
+  if (/If this spell was kicked, draw a card/i.test(text)) {
+    effects.push({ type: "drawCardsIfAdditionalManaPaid", amount: 1 });
+  }
+
+  if (/Return target nonland permanent to its owner's hand/i.test(text)) {
+    effects.push({ type: "returnPermanentToHand" });
+    targetMode = "opponentNonlandPermanent";
   }
 
   if (/Create two 1\/1 red Goblin creature tokens/i.test(text)) {
@@ -247,6 +270,18 @@ export function getSpellProfile(card: Card): SpellProfile | null {
   };
 }
 
+function isNonlandPermanent(instance: CardInstance): boolean {
+  return !instance.card.isLand;
+}
+
+function canBeDestroyedByArtifactEnchantmentOrFlyingRemoval(instance: CardInstance): boolean {
+  return (
+    instance.card.cardTypes.includes("Artifact") ||
+    instance.card.cardTypes.includes("Enchantment") ||
+    (instance.card.cardTypes.includes("Creature") && hasKeyword(instance, "Flying"))
+  );
+}
+
 function getTargetableCreatures(game: GameState, controllerId: PlayerId, targetMode: SpellProfile["targetMode"]): CardInstance[] {
   if (targetMode === "none" || targetMode === "stackSpell" || targetMode === "ownCreatureAndOpponentCreature") {
     return [];
@@ -258,6 +293,14 @@ function getTargetableCreatures(game: GameState, controllerId: PlayerId, targetM
 
   if (targetMode === "opponentCreature") {
     return getCreaturesOnBattlefield(getOpponent(game, controllerId));
+  }
+
+  if (targetMode === "opponentNonlandPermanent") {
+    return getOpponent(game, controllerId).battlefield.filter(isNonlandPermanent);
+  }
+
+  if (targetMode === "opponentArtifactEnchantmentOrFlyingCreature") {
+    return getOpponent(game, controllerId).battlefield.filter(canBeDestroyedByArtifactEnchantmentOrFlyingRemoval);
   }
 
   return game.players.flatMap((player) => getCreaturesOnBattlefield(player));
@@ -296,6 +339,28 @@ function findPermanentController(game: GameState, instanceId: string): PlayerSta
 function findPermanent(game: GameState, instanceId: string): CardInstance | null {
   const controller = findPermanentController(game, instanceId);
   return controller?.battlefield.find((instance) => instance.instanceId === instanceId) ?? null;
+}
+
+function resetPermanentForHiddenZone(instance: CardInstance): void {
+  instance.tapped = false;
+  instance.damageMarked = 0;
+  instance.deathtouchDamageMarked = 0;
+  instance.powerModifier = 0;
+  instance.toughnessModifier = 0;
+  instance.staticPowerModifier = 0;
+  instance.staticToughnessModifier = 0;
+  instance.basePowerOverride = null;
+  instance.baseToughnessOverride = null;
+  instance.plusOneCounters = 0;
+  instance.staticKeywords = [];
+  instance.temporaryKeywords = [];
+  instance.losesAbilities = false;
+  instance.cannotAttack = false;
+  instance.cannotDefend = false;
+  instance.temporaryCannotDefend = false;
+  instance.attachedToId = null;
+  instance.doesNotUntap = false;
+  instance.enteredTurn = null;
 }
 
 function counterStackItem(game: GameState, stackItemId: string): void {
@@ -341,6 +406,7 @@ function movePermanentToGraveyard(game: GameState, instanceId: string): void {
   permanent.staticToughnessModifier = 0;
   permanent.basePowerOverride = null;
   permanent.baseToughnessOverride = null;
+  permanent.plusOneCounters = 0;
   permanent.staticKeywords = [];
   permanent.temporaryKeywords = [];
   permanent.losesAbilities = false;
@@ -354,6 +420,32 @@ function movePermanentToGraveyard(game: GameState, instanceId: string): void {
     type: "permanentDied",
     playerId: controller.playerId,
     sourceId: permanent.instanceId,
+    details: { cardId: permanent.card.id },
+  });
+}
+
+function returnPermanentToHand(game: GameState, source: CardInstance, instanceId: string): void {
+  const controller = findPermanentController(game, instanceId);
+
+  if (!controller) {
+    return;
+  }
+
+  const permanent = controller.battlefield.find((instance) => instance.instanceId === instanceId);
+
+  if (!permanent) {
+    return;
+  }
+
+  controller.battlefield = controller.battlefield.filter((instance) => instance.instanceId !== instanceId);
+  detachFromPermanent(game, permanent.instanceId);
+  resetPermanentForHiddenZone(permanent);
+  controller.hand.push(permanent);
+  dispatchGameEvent(game, {
+    type: "permanentReturnedToHand",
+    playerId: controller.playerId,
+    sourceId: source.instanceId,
+    targetId: permanent.instanceId,
     details: { cardId: permanent.card.id },
   });
 }
@@ -390,6 +482,7 @@ function movePermanentToExile(game: GameState, instanceId: string): void {
   permanent.temporaryCannotDefend = false;
   permanent.attachedToId = null;
   permanent.doesNotUntap = false;
+  permanent.enteredTurn = null;
   controller.exile.push(permanent);
   dispatchGameEvent(game, {
     type: "permanentExiled",
@@ -425,11 +518,6 @@ function attachPersistentPermanent(game: GameState, controller: PlayerState, sou
   if (source.card.id === "starlight_snare") {
     target.tapped = true;
     target.doesNotUntap = true;
-  }
-
-  if (source.card.id === "quick_draw_katana") {
-    target.staticPowerModifier += 2;
-    target.staticKeywords.push("First strike");
   }
 
   if (source.card.id === "pirates_cutlass") {
@@ -469,6 +557,10 @@ function drawCards(game: GameState, player: PlayerState, amount: number): void {
       details: { cardId: card.card.id },
     });
   }
+}
+
+function paidAdditionalMana(stackItem: StackItem): boolean {
+  return stackItem.additionalCosts.some((cost) => cost.type === "mana" && cost.manaCost.length > 0);
 }
 
 function gainLifeFromCreatureDamage(game: GameState, source: CardInstance, damage: number): void {
@@ -608,9 +700,20 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
       log(game, `${stackItem.source.card.name} destroys ${target.card.name}.`);
     }
 
+    if (effect.type === "destroyPermanent" && target) {
+      movePermanentToGraveyard(game, target.instanceId);
+      log(game, `${stackItem.source.card.name} destroys ${target.card.name}.`);
+    }
+
     if (effect.type === "exileCreature" && target) {
       movePermanentToExile(game, target.instanceId);
       log(game, `${stackItem.source.card.name} exiles ${target.card.name}.`);
+    }
+
+    if (effect.type === "exileIfWouldDieThisTurn" && target) {
+      game.exileOnDeathUntilEndOfTurn = Array.from(
+        new Set([...game.exileOnDeathUntilEndOfTurn, target.instanceId]),
+      );
     }
 
     if (effect.type === "damageCreature" && target) {
@@ -671,6 +774,11 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
       log(game, `${controller.playerId} draws ${effect.amount} card(s) from ${stackItem.source.card.name}.`);
     }
 
+    if (effect.type === "drawCardsIfAdditionalManaPaid" && paidAdditionalMana(stackItem)) {
+      drawCards(game, controller, effect.amount);
+      log(game, `${controller.playerId} draws ${effect.amount} kicked card(s) from ${stackItem.source.card.name}.`);
+    }
+
     if (effect.type === "addPlusOneCounters" && target) {
       addPlusOneCounters(game, controller, target, effect.amount, stackItem.source);
       log(game, `${stackItem.source.card.name} puts ${effect.amount} +1/+1 counter(s) on ${target.card.name}.`);
@@ -703,6 +811,11 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
 
     if (effect.type === "counterSpell" && stackItem.targetIds[0]) {
       counterStackItem(game, stackItem.targetIds[0]);
+    }
+
+    if (effect.type === "returnPermanentToHand" && target) {
+      returnPermanentToHand(game, stackItem.source, target.instanceId);
+      log(game, `${stackItem.source.card.name} returns ${target.card.name} to hand.`);
     }
 
     if (effect.type === "attachPersistent" && target) {

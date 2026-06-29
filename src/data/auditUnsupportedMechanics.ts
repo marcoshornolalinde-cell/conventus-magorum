@@ -97,6 +97,23 @@ function supportedLabelsForCard(card: Card): Set<string> {
     labels.add("token creation");
   }
 
+  if (spellProfile?.effects.some((effect) => effect.type === "returnPermanentToHand")) {
+    labels.add("return from battlefield/yard");
+  }
+
+  if (spellProfile?.effects.some((effect) => effect.type === "destroyPermanent")) {
+    labels.add("expanded target removal");
+  }
+
+  if (spellProfile?.effects.some((effect) => effect.type === "drawCardsIfAdditionalManaPaid")) {
+    labels.add("kicker");
+    labels.add("optional payment");
+  }
+
+  if (spellProfile?.effects.some((effect) => effect.type === "exileIfWouldDieThisTurn")) {
+    labels.add("replacement effect");
+  }
+
   if (staticProfile?.effects.some((effect) => effect.type === "anthem" || effect.type === "attachmentBonus")) {
     labels.add("static anthem");
   }
@@ -118,6 +135,15 @@ function supportedLabelsForCard(card: Card): Set<string> {
     )
   ) {
     labels.add("conditional static ability");
+  }
+
+  if (/\bThis creature has flying as long as it's attacking\b/i.test(normalizeText(card))) {
+    labels.add("conditional static ability");
+  }
+
+  if (/\bEquipped creature gets \+2\/\+0 and has first strike while it's attacking\b/i.test(normalizeText(card))) {
+    labels.add("conditional static ability");
+    labels.add("static anthem");
   }
 
   if (
@@ -151,6 +177,10 @@ function supportedLabelsForCard(card: Card): Set<string> {
   ) {
     labels.add("return from battlefield/yard");
     labels.add("graveyard ability");
+  }
+
+  if (supportedTriggers.some((profile) => profile.effects.some((effect) => effect.type === "returnToHand"))) {
+    labels.add("return from battlefield/yard");
   }
 
   return labels;

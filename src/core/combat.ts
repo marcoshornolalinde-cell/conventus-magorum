@@ -71,6 +71,10 @@ function getBattlefieldCreature(player: PlayerState, instanceId: string): CardIn
   return player.battlefield.find((instance) => instance.instanceId === instanceId && isCreature(instance)) ?? null;
 }
 
+function getAttachedPermanents(player: PlayerState, permanentId: string): CardInstance[] {
+  return player.battlefield.filter((instance) => instance.attachedToId === permanentId);
+}
+
 export function getCreaturesOnBattlefield(player: PlayerState): CardInstance[] {
   return player.battlefield.filter(isCreature);
 }
@@ -237,6 +241,7 @@ function moveToGraveyard(game: GameState, player: PlayerState, instance: CardIns
   instance.staticToughnessModifier = 0;
   instance.basePowerOverride = null;
   instance.baseToughnessOverride = null;
+  instance.plusOneCounters = 0;
   instance.staticKeywords = [];
   instance.temporaryKeywords = [];
   instance.losesAbilities = false;
@@ -246,6 +251,30 @@ function moveToGraveyard(game: GameState, player: PlayerState, instance: CardIns
   instance.attachedToId = null;
   instance.doesNotUntap = false;
   player.graveyard.push(instance);
+}
+
+function moveToExile(game: GameState, player: PlayerState, instance: CardInstance): void {
+  player.battlefield = player.battlefield.filter((candidate) => candidate.instanceId !== instance.instanceId);
+  detachFromPermanent(game, instance.instanceId);
+  instance.tapped = false;
+  instance.damageMarked = 0;
+  instance.deathtouchDamageMarked = 0;
+  instance.powerModifier = 0;
+  instance.toughnessModifier = 0;
+  instance.staticPowerModifier = 0;
+  instance.staticToughnessModifier = 0;
+  instance.basePowerOverride = null;
+  instance.baseToughnessOverride = null;
+  instance.staticKeywords = [];
+  instance.temporaryKeywords = [];
+  instance.losesAbilities = false;
+  instance.cannotAttack = false;
+  instance.cannotDefend = false;
+  instance.temporaryCannotDefend = false;
+  instance.attachedToId = null;
+  instance.doesNotUntap = false;
+  instance.enteredTurn = null;
+  player.exile.push(instance);
 }
 
 export function detachFromPermanent(game: GameState, permanentId: string): void {
@@ -277,14 +306,28 @@ export function applyStateBasedActions(game: GameState): void {
         (creature.damageMarked >= toughness || creature.deathtouchDamageMarked > 0);
 
       if (hasZeroOrLessToughness || hasLethalDamage) {
-        moveToGraveyard(game, player, creature);
-        dispatchGameEvent(game, {
-          type: "permanentDied",
-          playerId: player.playerId,
-          sourceId: creature.instanceId,
-          details: { cardId: creature.card.id },
-        });
-        log(game, `${creature.card.name} dies.`);
+        if (game.exileOnDeathUntilEndOfTurn.includes(creature.instanceId)) {
+          moveToExile(game, player, creature);
+          game.exileOnDeathUntilEndOfTurn = game.exileOnDeathUntilEndOfTurn.filter(
+            (instanceId) => instanceId !== creature.instanceId,
+          );
+          dispatchGameEvent(game, {
+            type: "permanentExiled",
+            playerId: player.playerId,
+            sourceId: creature.instanceId,
+            details: { cardId: creature.card.id },
+          });
+          log(game, `${creature.card.name} is exiled instead of dying.`);
+        } else {
+          moveToGraveyard(game, player, creature);
+          dispatchGameEvent(game, {
+            type: "permanentDied",
+            playerId: player.playerId,
+            sourceId: creature.instanceId,
+            details: { cardId: creature.card.id },
+          });
+          log(game, `${creature.card.name} dies.`);
+        }
       }
     }
   }
@@ -573,6 +616,15 @@ export function resolveCombatPhase(game: GameState, chooseCombatPlan: ChooseComb
       if (attacker) {
         if (!hasKeyword(attacker, "Vigilance")) {
           attacker.tapped = true;
+        }
+
+        if (attacker.card.id === "kitesail_corsair") {
+          attacker.temporaryKeywords.push("Flying");
+        }
+
+        if (getAttachedPermanents(player, attacker.instanceId).some((attachment) => attachment.card.id === "quick_draw_katana")) {
+          attacker.powerModifier += 2;
+          attacker.temporaryKeywords.push("First strike");
         }
 
         dispatchGameEvent(game, {

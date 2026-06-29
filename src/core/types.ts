@@ -140,6 +140,7 @@ export interface StackItem {
   source: CardInstance;
   kind: "creatureSpell" | "nonCreatureSpell";
   targetIds: string[];
+  additionalCosts: AdditionalCostPayment[];
 }
 
 export type GameEventType =
@@ -220,6 +221,7 @@ export interface GameState {
   stack: StackItem[];
   winnerId: PlayerId | null;
   loserIds: PlayerId[];
+  exileOnDeathUntilEndOfTurn: string[];
   log: GameLogEntry[];
   events: GameEvent[];
 }
