@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="step">
+  <title>step</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#e9dec4" stroke="#2a2d2f" stroke-width="3"/>
+    <path d="M18 20v24l20-12Z" fill="#2a2d2f"/>
+    <path d="M43 19v26" stroke="#2a2d2f" stroke-width="6"/>
+  </g>
+</svg>

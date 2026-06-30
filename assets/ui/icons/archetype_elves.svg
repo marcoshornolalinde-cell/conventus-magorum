@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="elves archetype badge">
+  <title>elves archetype badge</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#4b9553" stroke="#211b18" stroke-width="3"/>
+    <path d="M50 14C28 12 15 25 17 45c20 2 32-12 33-31Z" fill="#fff2dc" stroke="#211b18" stroke-width="3"/>
+    <path d="M20 44c12-8 21-17 29-29" stroke="#211b18" stroke-width="4"/>
+  </g>
+</svg>

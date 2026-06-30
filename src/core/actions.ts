@@ -129,7 +129,7 @@ export function getLegalActions(game: GameState, playerId: PlayerId): LegalActio
   const player = getPlayer(game, playerId);
   const actions: LegalAction[] = [];
 
-  if (isMainPhase(game.phase)) {
+  if (isMainPhase(game.phase) || game.phase === "combat") {
     for (const ability of getManaAbilities(player, game.turnNumber)) {
       actions.push({
         type: "activateManaAbility",

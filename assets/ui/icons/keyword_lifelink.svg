@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="lifelink keyword heart link">
+  <title>lifelink keyword heart link</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#f0d7dd" stroke="#4b1f2d" stroke-width="3"/>
+    <path d="M32 51 15 34c-10-12 6-25 17-12 11-13 27 0 17 12Z" fill="#e76f91" stroke="#4b1f2d" stroke-width="3"/>
+    <path d="M21 35h8l4-9 5 15 4-6h6" stroke="#fff3d6" stroke-width="4"/>
+  </g>
+</svg>

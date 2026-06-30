@@ -1,0 +1,1384 @@
+{
+  "package": "conventus-magorum-assets-mvp",
+  "generated_for": "Conventus Magorum / interfaz motor headless",
+  "license_note": "Assets generados proceduralmente para el proyecto; no contienen recursos de terceros.",
+  "style": "fantasia tactica legible, texturas sutiles, iconografia consistente",
+  "files": [
+    {
+      "path": "assets/backgrounds/boards/default_board.webp",
+      "kind": "webp",
+      "role": "main board background",
+      "tags": [
+        "MVP",
+        "board"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/boards/default_board_1920x1080.webp",
+      "kind": "webp",
+      "role": "1080p variant of board background",
+      "tags": [
+        "MVP",
+        "board"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/boards/debug_board.webp",
+      "kind": "webp",
+      "role": "main board background",
+      "tags": [
+        "MVP",
+        "board"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/boards/debug_board_1920x1080.webp",
+      "kind": "webp",
+      "role": "1080p variant of board background",
+      "tags": [
+        "MVP",
+        "board"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/zones/battlefield_zone.webp",
+      "kind": "webp",
+      "role": "battlefield texture",
+      "tags": [
+        "MVP",
+        "zone"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/zones/hand_zone.webp",
+      "kind": "webp",
+      "role": "hand area texture",
+      "tags": [
+        "MVP",
+        "zone"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/zones/deck_zone.webp",
+      "kind": "webp",
+      "role": "deck pile texture",
+      "tags": [
+        "MVP",
+        "zone"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/zones/graveyard_zone.webp",
+      "kind": "webp",
+      "role": "graveyard subdued texture",
+      "tags": [
+        "MVP",
+        "zone"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/zones/exile_zone.webp",
+      "kind": "webp",
+      "role": "exile distinct texture",
+      "tags": [
+        "MVP",
+        "zone"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/zones/stack_zone.webp",
+      "kind": "webp",
+      "role": "stack/resolution texture",
+      "tags": [
+        "P2",
+        "zone"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/zones/combat_lane.webp",
+      "kind": "webp",
+      "role": "combat lane texture",
+      "tags": [
+        "MVP",
+        "zone"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/zones/log_panel.webp",
+      "kind": "webp",
+      "role": "log panel texture",
+      "tags": [
+        "P2",
+        "zone"
+      ]
+    },
+    {
+      "path": "assets/cards/types/creature.webp",
+      "kind": "webp",
+      "role": "generic creature card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "colorless"
+      ]
+    },
+    {
+      "path": "assets/cards/types/land.webp",
+      "kind": "webp",
+      "role": "generic land card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "colorless"
+      ]
+    },
+    {
+      "path": "assets/cards/types/instant.webp",
+      "kind": "webp",
+      "role": "generic instant card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "colorless"
+      ]
+    },
+    {
+      "path": "assets/cards/types/sorcery.webp",
+      "kind": "webp",
+      "role": "generic sorcery card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "colorless"
+      ]
+    },
+    {
+      "path": "assets/cards/types/enchantment.webp",
+      "kind": "webp",
+      "role": "generic enchantment card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "colorless"
+      ]
+    },
+    {
+      "path": "assets/cards/types/artifact.webp",
+      "kind": "webp",
+      "role": "generic artifact card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "colorless"
+      ]
+    },
+    {
+      "path": "assets/cards/types/token_creature.webp",
+      "kind": "webp",
+      "role": "generic token_creature card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "colorless"
+      ]
+    },
+    {
+      "path": "assets/cards/types/creature_w.webp",
+      "kind": "webp",
+      "role": "generic creature card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "white"
+      ]
+    },
+    {
+      "path": "assets/cards/types/creature_u.webp",
+      "kind": "webp",
+      "role": "generic creature card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "blue"
+      ]
+    },
+    {
+      "path": "assets/cards/types/creature_b.webp",
+      "kind": "webp",
+      "role": "generic creature card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "black"
+      ]
+    },
+    {
+      "path": "assets/cards/types/creature_r.webp",
+      "kind": "webp",
+      "role": "generic creature card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "red"
+      ]
+    },
+    {
+      "path": "assets/cards/types/creature_g.webp",
+      "kind": "webp",
+      "role": "generic creature card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "green"
+      ]
+    },
+    {
+      "path": "assets/cards/types/creature_m.webp",
+      "kind": "webp",
+      "role": "generic creature card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "multicolor"
+      ]
+    },
+    {
+      "path": "assets/cards/types/creature_c.webp",
+      "kind": "webp",
+      "role": "generic creature card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "colorless"
+      ]
+    },
+    {
+      "path": "assets/cards/types/land_w.webp",
+      "kind": "webp",
+      "role": "generic land card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "white"
+      ]
+    },
+    {
+      "path": "assets/cards/types/land_u.webp",
+      "kind": "webp",
+      "role": "generic land card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "blue"
+      ]
+    },
+    {
+      "path": "assets/cards/types/land_b.webp",
+      "kind": "webp",
+      "role": "generic land card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "black"
+      ]
+    },
+    {
+      "path": "assets/cards/types/land_r.webp",
+      "kind": "webp",
+      "role": "generic land card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "red"
+      ]
+    },
+    {
+      "path": "assets/cards/types/land_g.webp",
+      "kind": "webp",
+      "role": "generic land card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "green"
+      ]
+    },
+    {
+      "path": "assets/cards/types/instant_w.webp",
+      "kind": "webp",
+      "role": "generic instant card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "white"
+      ]
+    },
+    {
+      "path": "assets/cards/types/instant_u.webp",
+      "kind": "webp",
+      "role": "generic instant card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "blue"
+      ]
+    },
+    {
+      "path": "assets/cards/types/instant_b.webp",
+      "kind": "webp",
+      "role": "generic instant card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "black"
+      ]
+    },
+    {
+      "path": "assets/cards/types/instant_r.webp",
+      "kind": "webp",
+      "role": "generic instant card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "red"
+      ]
+    },
+    {
+      "path": "assets/cards/types/instant_g.webp",
+      "kind": "webp",
+      "role": "generic instant card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "green"
+      ]
+    },
+    {
+      "path": "assets/cards/types/sorcery_w.webp",
+      "kind": "webp",
+      "role": "generic sorcery card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "white"
+      ]
+    },
+    {
+      "path": "assets/cards/types/sorcery_u.webp",
+      "kind": "webp",
+      "role": "generic sorcery card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "blue"
+      ]
+    },
+    {
+      "path": "assets/cards/types/sorcery_b.webp",
+      "kind": "webp",
+      "role": "generic sorcery card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "black"
+      ]
+    },
+    {
+      "path": "assets/cards/types/sorcery_r.webp",
+      "kind": "webp",
+      "role": "generic sorcery card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "red"
+      ]
+    },
+    {
+      "path": "assets/cards/types/sorcery_g.webp",
+      "kind": "webp",
+      "role": "generic sorcery card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "green"
+      ]
+    },
+    {
+      "path": "assets/cards/types/enchantment_w.webp",
+      "kind": "webp",
+      "role": "generic enchantment card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "white"
+      ]
+    },
+    {
+      "path": "assets/cards/types/enchantment_u.webp",
+      "kind": "webp",
+      "role": "generic enchantment card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "blue"
+      ]
+    },
+    {
+      "path": "assets/cards/types/enchantment_b.webp",
+      "kind": "webp",
+      "role": "generic enchantment card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "black"
+      ]
+    },
+    {
+      "path": "assets/cards/types/enchantment_r.webp",
+      "kind": "webp",
+      "role": "generic enchantment card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "red"
+      ]
+    },
+    {
+      "path": "assets/cards/types/enchantment_g.webp",
+      "kind": "webp",
+      "role": "generic enchantment card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "green"
+      ]
+    },
+    {
+      "path": "assets/cards/types/artifact_c.webp",
+      "kind": "webp",
+      "role": "generic artifact card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "colorless"
+      ]
+    },
+    {
+      "path": "assets/cards/types/artifact_w.webp",
+      "kind": "webp",
+      "role": "generic artifact card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "white"
+      ]
+    },
+    {
+      "path": "assets/cards/types/artifact_u.webp",
+      "kind": "webp",
+      "role": "generic artifact card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "blue"
+      ]
+    },
+    {
+      "path": "assets/cards/types/artifact_b.webp",
+      "kind": "webp",
+      "role": "generic artifact card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "black"
+      ]
+    },
+    {
+      "path": "assets/cards/types/artifact_r.webp",
+      "kind": "webp",
+      "role": "generic artifact card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "red"
+      ]
+    },
+    {
+      "path": "assets/cards/types/artifact_g.webp",
+      "kind": "webp",
+      "role": "generic artifact card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "green"
+      ]
+    },
+    {
+      "path": "assets/cards/types/token_creature_zombie.webp",
+      "kind": "webp",
+      "role": "generic token_creature card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "black"
+      ]
+    },
+    {
+      "path": "assets/cards/tokens/zombie.webp",
+      "kind": "webp",
+      "role": "zombie token generic template",
+      "tags": [
+        "MVP",
+        "token"
+      ]
+    },
+    {
+      "path": "assets/cards/types/token_creature_goblin.webp",
+      "kind": "webp",
+      "role": "generic token_creature card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "red"
+      ]
+    },
+    {
+      "path": "assets/cards/tokens/goblin.webp",
+      "kind": "webp",
+      "role": "goblin token generic template",
+      "tags": [
+        "MVP",
+        "token"
+      ]
+    },
+    {
+      "path": "assets/cards/types/token_creature_soldier_cat.webp",
+      "kind": "webp",
+      "role": "generic token_creature card template",
+      "tags": [
+        "MVP",
+        "card_type",
+        "white"
+      ]
+    },
+    {
+      "path": "assets/cards/tokens/soldier_cat.webp",
+      "kind": "webp",
+      "role": "soldier_cat token generic template",
+      "tags": [
+        "MVP",
+        "token"
+      ]
+    },
+    {
+      "path": "assets/cards/backs/spell_deck_back.webp",
+      "kind": "webp",
+      "role": "deck back",
+      "tags": [
+        "MVP",
+        "deck_back"
+      ]
+    },
+    {
+      "path": "assets/cards/backs/land_deck_back.webp",
+      "kind": "webp",
+      "role": "deck back",
+      "tags": [
+        "MVP",
+        "deck_back"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/cats_avatar.webp",
+      "kind": "webp",
+      "role": "cats archetype avatar",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/cats_panel.webp",
+      "kind": "webp",
+      "role": "cats archetype selector panel",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/vampires_avatar.webp",
+      "kind": "webp",
+      "role": "vampires archetype avatar",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/vampires_panel.webp",
+      "kind": "webp",
+      "role": "vampires archetype selector panel",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/healing_avatar.webp",
+      "kind": "webp",
+      "role": "healing archetype avatar",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/healing_panel.webp",
+      "kind": "webp",
+      "role": "healing archetype selector panel",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/pirates_avatar.webp",
+      "kind": "webp",
+      "role": "pirates archetype avatar",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/pirates_panel.webp",
+      "kind": "webp",
+      "role": "pirates archetype selector panel",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/wizards_avatar.webp",
+      "kind": "webp",
+      "role": "wizards archetype avatar",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/wizards_panel.webp",
+      "kind": "webp",
+      "role": "wizards archetype selector panel",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/undead_avatar.webp",
+      "kind": "webp",
+      "role": "undead archetype avatar",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/undead_panel.webp",
+      "kind": "webp",
+      "role": "undead archetype selector panel",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/goblins_avatar.webp",
+      "kind": "webp",
+      "role": "goblins archetype avatar",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/goblins_panel.webp",
+      "kind": "webp",
+      "role": "goblins archetype selector panel",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/inferno_avatar.webp",
+      "kind": "webp",
+      "role": "inferno archetype avatar",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/inferno_panel.webp",
+      "kind": "webp",
+      "role": "inferno archetype selector panel",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/elves_avatar.webp",
+      "kind": "webp",
+      "role": "elves archetype avatar",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/elves_panel.webp",
+      "kind": "webp",
+      "role": "elves archetype selector panel",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/primal_avatar.webp",
+      "kind": "webp",
+      "role": "primal archetype avatar",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/backgrounds/archetypes/primal_panel.webp",
+      "kind": "webp",
+      "role": "primal archetype selector panel",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/mana_w.svg",
+      "kind": "svg",
+      "role": "white mana sun",
+      "tags": [
+        "MVP",
+        "mana"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/mana_u.svg",
+      "kind": "svg",
+      "role": "blue mana drop",
+      "tags": [
+        "MVP",
+        "mana"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/mana_b.svg",
+      "kind": "svg",
+      "role": "black mana skull",
+      "tags": [
+        "MVP",
+        "mana"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/mana_r.svg",
+      "kind": "svg",
+      "role": "red mana flame",
+      "tags": [
+        "MVP",
+        "mana"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/mana_g.svg",
+      "kind": "svg",
+      "role": "green mana leaf",
+      "tags": [
+        "MVP",
+        "mana"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/mana_c.svg",
+      "kind": "svg",
+      "role": "colorless mana diamond",
+      "tags": [
+        "MVP",
+        "mana"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/tap.svg",
+      "kind": "svg",
+      "role": "tap cost",
+      "tags": [
+        "MVP",
+        "mana",
+        "action"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/keyword_flying.svg",
+      "kind": "svg",
+      "role": "flying keyword wing",
+      "tags": [
+        "MVP",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/keyword_reach.svg",
+      "kind": "svg",
+      "role": "reach keyword arrow",
+      "tags": [
+        "MVP",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/keyword_first_strike.svg",
+      "kind": "svg",
+      "role": "first strike keyword spear",
+      "tags": [
+        "MVP",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/keyword_double_strike.svg",
+      "kind": "svg",
+      "role": "double strike keyword crossed spears",
+      "tags": [
+        "MVP",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/keyword_trample.svg",
+      "kind": "svg",
+      "role": "trample keyword hoof",
+      "tags": [
+        "MVP",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/keyword_lifelink.svg",
+      "kind": "svg",
+      "role": "lifelink keyword heart link",
+      "tags": [
+        "MVP",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/keyword_deathtouch.svg",
+      "kind": "svg",
+      "role": "deathtouch keyword skull drop",
+      "tags": [
+        "MVP",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/keyword_menace.svg",
+      "kind": "svg",
+      "role": "menace keyword eyes",
+      "tags": [
+        "MVP",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/keyword_vigilance.svg",
+      "kind": "svg",
+      "role": "vigilance keyword eye shield",
+      "tags": [
+        "MVP",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/keyword_haste.svg",
+      "kind": "svg",
+      "role": "haste keyword speed bolt",
+      "tags": [
+        "MVP",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/keyword_indestructible.svg",
+      "kind": "svg",
+      "role": "indestructible keyword shield diamond",
+      "tags": [
+        "P2",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/keyword_ward.svg",
+      "kind": "svg",
+      "role": "ward keyword ward shield",
+      "tags": [
+        "P2",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/status_unblockable.svg",
+      "kind": "svg",
+      "role": "unblockable status ghost arrow",
+      "tags": [
+        "MVP",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/status_sacrifice_after_damage.svg",
+      "kind": "svg",
+      "role": "sacrifice after damage status",
+      "tags": [
+        "P2",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/status_trigger.svg",
+      "kind": "svg",
+      "role": "trigger status bell",
+      "tags": [
+        "P2",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/action_activate.svg",
+      "kind": "svg",
+      "role": "activate ability action",
+      "tags": [
+        "MVP",
+        "keyword"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/play.svg",
+      "kind": "svg",
+      "role": "play",
+      "tags": [
+        "MVP",
+        "ui"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/pause.svg",
+      "kind": "svg",
+      "role": "pause",
+      "tags": [
+        "P2",
+        "ui"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/step.svg",
+      "kind": "svg",
+      "role": "step",
+      "tags": [
+        "MVP",
+        "ui"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/restart.svg",
+      "kind": "svg",
+      "role": "restart",
+      "tags": [
+        "MVP",
+        "ui"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/shuffle.svg",
+      "kind": "svg",
+      "role": "shuffle",
+      "tags": [
+        "MVP",
+        "ui"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/log.svg",
+      "kind": "svg",
+      "role": "log",
+      "tags": [
+        "MVP",
+        "ui"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/settings.svg",
+      "kind": "svg",
+      "role": "settings",
+      "tags": [
+        "MVP",
+        "ui"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/inspect.svg",
+      "kind": "svg",
+      "role": "inspect",
+      "tags": [
+        "MVP",
+        "ui"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/close.svg",
+      "kind": "svg",
+      "role": "close",
+      "tags": [
+        "MVP",
+        "ui"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/confirm.svg",
+      "kind": "svg",
+      "role": "confirm",
+      "tags": [
+        "MVP",
+        "ui"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/cancel.svg",
+      "kind": "svg",
+      "role": "cancel",
+      "tags": [
+        "MVP",
+        "ui"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/archetype_cats.svg",
+      "kind": "svg",
+      "role": "cats archetype badge",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/archetype_vampires.svg",
+      "kind": "svg",
+      "role": "vampires archetype badge",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/archetype_healing.svg",
+      "kind": "svg",
+      "role": "healing archetype badge",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/archetype_pirates.svg",
+      "kind": "svg",
+      "role": "pirates archetype badge",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/archetype_wizards.svg",
+      "kind": "svg",
+      "role": "wizards archetype badge",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/archetype_undead.svg",
+      "kind": "svg",
+      "role": "undead archetype badge",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/archetype_goblins.svg",
+      "kind": "svg",
+      "role": "goblins archetype badge",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/archetype_inferno.svg",
+      "kind": "svg",
+      "role": "inferno archetype badge",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/archetype_elves.svg",
+      "kind": "svg",
+      "role": "elves archetype badge",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/ui/icons/archetype_primal.svg",
+      "kind": "svg",
+      "role": "primal archetype badge",
+      "tags": [
+        "MVP",
+        "archetype"
+      ]
+    },
+    {
+      "path": "assets/ui/frames/card_frame_creature.svg",
+      "kind": "svg",
+      "role": "creature card frame",
+      "tags": [
+        "MVP",
+        "frame"
+      ]
+    },
+    {
+      "path": "assets/ui/frames/card_frame_noncreature.svg",
+      "kind": "svg",
+      "role": "noncreature card frame",
+      "tags": [
+        "MVP",
+        "frame"
+      ]
+    },
+    {
+      "path": "assets/ui/frames/card_frame_land.svg",
+      "kind": "svg",
+      "role": "land card frame",
+      "tags": [
+        "MVP",
+        "frame"
+      ]
+    },
+    {
+      "path": "assets/ui/overlays/tapped.svg",
+      "kind": "svg",
+      "role": "tapped overlay",
+      "tags": [
+        "MVP",
+        "overlay"
+      ]
+    },
+    {
+      "path": "assets/ui/overlays/attacking.svg",
+      "kind": "svg",
+      "role": "attacking overlay",
+      "tags": [
+        "MVP",
+        "overlay"
+      ]
+    },
+    {
+      "path": "assets/ui/overlays/blocking.svg",
+      "kind": "svg",
+      "role": "blocking overlay",
+      "tags": [
+        "MVP",
+        "overlay"
+      ]
+    },
+    {
+      "path": "assets/ui/overlays/summoning_sick.svg",
+      "kind": "svg",
+      "role": "summoning sick overlay",
+      "tags": [
+        "P2",
+        "overlay"
+      ]
+    },
+    {
+      "path": "assets/ui/overlays/targetable.svg",
+      "kind": "svg",
+      "role": "targetable overlay",
+      "tags": [
+        "MVP",
+        "overlay"
+      ]
+    },
+    {
+      "path": "assets/ui/overlays/selected.svg",
+      "kind": "svg",
+      "role": "selected overlay",
+      "tags": [
+        "MVP",
+        "overlay"
+      ]
+    },
+    {
+      "path": "assets/ui/overlays/illegal.svg",
+      "kind": "svg",
+      "role": "illegal overlay",
+      "tags": [
+        "MVP",
+        "overlay"
+      ]
+    },
+    {
+      "path": "assets/ui/overlays/damage_badge.svg",
+      "kind": "svg",
+      "role": "damage badge overlay",
+      "tags": [
+        "MVP",
+        "overlay"
+      ]
+    },
+    {
+      "path": "assets/ui/overlays/counter_badge.svg",
+      "kind": "svg",
+      "role": "counter badge overlay",
+      "tags": [
+        "MVP",
+        "overlay"
+      ]
+    },
+    {
+      "path": "assets/ui/overlays/temporary_buff.svg",
+      "kind": "svg",
+      "role": "temporary buff overlay",
+      "tags": [
+        "P2",
+        "overlay"
+      ]
+    },
+    {
+      "path": "assets/ui/overlays/exiled_binding.svg",
+      "kind": "svg",
+      "role": "exiled binding overlay",
+      "tags": [
+        "P2",
+        "overlay"
+      ]
+    },
+    {
+      "path": "assets/fx/damage_hit.webp",
+      "kind": "webp",
+      "role": "damage_hit.webp effect sprite",
+      "tags": [
+        "P2",
+        "fx"
+      ]
+    },
+    {
+      "path": "assets/fx/life_gain.webp",
+      "kind": "webp",
+      "role": "life_gain.webp effect sprite",
+      "tags": [
+        "P2",
+        "fx"
+      ]
+    },
+    {
+      "path": "assets/fx/death.webp",
+      "kind": "webp",
+      "role": "death.webp effect sprite",
+      "tags": [
+        "P2",
+        "fx"
+      ]
+    },
+    {
+      "path": "assets/fx/exile.webp",
+      "kind": "webp",
+      "role": "exile.webp effect sprite",
+      "tags": [
+        "P2",
+        "fx"
+      ]
+    },
+    {
+      "path": "assets/fx/draw_card.webp",
+      "kind": "webp",
+      "role": "draw_card.webp effect sprite",
+      "tags": [
+        "P2",
+        "fx"
+      ]
+    },
+    {
+      "path": "assets/fx/mana_produced.webp",
+      "kind": "webp",
+      "role": "mana_produced.webp effect sprite",
+      "tags": [
+        "P2",
+        "fx"
+      ]
+    },
+    {
+      "path": "assets/fx/counter_added.webp",
+      "kind": "webp",
+      "role": "counter_added.webp effect sprite",
+      "tags": [
+        "P2",
+        "fx"
+      ]
+    },
+    {
+      "path": "assets/fx/keyword_gain.webp",
+      "kind": "webp",
+      "role": "keyword_gain.webp effect sprite",
+      "tags": [
+        "P2",
+        "fx"
+      ]
+    },
+    {
+      "path": "README_ASSETS.md",
+      "kind": "md",
+      "role": "asset package documentation",
+      "tags": [
+        "MVP",
+        "docs"
+      ]
+    },
+    {
+      "path": "assets_manifest.json",
+      "kind": "json",
+      "role": "machine-readable asset manifest",
+      "tags": [
+        "MVP",
+        "docs"
+      ]
+    }
+  ]
+}

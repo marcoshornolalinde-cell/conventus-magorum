@@ -1,7 +1,13 @@
 import type { CardInstance, GamePhase, GameState, PlayerId, PlayerState } from "./types.js";
 import type { LegalAction } from "./types.js";
 import { getLegalActions, getOpponent, getPriorityOrder, performAction, resolveTopOfStack } from "./actions.js";
-import { clearCombatDamage, createSafeCombatPlan, resolveCombatPhase, type ChooseCombatPlan } from "./combat.js";
+import {
+  clearCombatDamage,
+  createSafeCombatPlan,
+  resolveCombatPhase,
+  type ChooseCombatAction,
+  type ChooseCombatPlan,
+} from "./combat.js";
 import { dispatchGameEvent } from "./triggerEngine.js";
 import { createEmptyManaPool } from "./mana.js";
 import { assertGameStateIsValid } from "./validateGameState.js";
@@ -242,12 +248,16 @@ function resolveStackWithResponses(game: GameState, priorityOrder: [PlayerId, Pl
   }
 }
 
-export function runCombat(game: GameState, chooseCombatPlan: ChooseCombatPlan = createSafeCombatPlan): void {
+export function runCombat(
+  game: GameState,
+  chooseCombatPlan: ChooseCombatPlan = createSafeCombatPlan,
+  chooseCombatAction?: ChooseCombatAction,
+): void {
   if (game.status === "gameOver") {
     return;
   }
 
-  resolveCombatPhase(game, chooseCombatPlan);
+  resolveCombatPhase(game, chooseCombatPlan, chooseCombatAction);
   assertGameStateIsValid(game, `after combat turn ${game.turnNumber}`);
 }
 
@@ -288,7 +298,7 @@ export function playOneGeneralTurn(
 
   if (game.status !== "gameOver") {
     runMainPhase(game, "main1", chooseAction);
-    runCombat(game, chooseCombatPlan);
+    runCombat(game, chooseCombatPlan, chooseAction);
     runMainPhase(game, "main2", chooseAction);
     cleanupGeneralTurn(game);
   }

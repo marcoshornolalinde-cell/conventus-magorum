@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="attacking overlay">
+  <title>attacking overlay</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="4" width="56" height="56" rx="7" fill="none" stroke="#d96745" stroke-width="5"/>
+    <path d="M16 42 47 11" stroke="#ffd39a" stroke-width="6"/>
+    <path d="M49 9l-5 18-13-13Z" fill="#ffd39a" stroke="#5c2218" stroke-width="2"/>
+  </g>
+</svg>

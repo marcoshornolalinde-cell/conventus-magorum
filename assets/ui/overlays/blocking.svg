@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="blocking overlay">
+  <title>blocking overlay</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="4" width="56" height="56" rx="7" fill="none" stroke="#6d8fb0" stroke-width="5"/>
+    <path d="M32 10 48 18v14c0 12-7 19-16 23-9-4-16-11-16-23V18Z" fill="#d9e8ff" opacity=".72" stroke="#1f344e" stroke-width="3"/>
+  </g>
+</svg>

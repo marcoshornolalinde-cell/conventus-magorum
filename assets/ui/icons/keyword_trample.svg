@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="trample keyword hoof">
+  <title>trample keyword hoof</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#e5d6bd" stroke="#372c1d" stroke-width="3"/>
+    <path d="M20 16c9 2 14 10 12 24-11-2-17-9-12-24ZM44 16c-9 2-14 10-12 24 11-2 17-9 12-24Z" fill="#715334" stroke="#372c1d" stroke-width="3"/>
+    <path d="M18 50h28M22 44l-6 8M36 44l-4 9" stroke="#372c1d" stroke-width="4"/>
+  </g>
+</svg>

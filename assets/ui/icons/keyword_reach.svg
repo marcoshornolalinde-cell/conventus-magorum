@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="reach keyword arrow">
+  <title>reach keyword arrow</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#dcebd2" stroke="#243b24" stroke-width="3"/>
+    <path d="M17 50C24 31 33 18 49 9" stroke="#243b24" stroke-width="5"/>
+    <path d="M48 9l-2 15M48 9L34 14" stroke="#243b24" stroke-width="5"/>
+    <path d="M18 50h25" stroke="#69865b" stroke-width="4"/>
+  </g>
+</svg>

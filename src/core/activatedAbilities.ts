@@ -29,14 +29,14 @@ type ActivatedEffect =
       };
     };
 
-interface ActivatedCost {
+export interface ActivatedCost {
   manaCost?: string;
   tap?: boolean;
   sacrificeSelf?: boolean;
   sacrificeAnotherCreature?: boolean;
 }
 
-interface ActivatedAbilityProfile {
+export interface ActivatedAbilityProfile {
   id: string;
   sourceZone: "battlefield" | "graveyard";
   cost: ActivatedCost;

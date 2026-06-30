@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="menace keyword eyes">
+  <title>menace keyword eyes</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#e2ccd1" stroke="#301a20" stroke-width="3"/>
+    <path d="M12 32c9-12 18-12 27 0-9 10-18 10-27 0ZM25 34c9-12 18-12 27 0-9 10-18 10-27 0Z" fill="#fff0e5" stroke="#301a20" stroke-width="3"/>
+    <circle cx="26" cy="32" r="4" fill="#301a20"/>
+    <circle cx="39" cy="34" r="4" fill="#301a20"/>
+  </g>
+</svg>

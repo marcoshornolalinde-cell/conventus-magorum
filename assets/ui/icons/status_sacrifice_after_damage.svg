@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="sacrifice after damage status">
+  <title>sacrifice after damage status</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#e8d5d2" stroke="#3b1e1d" stroke-width="3"/>
+    <path d="M32 11c9 13 14 20 14 29a14 14 0 0 1-28 0c0-9 5-16 14-29Z" fill="#c95a51" stroke="#3b1e1d" stroke-width="3"/>
+    <path d="M22 24l20 24M42 24 22 48" stroke="#fff0d9" stroke-width="5"/>
+  </g>
+</svg>

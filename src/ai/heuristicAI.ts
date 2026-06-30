@@ -1,8 +1,76 @@
 import { getPlayer } from "../core/actions.js";
+import { getActivatedAbilityProfile } from "../core/activatedAbilities.js";
 import { canAttack, canDefend, getCreaturesOnBattlefield, getCreatureStats } from "../core/combat.js";
 import { getEffectiveManaCost } from "../core/costs.js";
 import { addMana, canPayManaCost } from "../core/mana.js";
-import type { CombatPlan, GameState, LegalAction, PlayerId } from "../core/types.js";
+import type { CardInstance, CombatPlan, GameState, LegalAction, ManaPool, PlayerId, PlayerState } from "../core/types.js";
+
+function findPermanentController(game: GameState, instanceId: string): PlayerState | null {
+  return game.players.find((player) => player.battlefield.some((permanent) => permanent.instanceId === instanceId)) ?? null;
+}
+
+function findPermanent(game: GameState, instanceId: string): CardInstance | null {
+  return findPermanentController(game, instanceId)?.battlefield.find((permanent) => permanent.instanceId === instanceId) ?? null;
+}
+
+function isOwnPermanent(game: GameState, playerId: PlayerId, instanceId: string): boolean {
+  return findPermanentController(game, instanceId)?.playerId === playerId;
+}
+
+function hasAttackedThisTurn(game: GameState, playerId: PlayerId, instanceId: string): boolean {
+  return game.events.some(
+    (event) =>
+      event.turn === game.turnNumber &&
+      event.type === "creatureAttacked" &&
+      event.playerId === playerId &&
+      event.sourceId === instanceId,
+  );
+}
+
+function countAttackersThisTurn(game: GameState, playerId: PlayerId): number {
+  return game.events.filter(
+    (event) => event.turn === game.turnNumber && event.type === "creatureAttacked" && event.playerId === playerId,
+  ).length;
+}
+
+function canEventuallyPayRelevantActivatedAbility(
+  game: GameState,
+  player: PlayerState,
+  currentPool: ManaPool,
+  potentialPool: ManaPool,
+): boolean {
+  const sources = [...player.battlefield, ...player.graveyard];
+
+  return sources.some((source) => {
+    const profile = getActivatedAbilityProfile(source.card);
+
+    if (!profile?.cost.manaCost || !canPayManaCost(potentialPool, profile.cost.manaCost)) {
+      return false;
+    }
+
+    if (canPayManaCost(currentPool, profile.cost.manaCost)) {
+      return false;
+    }
+
+    if (profile.sourceZone === "battlefield" && !player.battlefield.some((permanent) => permanent.instanceId === source.instanceId)) {
+      return false;
+    }
+
+    if (profile.sourceZone === "graveyard" && !player.graveyard.some((card) => card.instanceId === source.instanceId)) {
+      return false;
+    }
+
+    if (profile.cost.tap && source.tapped) {
+      return false;
+    }
+
+    if (game.phase === "combat") {
+      return /attacking|pump|unblockable|flying|destroy|draw|drain/i.test(profile.id);
+    }
+
+    return /draw|drain|destroy|transform|sacrifice_counter|return_tapped|create_zombies/i.test(profile.id);
+  });
+}
 
 function couldUseMoreMana(game: GameState, playerId: PlayerId, legalActions: LegalAction[]): boolean {
   const player = getPlayer(game, playerId);
@@ -21,7 +89,63 @@ function couldUseMoreMana(game: GameState, playerId: PlayerId, legalActions: Leg
     ? player.hand.filter((card) => /Counter target spell/i.test(card.card.gameText))
     : player.hand;
 
-  return candidateCards.some((card) => canPayManaCost(potentialPool, getEffectiveManaCost(player, card)));
+  return (
+    candidateCards.some((card) => canPayManaCost(potentialPool, getEffectiveManaCost(player, card))) ||
+    canEventuallyPayRelevantActivatedAbility(game, player, player.manaPool, potentialPool)
+  );
+}
+
+function scoreActivatedAction(game: GameState, playerId: PlayerId, action: Extract<LegalAction, { type: "activateAbility" }>): number {
+  const abilityId = action.abilityId;
+  const targetId = action.targetIds[0];
+  const target = targetId ? findPermanent(game, targetId) : null;
+  const targetIsOurs = targetId ? isOwnPermanent(game, playerId, targetId) : false;
+  const targetIsAttacking = targetId ? hasAttackedThisTurn(game, playerId, targetId) : false;
+  const attackerCount = countAttackersThisTurn(game, playerId);
+
+  if (/destroy/i.test(abilityId)) {
+    return targetId && !targetIsOurs ? 120 : -30;
+  }
+
+  if (/attacking_pump/i.test(abilityId)) {
+    return attackerCount > 0 ? 85 + attackerCount * 10 : 0;
+  }
+
+  if (/attacking_counter/i.test(abilityId)) {
+    return targetIsOurs && targetIsAttacking ? 100 : 15;
+  }
+
+  if (/unblockable/i.test(abilityId)) {
+    return target && targetIsOurs && canAttack(target, game.turnNumber) ? 90 : 25;
+  }
+
+  if (/flying_sacrifice/i.test(abilityId)) {
+    return target && targetIsOurs && canAttack(target, game.turnNumber) ? 80 : 20;
+  }
+
+  if (/pump/i.test(abilityId)) {
+    if (targetIsOurs && targetIsAttacking) return 90;
+    if (targetIsOurs) return 60;
+    return -20;
+  }
+
+  if (/draw/i.test(abilityId)) {
+    return game.phase === "combat" ? 15 : 45;
+  }
+
+  if (/drain/i.test(abilityId)) {
+    return 50;
+  }
+
+  if (/transform/i.test(abilityId)) {
+    return 55;
+  }
+
+  if (/sacrifice_counter|return_tapped|create_zombies/i.test(abilityId)) {
+    return 40;
+  }
+
+  return 0;
 }
 
 export function chooseFirstPlayableCreature(
@@ -57,9 +181,13 @@ export function chooseFirstPlayableCreature(
   }
 
   const activatedActions = legalActions.filter((action) => action.type === "activateAbility");
-  const destroyAbility = activatedActions.find((action) => /destroy/i.test(action.abilityId));
-  if (destroyAbility) {
-    return destroyAbility;
+  const scoredActivatedActions = activatedActions
+    .map((action) => ({ action, score: scoreActivatedAction(game, playerId, action) }))
+    .filter((entry) => entry.score > 0)
+    .sort((first, second) => second.score - first.score);
+
+  if (scoredActivatedActions[0] && scoredActivatedActions[0].score >= 80) {
+    return scoredActivatedActions[0].action;
   }
 
   const creatureAction = legalActions.find((action) => action.type === "playCreature");
@@ -67,11 +195,8 @@ export function chooseFirstPlayableCreature(
     return creatureAction;
   }
 
-  const valueAbility = activatedActions.find((action) =>
-    /draw|drain|pump|transform|sacrifice_counter|return_tapped|create_zombies|unblockable/i.test(action.abilityId),
-  );
-  if (valueAbility) {
-    return valueAbility;
+  if (scoredActivatedActions[0]) {
+    return scoredActivatedActions[0].action;
   }
 
   const manaAction = legalActions.find((action) => action.type === "activateManaAbility");

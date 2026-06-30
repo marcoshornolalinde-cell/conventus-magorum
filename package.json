@@ -8,6 +8,7 @@
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "selfplay": "tsx src/cli/selfplay.ts",
+    "ui:snapshot": "tsx src/cli/exportUiSnapshot.ts",
     "simulate": "tsx src/cli/simulate.ts",
     "audit:mechanics": "tsx src/cli/auditMechanics.ts"
   },

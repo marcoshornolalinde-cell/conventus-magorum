@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="pirates archetype badge">
+  <title>pirates archetype badge</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#785c3a" stroke="#211b18" stroke-width="3"/>
+    <path d="M32 13v35M18 30h28M20 38c2 8 7 12 12 12s10-4 12-12M27 14a5 5 0 1 0 10 0" stroke="#fff2dc" stroke-width="5"/>
+  </g>
+</svg>

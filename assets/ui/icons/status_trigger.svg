@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="trigger status bell">
+  <title>trigger status bell</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#eee2c8" stroke="#42321e" stroke-width="3"/>
+    <path d="M22 42h20l-3-5V27a7 7 0 0 0-14 0v10Z" fill="#f7d486" stroke="#42321e" stroke-width="3"/>
+    <path d="M29 47a4 4 0 0 0 6 0M22 14l-6-6M42 14l6-6M32 11V5" stroke="#a66f28" stroke-width="4"/>
+  </g>
+</svg>

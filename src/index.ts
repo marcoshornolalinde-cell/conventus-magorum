@@ -23,3 +23,4 @@ export * from "./data/loadContent.js";
 export * from "./data/validateContent.js";
 export * from "./selfplay/runMatch.js";
 export * from "./simulate/runSimulation.js";
+export * from "./assets/brandAssets.js";

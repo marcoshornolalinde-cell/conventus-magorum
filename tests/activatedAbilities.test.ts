@@ -6,6 +6,7 @@ import { createInitialGame } from "../src/core/gameState.js";
 import type { InitialPlayerConfig } from "../src/core/gameState.js";
 import type { CardInstance, ContentBundle, PlayerState } from "../src/core/types.js";
 import { dispatchGameEvent } from "../src/core/triggerEngine.js";
+import { chooseBasicCombatPlan, chooseFirstPlayableCreature } from "../src/ai/heuristicAI.js";
 import { loadContentBundle } from "../src/data/loadContent.js";
 
 const content: ContentBundle = loadContentBundle();
@@ -53,6 +54,19 @@ function findPoolCard(player: PlayerState, cardId: string): CardInstance {
 
   removeFromCurrentZones(player, source.instanceId);
   return resetInstance(source);
+}
+
+function findPoolCards(player: PlayerState, cardId: string, count: number): CardInstance[] {
+  const sources = player.pool.filter((instance) => instance.card.id === cardId).slice(0, count);
+
+  if (sources.length !== count) {
+    throw new Error(`Missing ${count} test copies of ${cardId}.`);
+  }
+
+  return sources.map((source) => {
+    removeFromCurrentZones(player, source.instanceId);
+    return resetInstance(source);
+  });
 }
 
 function createGame(seed: string, players: [InitialPlayerConfig, InitialPlayerConfig]) {
@@ -363,5 +377,53 @@ describe("activated abilities", () => {
 
     expect(player.graveyard.map((instance) => instance.instanceId)).toContain(goblin.instanceId);
     expect(opponent.lifeTotal).toBeLessThan(20);
+  });
+
+  it("lets the AI use Goblin Smuggler before combat positioning so a small attacker cannot be blocked", () => {
+    const game = createGame("ai-smuggler-combat-window", [
+      { id: "player1", archetypeIds: ["goblins", "inferno"] },
+      { id: "player2", archetypeIds: ["cats", "healing"] },
+    ]);
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const smuggler = findPoolCard(player, "goblin_smuggler");
+    const attacker = findPoolCard(player, "swab_goblin");
+    const blocker = findPoolCard(opponent, "savannah_lions");
+    player.battlefield = [smuggler, attacker];
+    opponent.battlefield = [blocker];
+    game.turnNumber = 6;
+    game.attackingPriorityPlayerId = player.playerId;
+
+    resolveCombatPhase(game, chooseBasicCombatPlan, chooseFirstPlayableCreature);
+
+    expect(smuggler.tapped).toBe(true);
+    expect(hasKeyword(attacker, "Unblockable")).toBe(true);
+    expect(opponent.lifeTotal).toBe(18);
+    expect(game.events.some((event) => event.type === "abilityActivated" && event.sourceId === smuggler.instanceId)).toBe(true);
+  });
+
+  it("lets the AI activate mana in combat and spend it on Jazal after attackers are declared", () => {
+    const game = createGame("ai-jazal-combat-window", [
+      { id: "player1", archetypeIds: ["cats", "healing"] },
+      { id: "player2", archetypeIds: ["goblins", "inferno"] },
+    ]);
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const jazal = findPoolCard(player, "jazal_goldmane");
+    const firstAttacker = findPoolCard(player, "savannah_lions");
+    const secondAttacker = findPoolCard(player, "leonin_skyhunter");
+    const plains = findPoolCards(player, "plains", 5);
+    player.battlefield = [jazal, firstAttacker, secondAttacker, ...plains];
+    opponent.battlefield = [];
+    game.turnNumber = 6;
+    game.attackingPriorityPlayerId = player.playerId;
+
+    resolveCombatPhase(game, chooseBasicCombatPlan, chooseFirstPlayableCreature);
+
+    expect(plains.every((land) => land.tapped)).toBe(true);
+    expect(player.manaPool.W).toBe(0);
+    expect(game.events.some((event) => event.type === "abilityActivated" && event.sourceId === jazal.instanceId)).toBe(true);
+    expect(getCreatureStats(firstAttacker).power).toBeGreaterThan(2);
+    expect(getCreatureStats(secondAttacker).power).toBeGreaterThan(2);
   });
 });

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Conventus Magorum</title>
+    <link rel="icon" type="image/png" href="../assets/app/app_icon_192.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <img class="brand-mark" src="../assets/app/app_icon_256.webp" alt="" />
+          <div>
+            <h1>Conventus Magorum</h1>
+            <p id="match-subtitle"></p>
+          </div>
+        </div>
+        <section class="match-stats" id="match-stats" aria-label="Resumen de partida"></section>
+        <section class="replay-controls" aria-label="Controles de replay">
+          <button class="control-button" id="replay-prev" type="button" aria-label="Paso anterior">
+            <img src="../assets/ui/icons/step.svg" alt="" />
+          </button>
+          <button class="control-button" id="replay-play" type="button" aria-label="Reproducir">
+            <img src="../assets/ui/icons/play.svg" alt="" />
+          </button>
+          <button class="control-button" id="replay-next" type="button" aria-label="Paso siguiente">
+            <img src="../assets/ui/icons/step.svg" alt="" />
+          </button>
+          <label class="speed-control">
+            <span>Velocidad</span>
+            <select id="replay-speed">
+              <option value="2200">Lenta</option>
+              <option value="1400" selected>Normal</option>
+              <option value="800">Rapida</option>
+            </select>
+          </label>
+          <div class="replay-readout">
+            <strong id="replay-label"></strong>
+            <span id="replay-message"></span>
+          </div>
+        </section>
+      </header>
+
+      <section class="board" id="board" aria-label="Tablero de partida"></section>
+
+      <button class="floating-log-button" id="open-log" type="button" aria-label="Consultar registro">
+        <img src="../assets/ui/icons/log.svg" alt="" />
+      </button>
+    </main>
+
+    <script src="./state/live-match.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

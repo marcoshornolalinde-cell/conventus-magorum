@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="log">
+  <title>log</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#e9dec4" stroke="#2a2d2f" stroke-width="3"/>
+    <path d="M20 14h24v36H20Z" fill="#fff6df" stroke="#2a2d2f" stroke-width="3"/>
+    <path d="M25 24h14M25 32h14M25 40h10" stroke="#2a2d2f" stroke-width="3"/>
+  </g>
+</svg>

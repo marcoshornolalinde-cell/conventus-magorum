@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="primal archetype badge">
+  <title>primal archetype badge</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#658448" stroke="#211b18" stroke-width="3"/>
+    <path d="M19 37c5-18 22-24 30-15-10 0-15 6-16 17 6-4 14-4 18 2-13 1-23 5-32-4Z" fill="#fff2dc" stroke="#211b18" stroke-width="3"/>
+  </g>
+</svg>

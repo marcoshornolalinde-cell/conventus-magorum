@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="illegal overlay">
+  <title>illegal overlay</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="4" width="56" height="56" rx="7" fill="#4b1010" opacity=".38" stroke="#e86767" stroke-width="4"/>
+    <path d="M18 18l28 28M46 18 18 46" stroke="#ffd2d2" stroke-width="6"/>
+  </g>
+</svg>

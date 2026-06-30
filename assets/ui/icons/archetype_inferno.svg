@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="inferno archetype badge">
+  <title>inferno archetype badge</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#c85328" stroke="#211b18" stroke-width="3"/>
+    <path d="M32 8c13 14 4 20 13 30 6 9-2 18-13 18-12 0-21-10-13-22 5-8 1-15 13-26Z" fill="#fff2dc" stroke="#211b18" stroke-width="3"/>
+  </g>
+</svg>

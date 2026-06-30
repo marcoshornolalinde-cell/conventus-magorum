@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="healing archetype badge">
+  <title>healing archetype badge</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#d26278" stroke="#211b18" stroke-width="3"/>
+    <path d="M32 50 16 34c-9-11 6-23 16-10 10-13 25-1 16 10Z" fill="#fff2dc" stroke="#211b18" stroke-width="3"/>
+  </g>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="vampires archetype badge">
+  <title>vampires archetype badge</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="28" fill="#843748" stroke="#211b18" stroke-width="3"/>
+    <path d="M20 25a12 12 0 0 1 24 0v11l-5 5H25l-5-5Z" fill="#fff2dc" stroke="#211b18" stroke-width="3"/>
+    <circle cx="27" cy="30" r="4" fill="#211b18"/><circle cx="37" cy="30" r="4" fill="#211b18"/>
+  </g>
+</svg>

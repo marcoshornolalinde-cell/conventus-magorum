@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="white mana sun">
+  <title>white mana sun</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="32" cy="32" r="25" fill="#e8dcc0" stroke="#40382d" stroke-width="3"/>
+    <circle cx="32" cy="32" r="10" fill="#fff7d8" stroke="#40382d" stroke-width="2"/>
+    <path d="M32 6v9M32 49v9M6 32h9M49 32h9M14 14l7 7M43 43l7 7M50 14l-7 7M21 43l-7 7" stroke="#8f6d2f" stroke-width="4"/>
+  </g>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="land card frame">
+  <title>land card frame</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="4" width="56" height="56" rx="7" fill="none" stroke="#628254" stroke-width="4"/>
+    <rect x="8" y="8" width="48" height="48" rx="5" fill="none" stroke="#f5e7c4" stroke-width="1.5" opacity=".85"/>
+  </g>
+</svg>

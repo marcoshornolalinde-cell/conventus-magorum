@@ -3,3 +3,8 @@ dist/
 .npm-cache/
 .agents/
 simulation-errors-*.json
+conventus-magorum-*.zip
+conventus-magorum-brand-game-ready/
+preview/
+ChatGPT Image 30 jun 2026*.png
+web/state/match.js
