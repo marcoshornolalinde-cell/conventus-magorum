@@ -44,6 +44,7 @@ function findPoolCard(player: PlayerState, cardId: string): CardInstance {
   source.plusOneCounters = 0;
   source.staticKeywords = [];
   source.temporaryKeywords = [];
+  source.additionalSubtypes = [];
   source.losesAbilities = false;
   source.cannotAttack = false;
   source.cannotDefend = false;
@@ -51,6 +52,7 @@ function findPoolCard(player: PlayerState, cardId: string): CardInstance {
   source.attachedToId = null;
   source.doesNotUntap = false;
   source.enteredTurn = 0;
+  source.activatedAbilityIdsUsed = [];
   return source;
 }
 
@@ -61,7 +63,7 @@ function setHand(player: PlayerState, cards: CardInstance[]): void {
 }
 
 describe("general turn start", () => {
-  it("puts a land onto each battlefield, produces mana, and draws from spellDeck", () => {
+  it("puts a land onto each battlefield and draws from spellDeck without producing automatic mana", () => {
     const game = createInitialGame(content, {
       seed: "turn-start",
       players: defaultPlayers,
@@ -72,12 +74,12 @@ describe("general turn start", () => {
     expect(game.turnNumber).toBe(1);
     expect(game.phase).toBe("main1");
     expect(game.events.map((event) => event.type)).toEqual(
-      expect.arrayContaining(["gameCreated", "turnStarted", "landEntered", "manaProduced", "cardDrawn"]),
+      expect.arrayContaining(["gameCreated", "turnStarted", "landEntered", "cardDrawn"]),
     );
 
     for (const player of game.players) {
       expect(player.battlefield.filter((instance) => instance.card.isLand)).toHaveLength(1);
-      expect(Object.values(player.manaPool).reduce((total, amount) => total + amount, 0)).toBe(1);
+      expect(Object.values(player.manaPool).reduce((total, amount) => total + amount, 0)).toBe(0);
       expect(player.hand).toHaveLength(5);
       expect(player.cardsDrawnThisTurn).toBe(1);
     }
@@ -100,6 +102,79 @@ describe("general turn start", () => {
 });
 
 describe("basic actions", () => {
+  it("activates a land mana ability by tapping the land", () => {
+    const game = createInitialGame(content, {
+      seed: "activate-land",
+      players: defaultPlayers,
+    });
+    const player = game.players[0];
+    const land = findPoolCard(player, "plains");
+    player.battlefield = [land];
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "activateManaAbility");
+    expect(action).toEqual(
+      expect.objectContaining({
+        type: "activateManaAbility",
+        permanentId: land.instanceId,
+        mana: "W",
+        amount: 1,
+      }),
+    );
+
+    performAction(game, action as LegalAction);
+
+    expect(land.tapped).toBe(true);
+    expect(player.manaPool.W).toBe(1);
+    expect(game.events.map((event) => event.type)).toContain("manaProduced");
+    expect(getLegalActions(game, player.playerId).some((candidate) => candidate.type === "activateManaAbility")).toBe(false);
+  });
+
+  it("activates creature and tribal mana abilities with tap costs", () => {
+    const game = createInitialGame(content, {
+      seed: "activate-creature-mana",
+      players: [
+        { id: "player1", archetypeIds: ["elves", "primal"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const llanowar = findPoolCard(player, "llanowar_elves");
+    const archdruid = findPoolCard(player, "elvish_archdruid");
+    player.battlefield = [llanowar, archdruid];
+    game.phase = "main1";
+    game.turnNumber = 3;
+
+    const actions = getLegalActions(game, player.playerId).filter((candidate) => candidate.type === "activateManaAbility");
+    expect(actions).toHaveLength(2);
+
+    const archdruidAction = actions.find(
+      (candidate) => candidate.type === "activateManaAbility" && candidate.permanentId === archdruid.instanceId,
+    );
+    performAction(game, archdruidAction as LegalAction);
+
+    expect(archdruid.tapped).toBe(true);
+    expect(player.manaPool.G).toBe(2);
+  });
+
+  it("does not activate a summoning-sick creature mana ability", () => {
+    const game = createInitialGame(content, {
+      seed: "summoning-sick-mana",
+      players: [
+        { id: "player1", archetypeIds: ["elves", "primal"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const llanowar = findPoolCard(player, "llanowar_elves");
+    llanowar.enteredTurn = 2;
+    player.battlefield = [llanowar];
+    game.phase = "main1";
+    game.turnNumber = 2;
+
+    expect(getLegalActions(game, player.playerId).some((candidate) => candidate.type === "activateManaAbility")).toBe(false);
+  });
+
   it("plays and resolves a payable creature through the stack", () => {
     const game = createInitialGame(content, {
       seed: "play-creature",

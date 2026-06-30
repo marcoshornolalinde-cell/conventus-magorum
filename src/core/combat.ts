@@ -53,6 +53,14 @@ function hasDeathtouch(instance: CardInstance): boolean {
   return hasKeyword(instance, "Deathtouch");
 }
 
+function hasMenace(instance: CardInstance): boolean {
+  return hasKeyword(instance, "Menace");
+}
+
+function isUnblockable(instance: CardInstance): boolean {
+  return hasKeyword(instance, "Unblockable");
+}
+
 export function getCreatureStats(instance: CardInstance): CreatureStats {
   const basePower = instance.basePowerOverride ?? (Number.parseInt(instance.card.power ?? "0", 10) || 0);
   const baseToughness = instance.baseToughnessOverride ?? (Number.parseInt(instance.card.toughness ?? "0", 10) || 0);
@@ -75,6 +83,14 @@ function getAttachedPermanents(player: PlayerState, permanentId: string): CardIn
   return player.battlefield.filter((instance) => instance.attachedToId === permanentId);
 }
 
+function hasPermanent(player: PlayerState, cardId: string): boolean {
+  return player.battlefield.some((instance) => instance.card.id === cardId);
+}
+
+function hasSubtype(instance: CardInstance, subtype: string): boolean {
+  return new RegExp(`\\b${subtype}\\b`, "i").test(instance.card.typeLine) || (instance.additionalSubtypes ?? []).includes(subtype);
+}
+
 export function getCreaturesOnBattlefield(player: PlayerState): CardInstance[] {
   return player.battlefield.filter(isCreature);
 }
@@ -92,6 +108,10 @@ export function canDefend(instance: CardInstance): boolean {
 }
 
 export function canBlock(attacker: CardInstance, defender: CardInstance): boolean {
+  if (isUnblockable(attacker)) {
+    return false;
+  }
+
   if (!canDefend(defender)) {
     return false;
   }
@@ -176,7 +196,7 @@ function buildPairings(
       continue;
     }
 
-    const defenderIndex = freeDefenderIds.findIndex((defenderId) => {
+    const defenderIndex = hasMenace(attacker) && freeDefenderIds.length < 2 ? -1 : freeDefenderIds.findIndex((defenderId) => {
       const defender = getBattlefieldCreature(defendingPlayer, defenderId);
       return defender ? canBlock(attacker, defender) : false;
     });
@@ -230,6 +250,7 @@ function buildPairings(
 }
 
 function moveToGraveyard(game: GameState, player: PlayerState, instance: CardInstance): void {
+  const shouldReturnTappedWithCounter = instance.returnTappedWithCounterOnDeathUntilEndOfTurn === true;
   player.battlefield = player.battlefield.filter((candidate) => candidate.instanceId !== instance.instanceId);
   detachFromPermanent(game, instance.instanceId);
   instance.tapped = false;
@@ -244,13 +265,86 @@ function moveToGraveyard(game: GameState, player: PlayerState, instance: CardIns
   instance.plusOneCounters = 0;
   instance.staticKeywords = [];
   instance.temporaryKeywords = [];
+  instance.additionalSubtypes = [];
   instance.losesAbilities = false;
   instance.cannotAttack = false;
   instance.cannotDefend = false;
   instance.temporaryCannotDefend = false;
   instance.attachedToId = null;
+  instance.exiledById = null;
   instance.doesNotUntap = false;
+  instance.activatedAbilityIdsUsed = [];
+  instance.returnTappedWithCounterOnDeathUntilEndOfTurn = false;
   player.graveyard.push(instance);
+
+  if (shouldReturnTappedWithCounter) {
+    const graveyardIndex = player.graveyard.findIndex((candidate) => candidate.instanceId === instance.instanceId);
+    const [returned] = graveyardIndex === -1 ? [] : player.graveyard.splice(graveyardIndex, 1);
+
+    if (returned) {
+      returned.tapped = true;
+      returned.damageMarked = 0;
+      returned.deathtouchDamageMarked = 0;
+      returned.powerModifier = 0;
+      returned.toughnessModifier = 0;
+      returned.staticPowerModifier = 0;
+      returned.staticToughnessModifier = 0;
+      returned.basePowerOverride = null;
+      returned.baseToughnessOverride = null;
+      returned.plusOneCounters = 1;
+      returned.staticKeywords = [];
+      returned.temporaryKeywords = [];
+      returned.additionalSubtypes = [];
+      returned.losesAbilities = false;
+      returned.cannotAttack = false;
+      returned.cannotDefend = false;
+      returned.temporaryCannotDefend = false;
+      returned.attachedToId = null;
+      returned.exiledById = null;
+      returned.doesNotUntap = false;
+      returned.enteredTurn = game.turnNumber;
+      returned.activatedAbilityIdsUsed = [];
+      returned.returnTappedWithCounterOnDeathUntilEndOfTurn = false;
+      player.battlefield.push(returned);
+      dispatchGameEvent(game, {
+        type: "creatureEntered",
+        playerId: player.playerId,
+        sourceId: returned.instanceId,
+        details: { cardId: returned.card.id, from: "graveyard", tapped: true, plusOneCounter: true },
+      });
+    }
+  }
+}
+
+function sacrificeCombatDamageSourcesSince(game: GameState, firstEventSequence: number): void {
+  const sourceIds = new Set(
+    game.events
+      .filter(
+        (event) =>
+          event.sequence > firstEventSequence &&
+          event.type === "damageDealt" &&
+          event.details?.combat === true &&
+          typeof event.sourceId === "string",
+      )
+      .map((event) => event.sourceId as string),
+  );
+
+  for (const player of game.players) {
+    for (const creature of [...getCreaturesOnBattlefield(player)]) {
+      if (!sourceIds.has(creature.instanceId) || !hasKeyword(creature, "SacrificeOnCombatDamage")) {
+        continue;
+      }
+
+      moveToGraveyard(game, player, creature);
+      dispatchGameEvent(game, {
+        type: "permanentDied",
+        playerId: player.playerId,
+        sourceId: creature.instanceId,
+        details: { cardId: creature.card.id, sacrificedAfterCombatDamage: true },
+      });
+      log(game, `${creature.card.name} is sacrificed after dealing combat damage.`);
+    }
+  }
 }
 
 function moveToExile(game: GameState, player: PlayerState, instance: CardInstance): void {
@@ -267,13 +361,17 @@ function moveToExile(game: GameState, player: PlayerState, instance: CardInstanc
   instance.baseToughnessOverride = null;
   instance.staticKeywords = [];
   instance.temporaryKeywords = [];
+  instance.additionalSubtypes = [];
   instance.losesAbilities = false;
   instance.cannotAttack = false;
   instance.cannotDefend = false;
   instance.temporaryCannotDefend = false;
   instance.attachedToId = null;
+  instance.exiledById = null;
   instance.doesNotUntap = false;
   instance.enteredTurn = null;
+  instance.activatedAbilityIdsUsed = [];
+  instance.returnTappedWithCounterOnDeathUntilEndOfTurn = false;
   player.exile.push(instance);
 }
 
@@ -490,6 +588,7 @@ function dealCombatDamageStep(
   wasBlocked: boolean,
 ): void {
   const currentAttacker = getBattlefieldCreature(attackingPlayer, attacker.instanceId);
+  const firstEventSequence = game.events.length;
 
   if (!currentAttacker) {
     return;
@@ -525,6 +624,7 @@ function dealCombatDamageStep(
   }
 
   applyStateBasedActions(game);
+  sacrificeCombatDamageSourcesSince(game, firstEventSequence);
 }
 
 function resolvePairing(
@@ -625,6 +725,14 @@ export function resolveCombatPhase(game: GameState, chooseCombatPlan: ChooseComb
         if (getAttachedPermanents(player, attacker.instanceId).some((attachment) => attachment.card.id === "quick_draw_katana")) {
           attacker.powerModifier += 2;
           attacker.temporaryKeywords.push("First strike");
+        }
+
+        if (hasPermanent(player, "goblin_oriflamme")) {
+          attacker.powerModifier += 1;
+        }
+
+        if (hasPermanent(player, "crossway_troublemakers") && hasSubtype(attacker, "Vampire")) {
+          attacker.temporaryKeywords.push("Deathtouch", "Lifelink");
         }
 
         dispatchGameEvent(game, {

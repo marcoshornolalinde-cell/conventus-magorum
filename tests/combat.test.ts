@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { canAttack, resolveCombatPhase } from "../src/core/combat.js";
+import { canAttack, hasKeyword, resolveCombatPhase } from "../src/core/combat.js";
 import { createInitialGame } from "../src/core/gameState.js";
 import type { InitialPlayerConfig } from "../src/core/gameState.js";
 import type { CardInstance, CombatPlan, ContentBundle, PlayerState } from "../src/core/types.js";
@@ -49,6 +49,7 @@ function findPoolCard(player: PlayerState, cardId: string): CardInstance {
     attachedToId: null,
     doesNotUntap: false,
     enteredTurn: 0,
+    activatedAbilityIdsUsed: [],
   };
 }
 
@@ -111,6 +112,103 @@ describe("combat", () => {
 
     expect(game.players[1].lifeTotal).toBe(18);
     expect(attacker.tapped).toBe(true);
+  });
+
+  it("prevents a menace attacker from being blocked by only one creature", () => {
+    const game = createInitialGame(content, {
+      seed: "combat-menace",
+      players: defaultPlayers,
+    });
+    const attacker = withCombatStats(findPoolCard(game.players[0], "savannah_lions"), "2", "1", []);
+    const blocker = withCombatStats(findPoolCard(game.players[1], "hinterland_sanctifier"), "1", "2", []);
+    attacker.temporaryKeywords.push("Menace");
+    game.turnNumber = 2;
+    game.phase = "combat";
+    game.attackingPriorityPlayerId = game.players[0].playerId;
+    game.activePlayerId = game.players[0].playerId;
+    game.players[0].battlefield = [attacker];
+    game.players[1].battlefield = [blocker];
+
+    resolveCombatPhase(
+      game,
+      planFor(
+        {
+          playerId: game.players[0].playerId,
+          attackerIds: [attacker.instanceId],
+          defenderIds: [],
+        },
+        {
+          playerId: game.players[1].playerId,
+          attackerIds: [],
+          defenderIds: [blocker.instanceId],
+        },
+      ),
+    );
+
+    expect(blocker.damageMarked).toBe(0);
+    expect(game.players[1].lifeTotal).toBe(18);
+  });
+
+  it("applies Goblin Oriflamme to attacking creatures", () => {
+    const game = createInitialGame(content, {
+      seed: "combat-oriflamme",
+      players: [
+        { id: "player1", archetypeIds: ["cats", "goblins"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const attacker = findPoolCard(game.players[0], "savannah_lions");
+    const oriflamme = findPoolCard(game.players[0], "goblin_oriflamme");
+    game.turnNumber = 2;
+    game.phase = "combat";
+    game.attackingPriorityPlayerId = game.players[0].playerId;
+    game.activePlayerId = game.players[0].playerId;
+    game.players[0].battlefield = [attacker, oriflamme];
+    game.players[1].battlefield = [];
+
+    resolveCombatPhase(
+      game,
+      planFor({
+        playerId: game.players[0].playerId,
+        attackerIds: [attacker.instanceId],
+        defenderIds: [],
+      }),
+    );
+
+    expect(game.players[1].lifeTotal).toBe(17);
+    expect(attacker.powerModifier).toBe(1);
+  });
+
+  it("grants deathtouch and lifelink to attacking Vampires from Crossway Troublemakers", () => {
+    const game = createInitialGame(content, {
+      seed: "combat-crossway",
+      players: [
+        { id: "player1", archetypeIds: ["vampires", "cats"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const attacker = findPoolCard(game.players[0], "vampire_interloper");
+    const crossway = findPoolCard(game.players[0], "crossway_troublemakers");
+    game.turnNumber = 2;
+    game.phase = "combat";
+    game.attackingPriorityPlayerId = game.players[0].playerId;
+    game.activePlayerId = game.players[0].playerId;
+    game.players[0].battlefield = [attacker, crossway];
+    game.players[1].battlefield = [];
+
+    resolveCombatPhase(
+      game,
+      planFor({
+        playerId: game.players[0].playerId,
+        attackerIds: [attacker.instanceId],
+        defenderIds: [],
+      }),
+    );
+
+    expect(hasKeyword(attacker, "Deathtouch")).toBe(true);
+    expect(hasKeyword(attacker, "Lifelink")).toBe(true);
+    expect(game.players[0].lifeTotal).toBe(22);
+    expect(game.players[1].lifeTotal).toBe(18);
   });
 
   it("assigns blockers and moves creatures with lethal damage to graveyards", () => {

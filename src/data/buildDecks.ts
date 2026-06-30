@@ -65,6 +65,7 @@ export function expandArchetypePool(
           plusOneCounters: 0,
           staticKeywords: [],
           temporaryKeywords: [],
+          additionalSubtypes: [],
           losesAbilities: false,
           cannotAttack: false,
           cannotDefend: false,
@@ -72,6 +73,7 @@ export function expandArchetypePool(
           attachedToId: null,
           doesNotUntap: false,
           enteredTurn: null,
+          activatedAbilityIdsUsed: [],
         });
       }
     }

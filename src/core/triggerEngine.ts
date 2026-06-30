@@ -561,7 +561,7 @@ function getBattlefieldCreature(player: PlayerState, instanceId: string): CardIn
 }
 
 function hasSubtype(instance: CardInstance, subtype: string): boolean {
-  return instance.card.typeLine.toLowerCase().includes(subtype.toLowerCase());
+  return new RegExp(`\\b${subtype}\\b`, "i").test(instance.card.typeLine) || (instance.additionalSubtypes ?? []).includes(subtype);
 }
 
 function battlefieldTriggerSources(game: GameState): Array<{ controller: PlayerState; source: CardInstance }> {
@@ -663,7 +663,7 @@ function conditionMatches(
         (candidate) =>
           candidate.instanceId !== source.instanceId &&
           candidate.card.cardTypes.includes("Creature") &&
-          candidate.card.typeLine.toLowerCase().includes(condition.subtype.toLowerCase()),
+          hasSubtype(candidate, condition.subtype),
       )
     );
   }
@@ -698,7 +698,7 @@ function conditionMatches(
       event.playerId === controller.playerId &&
       castSource !== null &&
       (!castSource.card.cardTypes.includes("Creature") ||
-        castSource.card.typeLine.toLowerCase().includes(condition.subtype.toLowerCase()))
+        hasSubtype(castSource, condition.subtype))
     );
   }
 
@@ -759,6 +759,7 @@ function resetPermanentForHiddenZone(instance: CardInstance): void {
   instance.baseToughnessOverride = null;
   instance.staticKeywords = [];
   instance.temporaryKeywords = [];
+  instance.additionalSubtypes = [];
   instance.losesAbilities = false;
   instance.cannotAttack = false;
   instance.cannotDefend = false;
@@ -766,6 +767,7 @@ function resetPermanentForHiddenZone(instance: CardInstance): void {
   instance.attachedToId = null;
   instance.doesNotUntap = false;
   instance.enteredTurn = null;
+  instance.activatedAbilityIdsUsed = [];
 }
 
 function detachAttachmentsFromPermanent(game: GameState, permanentId: string): void {
@@ -955,6 +957,7 @@ function createToken(game: GameState, controller: PlayerState, source: CardInsta
       plusOneCounters: 0,
       staticKeywords: [],
       temporaryKeywords: [],
+      additionalSubtypes: [],
       losesAbilities: false,
       cannotAttack: false,
       cannotDefend: false,
@@ -962,6 +965,7 @@ function createToken(game: GameState, controller: PlayerState, source: CardInsta
       attachedToId: null,
       doesNotUntap: false,
       enteredTurn: game.turnNumber,
+      activatedAbilityIdsUsed: [],
     };
 
     controller.battlefield.push(token);
@@ -1125,12 +1129,14 @@ function resetPermanentForGraveyard(instance: CardInstance): void {
   instance.baseToughnessOverride = null;
   instance.staticKeywords = [];
   instance.temporaryKeywords = [];
+  instance.additionalSubtypes = [];
   instance.losesAbilities = false;
   instance.cannotAttack = false;
   instance.cannotDefend = false;
   instance.temporaryCannotDefend = false;
   instance.attachedToId = null;
   instance.doesNotUntap = false;
+  instance.activatedAbilityIdsUsed = [];
 }
 
 function moveCreatureToGraveyardFromTrigger(game: GameState, controller: PlayerState, creature: CardInstance): void {
@@ -1209,7 +1215,7 @@ function countOwnSubtype(controller: PlayerState, subtype: string): number {
   return controller.battlefield.filter(
     (candidate) =>
       candidate.card.cardTypes.includes("Creature") &&
-      candidate.card.typeLine.toLowerCase().includes(subtype.toLowerCase()),
+      hasSubtype(candidate, subtype),
   ).length;
 }
 
@@ -1315,7 +1321,7 @@ function applyTriggerEffect(
     const target = controller.battlefield.find(
       (candidate) =>
         candidate.card.cardTypes.includes("Creature") &&
-        candidate.card.typeLine.toLowerCase().includes(effect.subtype!.toLowerCase()),
+        hasSubtype(candidate, effect.subtype!),
     );
 
     if (target) {

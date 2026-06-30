@@ -38,8 +38,8 @@ describe("content bundle", () => {
     const audit = auditUnsupportedMechanics(content);
 
     expect(audit.cardsWithText).toBeGreaterThan(0);
-    expect(audit.unsupportedCards.length).toBeGreaterThan(0);
-    expect(audit.unsupportedCounts["triggered ability"]).toBeGreaterThan(0);
+    expect(audit.unsupportedCards).toHaveLength(0);
+    expect(audit.unsupportedCounts).toEqual({});
   });
 });
 

@@ -3,7 +3,7 @@ import type { LegalAction } from "./types.js";
 import { getLegalActions, getOpponent, getPriorityOrder, performAction, resolveTopOfStack } from "./actions.js";
 import { clearCombatDamage, createSafeCombatPlan, resolveCombatPhase, type ChooseCombatPlan } from "./combat.js";
 import { dispatchGameEvent } from "./triggerEngine.js";
-import { createEmptyManaPool, produceManaFromBattlefield } from "./mana.js";
+import { createEmptyManaPool } from "./mana.js";
 import { assertGameStateIsValid } from "./validateGameState.js";
 
 export interface TurnSummary {
@@ -61,12 +61,14 @@ function putTopLandOntoBattlefield(player: PlayerState, turnNumber: number): Car
   land.plusOneCounters = 0;
   land.staticKeywords = [];
   land.temporaryKeywords = [];
+  land.additionalSubtypes = [];
   land.losesAbilities = false;
   land.cannotAttack = false;
   land.cannotDefend = false;
   land.temporaryCannotDefend = false;
   land.attachedToId = null;
   land.doesNotUntap = false;
+  land.activatedAbilityIdsUsed = [];
   player.battlefield.push(land);
   return land;
 }
@@ -118,6 +120,7 @@ export function beginGeneralTurn(game: GameState): void {
   for (const player of game.players) {
     player.cardsDrawnThisTurn = 0;
     player.manaPool = createEmptyManaPool();
+    player.dragonHasteMana = 0;
   }
 
   log(game, "start", `General turn ${game.turnNumber} starts. Attacking priority: ${game.attackingPriorityPlayerId}.`);
@@ -138,17 +141,6 @@ export function beginGeneralTurn(game: GameState): void {
       });
     }
     log(game, "start", land ? `${player.playerId} puts ${land.card.name} onto the battlefield.` : `${player.playerId} has no land to put onto the battlefield.`);
-  }
-
-  for (const player of game.players) {
-    player.manaPool = produceManaFromBattlefield(player);
-    const producedMana = Object.values(player.manaPool).reduce((total, amount) => total + amount, 0);
-    dispatchGameEvent(game, {
-      type: "manaProduced",
-      playerId: player.playerId,
-      amount: producedMana,
-    });
-    log(game, "start", `${player.playerId} produces ${producedMana} mana.`);
   }
 
   const playersUnableToDraw: PlayerState[] = [];
@@ -273,7 +265,9 @@ export function cleanupGeneralTurn(game: GameState): void {
 
   for (const player of game.players) {
     player.manaPool = createEmptyManaPool();
+    player.dragonHasteMana = 0;
     for (const permanent of player.battlefield) {
+      permanent.returnTappedWithCounterOnDeathUntilEndOfTurn = false;
       if (!permanent.doesNotUntap) {
         permanent.tapped = false;
       }

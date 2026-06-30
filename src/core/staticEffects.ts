@@ -39,7 +39,7 @@ function isCreature(instance: CardInstance): boolean {
 }
 
 function hasSubtype(instance: CardInstance, subtype: string): boolean {
-  return new RegExp(`\\b${subtype}\\b`, "i").test(instance.card.typeLine);
+  return new RegExp(`\\b${subtype}\\b`, "i").test(instance.card.typeLine) || (instance.additionalSubtypes ?? []).includes(subtype);
 }
 
 export function getStaticAbilityProfile(card: Card): StaticAbilityProfile | null {

@@ -33,6 +33,7 @@ function resetInstance(instance: CardInstance): void {
   instance.plusOneCounters = 0;
   instance.staticKeywords = [];
   instance.temporaryKeywords = [];
+  instance.additionalSubtypes = [];
   instance.losesAbilities = false;
   instance.cannotAttack = false;
   instance.cannotDefend = false;
@@ -40,6 +41,7 @@ function resetInstance(instance: CardInstance): void {
   instance.attachedToId = null;
   instance.doesNotUntap = false;
   instance.enteredTurn = 0;
+  instance.activatedAbilityIdsUsed = [];
 }
 
 function findPoolCard(player: PlayerState, cardId: string): CardInstance {

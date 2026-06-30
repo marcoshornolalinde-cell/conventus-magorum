@@ -2,6 +2,7 @@ import type { Card, ContentBundle } from "../core/types.js";
 import { getSpellProfile } from "../core/spells.js";
 import { getTriggeredAbilityProfiles } from "../core/triggerEngine.js";
 import { getStaticAbilityProfile } from "../core/staticEffects.js";
+import { getActivatedAbilityProfile } from "../core/activatedAbilities.js";
 
 export interface UnsupportedMechanicFinding {
   cardId: string;
@@ -70,6 +71,7 @@ function supportedLabelsForCard(card: Card): Set<string> {
   const supportedTriggers = getTriggeredAbilityProfiles(card);
   const spellProfile = getSpellProfile(card);
   const staticProfile = getStaticAbilityProfile(card);
+  const activatedProfile = getActivatedAbilityProfile(card);
 
   if (supportedTriggers.length > 0) {
     labels.add("triggered ability");
@@ -101,6 +103,27 @@ function supportedLabelsForCard(card: Card): Set<string> {
     labels.add("return from battlefield/yard");
   }
 
+  if (spellProfile?.effects.some((effect) => effect.type === "returnGraveyardCreatureToHand")) {
+    labels.add("return from battlefield/yard");
+    labels.add("graveyard ability");
+  }
+
+  if (spellProfile?.effects.some((effect) => effect.type === "destroyCreatureOrReturnZombieFromGraveyardToBattlefieldTapped")) {
+    labels.add("return from battlefield/yard");
+    labels.add("graveyard ability");
+    labels.add("modal choice");
+  }
+
+  if (spellProfile?.effects.some((effect) => effect.type === "grantReturnTappedWithCounterOnDeath")) {
+    labels.add("triggered ability");
+    labels.add("return from battlefield/yard");
+  }
+
+  if (spellProfile?.effects.some((effect) => effect.type === "prayerBinding")) {
+    labels.add("triggered ability");
+    labels.add("until leaves battlefield");
+  }
+
   if (spellProfile?.effects.some((effect) => effect.type === "destroyPermanent")) {
     labels.add("expanded target removal");
   }
@@ -110,8 +133,73 @@ function supportedLabelsForCard(card: Card): Set<string> {
     labels.add("optional payment");
   }
 
+  if (spellProfile?.effects.some((effect) => effect.type === "optionalDiscardThenDraw")) {
+    labels.add("optional payment");
+  }
+
   if (spellProfile?.effects.some((effect) => effect.type === "exileIfWouldDieThisTurn")) {
     labels.add("replacement effect");
+  }
+
+  if (spellProfile?.effects.some((effect) => effect.type === "scry")) {
+    labels.add("scry");
+  }
+
+  if (spellProfile?.effects.some((effect) => effect.type === "distributeCountersThenDouble")) {
+    labels.add("counter distribution");
+  }
+
+  if (
+    /\{T}: Add \{G}\./i.test(normalizeText(card)) ||
+    /\{T}: Add \{G} for each Elf you control\./i.test(normalizeText(card)) ||
+    (card.id === "carnelian_orb_of_dragonkind" && /\{T}: Add \{R}\./i.test(normalizeText(card)))
+  ) {
+    labels.add("activated ability");
+  }
+
+  if (activatedProfile) {
+    labels.add("activated ability");
+  }
+
+  if (activatedProfile?.effects.some((effect) => effect.type === "destroyTargetPermanent")) {
+    labels.add("expanded target removal");
+  }
+
+  if (activatedProfile?.sourceZone === "graveyard") {
+    labels.add("graveyard ability");
+    labels.add("return from battlefield/yard");
+  }
+
+  if (activatedProfile?.effects.some((effect) => effect.type === "createToken")) {
+    labels.add("token creation");
+  }
+
+  if (activatedProfile?.effects.some((effect) => effect.type === "grantUnblockable")) {
+    labels.add("can't be blocked");
+  }
+
+  if (activatedProfile?.effects.some((effect) => effect.type === "becomeWerewolfThenCountersAndDraw")) {
+    labels.add("type-changing effect");
+  }
+
+  if (
+    activatedProfile?.effects.some(
+      (effect) =>
+        effect.type === "pumpAttackingCreaturesByAttackerCount" ||
+        effect.type === "addCounterToTargetAndMaybeFirstStrike" ||
+        effect.type === "grantFlyingAndSacrificeOnCombatDamage",
+    )
+  ) {
+    labels.add("triggered ability");
+  }
+
+  if (card.id === "new_horizons" && spellProfile?.effects.some((effect) => effect.type === "attachPersistent")) {
+    labels.add("activated ability");
+    labels.add("enchanted land mana ability");
+  }
+
+  if (/\bWard (?:\{[^}]+})+/i.test(normalizeText(card))) {
+    labels.add("ward");
   }
 
   if (staticProfile?.effects.some((effect) => effect.type === "anthem" || effect.type === "attachmentBonus")) {
@@ -126,6 +214,30 @@ function supportedLabelsForCard(card: Card): Set<string> {
         effect.type === "selfKeywordIfLifeAtLeast",
     )
   ) {
+    labels.add("static keyword grant");
+  }
+
+  if (
+    staticProfile?.effects.some(
+      (effect) =>
+        (effect.type === "anthem" || effect.type === "attachmentBonus") &&
+        (effect.keywords ?? []).some((keyword) => keyword.toLowerCase() === "menace"),
+    )
+  ) {
+    labels.add("can't be blocked");
+  }
+
+  if (/\bAttacking creatures you control get \+1\/\+0\b/i.test(normalizeText(card))) {
+    labels.add("static anthem");
+    labels.add("team pump");
+  }
+
+  if (/\bAt the end of the combat positioning step, target attacking creature you control gets \+\d+\/\+\d+ until end of turn\b/i.test(normalizeText(card))) {
+    labels.add("static anthem");
+    labels.add("team pump");
+  }
+
+  if (/\bAttacking Vampires you control have deathtouch and lifelink\b/i.test(normalizeText(card))) {
     labels.add("static keyword grant");
   }
 
@@ -181,6 +293,14 @@ function supportedLabelsForCard(card: Card): Set<string> {
 
   if (supportedTriggers.some((profile) => profile.effects.some((effect) => effect.type === "returnToHand"))) {
     labels.add("return from battlefield/yard");
+  }
+
+  if (supportedTriggers.some((profile) => profile.effects.some((effect) => effect.type === "payLifeThenDraw"))) {
+    labels.add("optional payment");
+  }
+
+  if (supportedTriggers.some((profile) => profile.effects.some((effect) => effect.type === "payManaThenPreventBlock"))) {
+    labels.add("optional payment");
   }
 
   return labels;

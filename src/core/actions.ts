@@ -1,11 +1,12 @@
 import type { CardInstance, GamePhase, GameState, LegalAction, PlayerId, PlayerState, StackItem } from "./types.js";
-import { canPayManaCost, spendManaCost } from "./mana.js";
+import { addMana, canPayManaCost, getManaAbilities, spendManaCost } from "./mana.js";
 import {
   getAdditionalCostOptions,
   getEffectiveManaCost,
   hasPayableAdditionalCosts,
 } from "./costs.js";
 import { getSpellTargetOptions, resolveNonCreatureSpell } from "./spells.js";
+import { getActivatedAbilityActions, resolveActivatedAbility } from "./activatedAbilities.js";
 import { assertGameStateIsValid } from "./validateGameState.js";
 import { dispatchGameEvent } from "./triggerEngine.js";
 import { applyContinuousEffects } from "./staticEffects.js";
@@ -24,6 +25,10 @@ function entersTapped(instance: CardInstance): boolean {
 
 function cannotDefend(instance: CardInstance): boolean {
   return /\bcan't defend\b/i.test(instance.card.gameText);
+}
+
+function hasSubtype(instance: CardInstance, subtype: string): boolean {
+  return new RegExp(`\\b${subtype}\\b`, "i").test(instance.card.typeLine) || (instance.additionalSubtypes ?? []).includes(subtype);
 }
 
 export function getPlayer(game: GameState, playerId: PlayerId): PlayerState {
@@ -56,15 +61,53 @@ function canPayFullSpellCost(player: PlayerState, cardInstance: CardInstance): b
   return hasPayableAdditionalCosts(player, cardInstance);
 }
 
+function getTargetingAdditionalManaCost(game: GameState, controllerId: PlayerId, targetIds: string[]): string {
+  const controller = getPlayer(game, controllerId);
+  const wardCosts: string[] = [];
+
+  for (const targetId of targetIds) {
+    const targetController = game.players.find((player) =>
+      player.battlefield.some((permanent) => permanent.instanceId === targetId),
+    );
+    const target = targetController?.battlefield.find((permanent) => permanent.instanceId === targetId);
+
+    if (!target || targetController?.playerId === controller.playerId) {
+      continue;
+    }
+
+    const wardMatch = target.card.gameText.match(/\bWard ((?:\{[^}]+})+)/i);
+
+    if (wardMatch) {
+      wardCosts.push(wardMatch[1]);
+    }
+  }
+
+  return wardCosts.join("");
+}
+
+function getCastManaCost(game: GameState, player: PlayerState, card: CardInstance, action: Extract<LegalAction, { type: "castSpell" }>): string {
+  return `${getEffectiveManaCost(player, card, action.additionalCosts)}${getTargetingAdditionalManaCost(
+    game,
+    player.playerId,
+    action.targetIds,
+  )}`;
+}
+
 function createCastSpellActions(game: GameState, player: PlayerState, cardInstance: CardInstance): LegalAction[] {
   const actions: LegalAction[] = [];
 
   for (const additionalCosts of getAdditionalCostOptions(player, cardInstance)) {
-    if (!canPayManaCost(player.manaPool, getEffectiveManaCost(player, cardInstance, additionalCosts))) {
-      continue;
-    }
-
     for (const targetIds of getSpellTargetOptions(game, player.playerId, cardInstance.card)) {
+      const manaCost = `${getEffectiveManaCost(player, cardInstance, additionalCosts)}${getTargetingAdditionalManaCost(
+        game,
+        player.playerId,
+        targetIds,
+      )}`;
+
+      if (!canPayManaCost(player.manaPool, manaCost)) {
+        continue;
+      }
+
       actions.push({
         type: "castSpell",
         playerId: player.playerId,
@@ -85,6 +128,22 @@ export function getLegalActions(game: GameState, playerId: PlayerId): LegalActio
 
   const player = getPlayer(game, playerId);
   const actions: LegalAction[] = [];
+
+  if (isMainPhase(game.phase)) {
+    for (const ability of getManaAbilities(player, game.turnNumber)) {
+      actions.push({
+        type: "activateManaAbility",
+        playerId,
+        permanentId: ability.permanentId,
+        mana: ability.mana,
+        amount: ability.amount,
+      });
+    }
+  }
+
+  if ((isMainPhase(game.phase) || game.phase === "combat") && game.stack.length === 0) {
+    actions.push(...getActivatedAbilityActions(game, playerId));
+  }
 
   if (isMainPhase(game.phase) && game.stack.length > 0) {
     for (const cardInstance of player.hand) {
@@ -188,12 +247,14 @@ function payAdditionalCosts(game: GameState, player: PlayerState, source: CardIn
       sacrificed.baseToughnessOverride = null;
       sacrificed.staticKeywords = [];
       sacrificed.temporaryKeywords = [];
+      sacrificed.additionalSubtypes = [];
       sacrificed.losesAbilities = false;
       sacrificed.cannotAttack = false;
       sacrificed.cannotDefend = false;
       sacrificed.temporaryCannotDefend = false;
       sacrificed.attachedToId = null;
       sacrificed.doesNotUntap = false;
+      sacrificed.activatedAbilityIdsUsed = [];
       detachAttachmentsFromPermanent(game, sacrificed.instanceId);
       player.graveyard.push(sacrificed);
       dispatchGameEvent(game, {
@@ -242,6 +303,21 @@ export function performAction(game: GameState, action: LegalAction): void {
     if (legalAction.type !== action.type) return false;
     if (legalAction.playerId !== action.playerId) return false;
     if (legalAction.type === "pass" && action.type === "pass") return true;
+    if (legalAction.type === "activateManaAbility" && action.type === "activateManaAbility") {
+      return (
+        legalAction.permanentId === action.permanentId &&
+        legalAction.mana === action.mana &&
+        legalAction.amount === action.amount
+      );
+    }
+    if (legalAction.type === "activateAbility" && action.type === "activateAbility") {
+      return (
+        legalAction.sourceId === action.sourceId &&
+        legalAction.abilityId === action.abilityId &&
+        legalAction.targetIds.length === action.targetIds.length &&
+        legalAction.targetIds.every((targetId, index) => targetId === action.targetIds[index])
+      );
+    }
     if (legalAction.type === "playCreature" && action.type === "playCreature") {
       return legalAction.cardInstanceId === action.cardInstanceId;
     }
@@ -271,11 +347,54 @@ export function performAction(game: GameState, action: LegalAction): void {
   }
 
   const player = getPlayer(game, action.playerId);
+
+  if (action.type === "activateManaAbility") {
+    const permanent = player.battlefield.find((candidate) => candidate.instanceId === action.permanentId);
+
+    if (!permanent) {
+      throw new Error(`Permanent ${action.permanentId} is not on ${player.playerId}'s battlefield.`);
+    }
+
+    permanent.tapped = true;
+    player.manaPool = addMana(player.manaPool, action.mana, action.amount);
+    if (permanent.card.id === "carnelian_orb_of_dragonkind" && action.mana === "R") {
+      player.dragonHasteMana += action.amount;
+    }
+    game.log.push({
+      turn: game.turnNumber,
+      phase: game.phase,
+      message: `${player.playerId} taps ${permanent.card.name} for ${action.amount} ${action.mana} mana.`,
+    });
+    dispatchGameEvent(game, {
+      type: "manaProduced",
+      playerId: player.playerId,
+      sourceId: permanent.instanceId,
+      amount: action.amount,
+      details: { mana: action.mana, cardId: permanent.card.id },
+    });
+    assertGameStateIsValid(game, `after ${player.playerId} activates ${permanent.card.name}`);
+    return;
+  }
+
+  if (action.type === "activateAbility") {
+    resolveActivatedAbility(game, action);
+    applyContinuousEffects(game);
+    assertGameStateIsValid(game, `after ${player.playerId} activates ${action.abilityId}`);
+    return;
+  }
+
   const card = removeFromHand(player, action.cardInstanceId);
-  player.manaPool = spendManaCost(
-    player.manaPool,
-    action.type === "castSpell" ? getEffectiveManaCost(player, card, action.additionalCosts) : getEffectiveManaCost(player, card),
-  );
+  const manaCost = action.type === "castSpell" ? getCastManaCost(game, player, card, action) : getEffectiveManaCost(player, card);
+  const redManaBefore = player.manaPool.R;
+  player.manaPool = spendManaCost(player.manaPool, manaCost);
+  const redManaSpent = Math.max(0, redManaBefore - player.manaPool.R);
+  const dragonHasteManaSpent = Math.min(player.dragonHasteMana, redManaSpent);
+
+  if (action.type === "playCreature" && dragonHasteManaSpent > 0 && hasSubtype(card, "Dragon")) {
+    card.temporaryKeywords.push("Haste");
+  }
+
+  player.dragonHasteMana -= dragonHasteManaSpent;
   payAdditionalCosts(game, player, card, action);
   if (action.type === "playCreature") {
     pushCreatureSpell(game, player, card);
@@ -313,6 +432,7 @@ export function resolveTopOfStack(game: GameState): void {
 
   if (stackItem.kind === "creatureSpell") {
     const controller = getPlayer(game, stackItem.controllerId);
+    const grantedKeywordsOnStack = [...stackItem.source.temporaryKeywords];
     stackItem.source.enteredTurn = game.turnNumber;
     stackItem.source.tapped = entersTapped(stackItem.source);
     stackItem.source.damageMarked = 0;
@@ -324,13 +444,17 @@ export function resolveTopOfStack(game: GameState): void {
     stackItem.source.basePowerOverride = null;
     stackItem.source.baseToughnessOverride = null;
     stackItem.source.staticKeywords = [];
-    stackItem.source.temporaryKeywords = [];
+    stackItem.source.temporaryKeywords = grantedKeywordsOnStack;
+    stackItem.source.additionalSubtypes = [];
     stackItem.source.losesAbilities = false;
     stackItem.source.cannotAttack = false;
     stackItem.source.cannotDefend = cannotDefend(stackItem.source);
     stackItem.source.temporaryCannotDefend = false;
     stackItem.source.attachedToId = null;
+    stackItem.source.exiledById = null;
     stackItem.source.doesNotUntap = false;
+    stackItem.source.activatedAbilityIdsUsed = [];
+    stackItem.source.returnTappedWithCounterOnDeathUntilEndOfTurn = false;
     controller.battlefield.push(stackItem.source);
     dispatchGameEvent(game, {
       type: "creatureEntered",

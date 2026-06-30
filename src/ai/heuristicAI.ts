@@ -1,6 +1,28 @@
 import { getPlayer } from "../core/actions.js";
 import { canAttack, canDefend, getCreaturesOnBattlefield, getCreatureStats } from "../core/combat.js";
+import { getEffectiveManaCost } from "../core/costs.js";
+import { addMana, canPayManaCost } from "../core/mana.js";
 import type { CombatPlan, GameState, LegalAction, PlayerId } from "../core/types.js";
+
+function couldUseMoreMana(game: GameState, playerId: PlayerId, legalActions: LegalAction[]): boolean {
+  const player = getPlayer(game, playerId);
+  const manaActions = legalActions.filter((action) => action.type === "activateManaAbility");
+
+  if (manaActions.length === 0) {
+    return false;
+  }
+
+  let potentialPool = { ...player.manaPool };
+  for (const action of manaActions) {
+    potentialPool = addMana(potentialPool, action.mana, action.amount);
+  }
+
+  const candidateCards = game.stack.length > 0
+    ? player.hand.filter((card) => /Counter target spell/i.test(card.card.gameText))
+    : player.hand;
+
+  return candidateCards.some((card) => canPayManaCost(potentialPool, getEffectiveManaCost(player, card)));
+}
 
 export function chooseFirstPlayableCreature(
   game: GameState,
@@ -17,6 +39,8 @@ export function chooseFirstPlayableCreature(
 
       if (/Destroy target creature|Exile target creature|deals \d+ damage to target .*creature|gets -\d+\/-\d+/i.test(text)) {
         score = 100;
+      } else if (game.stack.length > 0 && /Counter target spell/i.test(text)) {
+        score = 95;
       } else if (/gets \+\d+\/\+\d+|gains? (first strike|deathtouch|indestructible|trample|lifelink)/i.test(text)) {
         score = 60;
       } else if (/Draw/i.test(text)) {
@@ -32,7 +56,30 @@ export function chooseFirstPlayableCreature(
     return scoredSpellActions[0].action;
   }
 
-  return legalActions.find((action) => action.type === "playCreature") ?? legalActions[0];
+  const activatedActions = legalActions.filter((action) => action.type === "activateAbility");
+  const destroyAbility = activatedActions.find((action) => /destroy/i.test(action.abilityId));
+  if (destroyAbility) {
+    return destroyAbility;
+  }
+
+  const creatureAction = legalActions.find((action) => action.type === "playCreature");
+  if (creatureAction) {
+    return creatureAction;
+  }
+
+  const valueAbility = activatedActions.find((action) =>
+    /draw|drain|pump|transform|sacrifice_counter|return_tapped|create_zombies|unblockable/i.test(action.abilityId),
+  );
+  if (valueAbility) {
+    return valueAbility;
+  }
+
+  const manaAction = legalActions.find((action) => action.type === "activateManaAbility");
+  if (manaAction && couldUseMoreMana(game, playerId, legalActions)) {
+    return manaAction;
+  }
+
+  return legalActions.find((action) => action.type === "pass") ?? legalActions[0];
 }
 
 export function chooseBasicCombatPlan(game: GameState, playerId: PlayerId): CombatPlan {

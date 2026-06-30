@@ -99,13 +99,17 @@ export interface CardInstance {
   plusOneCounters: number;
   staticKeywords: string[];
   temporaryKeywords: string[];
+  additionalSubtypes?: string[];
   losesAbilities: boolean;
   cannotAttack: boolean;
   cannotDefend: boolean;
   temporaryCannotDefend: boolean;
   attachedToId: string | null;
+  exiledById?: string | null;
   doesNotUntap: boolean;
   enteredTurn: number | null;
+  activatedAbilityIdsUsed: string[];
+  returnTappedWithCounterOnDeathUntilEndOfTurn?: boolean;
 }
 
 export interface PlayerDecks {
@@ -119,6 +123,7 @@ export interface PlayerDecks {
 export interface PlayerState extends PlayerDecks {
   lifeTotal: number;
   manaPool: ManaPool;
+  dragonHasteMana: number;
   cardsDrawnThisTurn: number;
   hand: CardInstance[];
   battlefield: CardInstance[];
@@ -156,12 +161,14 @@ export type GameEventType =
   | "spellCast"
   | "spellResolved"
   | "spellCountered"
+  | "abilityActivated"
   | "creatureEntered"
   | "creatureAttacked"
   | "creaturesAttacked"
   | "permanentDied"
   | "permanentExiled"
   | "permanentReturnedToHand"
+  | "permanentReturnedToBattlefield"
   | "permanentAttached"
   | "damageDealt"
   | "lifeGained"
@@ -227,6 +234,20 @@ export interface GameState {
 }
 
 export type LegalAction =
+  | {
+      type: "activateManaAbility";
+      playerId: PlayerId;
+      permanentId: string;
+      mana: ManaSymbol;
+      amount: number;
+    }
+  | {
+      type: "activateAbility";
+      playerId: PlayerId;
+      sourceId: string;
+      abilityId: string;
+      targetIds: string[];
+    }
   | {
       type: "playCreature";
       playerId: PlayerId;

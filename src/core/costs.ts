@@ -26,7 +26,7 @@ export function canPayFullManaPath(player: PlayerState, card: CardInstance): boo
 }
 
 function hasSubtype(instance: CardInstance, subtype: string): boolean {
-  return new RegExp(`\\b${subtype}\\b`, "i").test(instance.card.typeLine);
+  return new RegExp(`\\b${subtype}\\b`, "i").test(instance.card.typeLine) || (instance.additionalSubtypes ?? []).includes(subtype);
 }
 
 function isInstantOrSorcery(instance: CardInstance): boolean {

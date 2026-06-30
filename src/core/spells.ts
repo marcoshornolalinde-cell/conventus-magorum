@@ -18,10 +18,14 @@ type SpellEffect =
   | { type: "modifyOwnCreatures"; power: number; toughness: number }
   | { type: "grantKeywords"; keywords: string[] }
   | { type: "grantKeywordsToOwnCreatures"; keywords: string[] }
+  | { type: "grantReturnTappedWithCounterOnDeath" }
   | { type: "gainLife"; amount: number }
+  | { type: "scry"; amount: number }
   | { type: "drawCards"; amount: number }
+  | { type: "optionalDiscardThenDraw" }
   | { type: "drawCardsIfAdditionalManaPaid"; amount: number }
   | { type: "addPlusOneCounters"; amount: number }
+  | { type: "distributeCountersThenDouble"; amount: number }
   | {
       type: "createToken";
       count: number;
@@ -38,6 +42,9 @@ type SpellEffect =
   | { type: "ownCreatureDealsPowerDamage" }
   | { type: "counterSpell" }
   | { type: "returnPermanentToHand" }
+  | { type: "returnGraveyardCreatureToHand"; drawIfSubtype?: string }
+  | { type: "destroyCreatureOrReturnZombieFromGraveyardToBattlefieldTapped" }
+  | { type: "prayerBinding" }
   | { type: "attachPersistent" };
 
 export interface SpellProfile {
@@ -47,8 +54,13 @@ export interface SpellProfile {
     | "opponentCreature"
     | "anyCreature"
     | "opponentNonlandPermanent"
+    | "upToOneOpponentNonlandPermanent"
     | "opponentArtifactEnchantmentOrFlyingCreature"
+    | "upToThreeOwnCreatures"
     | "stackSpell"
+    | "ownLandAndOwnCreature"
+    | "ownCreatureCardInGraveyard"
+    | "opponentCreatureOrOwnZombieCreatureCardInGraveyard"
     | "ownCreatureAndOpponentCreature";
   effects: SpellEffect[];
 }
@@ -123,6 +135,7 @@ function isPersistentAttachment(card: Card): boolean {
     card.id === "untamed_hunger" ||
     card.id === "eaten_by_piranhas" ||
     card.id === "starlight_snare" ||
+    card.id === "new_horizons" ||
     card.id === "quick_draw_katana" ||
     card.id === "pirates_cutlass"
   );
@@ -137,11 +150,43 @@ export function getSpellProfile(card: Card): SpellProfile | null {
   const effects: SpellEffect[] = [];
   let targetMode: SpellProfile["targetMode"] = "none";
 
+  if (card.id === "cemetery_recruitment") {
+    return {
+      targetMode: "ownCreatureCardInGraveyard",
+      effects: [{ type: "returnGraveyardCreatureToHand", drawIfSubtype: "Zombie" }],
+    };
+  }
+
+  if (card.id === "deadly_plot") {
+    return {
+      targetMode: "opponentCreatureOrOwnZombieCreatureCardInGraveyard",
+      effects: [{ type: "destroyCreatureOrReturnZombieFromGraveyardToBattlefieldTapped" }],
+    };
+  }
+
+  if (card.id === "prayer_of_binding") {
+    return {
+      targetMode: "upToOneOpponentNonlandPermanent",
+      effects: [{ type: "prayerBinding" }, { type: "gainLife", amount: 2 }],
+    };
+  }
+
+  if (card.id === "undying_malice") {
+    return {
+      targetMode: "anyCreature",
+      effects: [{ type: "grantReturnTappedWithCounterOnDeath" }],
+    };
+  }
+
   if (isPersistentAttachment(card)) {
     effects.push({ type: "attachPersistent" });
-    targetMode = card.id === "pacifism" || card.id === "eaten_by_piranhas" || card.id === "starlight_snare"
-      ? "opponentCreature"
-      : "ownCreature";
+    if (card.id === "new_horizons") {
+      targetMode = "ownLandAndOwnCreature";
+    } else {
+      targetMode = card.id === "pacifism" || card.id === "eaten_by_piranhas" || card.id === "starlight_snare"
+        ? "opponentCreature"
+        : "ownCreature";
+    }
   }
 
   if (/Destroy target creature/i.test(text)) {
@@ -198,13 +243,25 @@ export function getSpellProfile(card: Card): SpellProfile | null {
     effects.push({ type: "gainLife", amount: gainLife });
   }
 
-  const drawCards = /If this spell was kicked, draw a card/i.test(text) ? 0 : parseDrawAmount(text);
+  const scryMatch = text.match(/\bScry (\d+)/i);
+  if (scryMatch) {
+    effects.push({ type: "scry", amount: Number.parseInt(scryMatch[1], 10) });
+  }
+
+  const hasConditionalDraw =
+    /If this spell was kicked, draw a card/i.test(text) ||
+    /\bYou may discard a card\. If you do, draw a card\b/i.test(text);
+  const drawCards = hasConditionalDraw ? 0 : parseDrawAmount(text);
   if (drawCards > 0) {
     effects.push({ type: "drawCards", amount: drawCards });
   }
 
   if (/If this spell was kicked, draw a card/i.test(text)) {
     effects.push({ type: "drawCardsIfAdditionalManaPaid", amount: 1 });
+  }
+
+  if (/\bYou may discard a card\. If you do, draw a card\b/i.test(text)) {
+    effects.push({ type: "optionalDiscardThenDraw" });
   }
 
   if (/Return target nonland permanent to its owner's hand/i.test(text)) {
@@ -247,6 +304,15 @@ export function getSpellProfile(card: Card): SpellProfile | null {
     targetMode = targetMode === "none" ? "ownCreature" : targetMode;
   }
 
+  const distributeCountersMatch = text.match(/Distribute (\w+) \+1\/\+1 counters among one, two, or three target creatures/i);
+  if (distributeCountersMatch && /\bthen double the number of \+1\/\+1 counters on each of those creatures\b/i.test(text)) {
+    effects.push({
+      type: "distributeCountersThenDouble",
+      amount: distributeCountersMatch[1].toLowerCase() === "three" ? 3 : Number.parseInt(distributeCountersMatch[1], 10),
+    });
+    targetMode = "upToThreeOwnCreatures";
+  }
+
   if (
     /target creature you control deals damage equal to its power to target creature/i.test(text) ||
     /Then that creature deals damage equal to its power to target creature/i.test(text)
@@ -283,7 +349,13 @@ function canBeDestroyedByArtifactEnchantmentOrFlyingRemoval(instance: CardInstan
 }
 
 function getTargetableCreatures(game: GameState, controllerId: PlayerId, targetMode: SpellProfile["targetMode"]): CardInstance[] {
-  if (targetMode === "none" || targetMode === "stackSpell" || targetMode === "ownCreatureAndOpponentCreature") {
+  if (
+    targetMode === "none" ||
+    targetMode === "stackSpell" ||
+    targetMode === "ownCreatureAndOpponentCreature" ||
+    targetMode === "ownCreatureCardInGraveyard" ||
+    targetMode === "opponentCreatureOrOwnZombieCreatureCardInGraveyard"
+  ) {
     return [];
   }
 
@@ -296,6 +368,10 @@ function getTargetableCreatures(game: GameState, controllerId: PlayerId, targetM
   }
 
   if (targetMode === "opponentNonlandPermanent") {
+    return getOpponent(game, controllerId).battlefield.filter(isNonlandPermanent);
+  }
+
+  if (targetMode === "upToOneOpponentNonlandPermanent") {
     return getOpponent(game, controllerId).battlefield.filter(isNonlandPermanent);
   }
 
@@ -317,6 +393,13 @@ export function getSpellTargetOptions(game: GameState, controllerId: PlayerId, c
     return [[]];
   }
 
+  if (profile.targetMode === "upToOneOpponentNonlandPermanent") {
+    return [
+      [],
+      ...getOpponent(game, controllerId).battlefield.filter(isNonlandPermanent).map((target) => [target.instanceId]),
+    ];
+  }
+
   if (profile.targetMode === "stackSpell") {
     return game.stack.map((stackItem) => [stackItem.id]);
   }
@@ -329,6 +412,46 @@ export function getSpellTargetOptions(game: GameState, controllerId: PlayerId, c
     );
   }
 
+  if (profile.targetMode === "ownLandAndOwnCreature") {
+    const player = getPlayer(game, controllerId);
+    const ownLands = player.battlefield.filter((permanent) => permanent.card.isLand);
+    const ownCreatures = getCreaturesOnBattlefield(player);
+    return ownLands.flatMap((land) => ownCreatures.map((creature) => [land.instanceId, creature.instanceId]));
+  }
+
+  if (profile.targetMode === "ownCreatureCardInGraveyard") {
+    return getPlayer(game, controllerId).graveyard
+      .filter((card) => card.card.cardTypes.includes("Creature"))
+      .map((card) => [card.instanceId]);
+  }
+
+  if (profile.targetMode === "opponentCreatureOrOwnZombieCreatureCardInGraveyard") {
+    const opponentCreatures = getCreaturesOnBattlefield(getOpponent(game, controllerId)).map((creature) => [creature.instanceId]);
+    const zombieCards = getPlayer(game, controllerId).graveyard
+      .filter((card) => card.card.cardTypes.includes("Creature") && hasSubtype(card, "Zombie"))
+      .map((card) => [card.instanceId]);
+    return [...opponentCreatures, ...zombieCards];
+  }
+
+  if (profile.targetMode === "upToThreeOwnCreatures") {
+    const ownCreatures = getCreaturesOnBattlefield(getPlayer(game, controllerId));
+    const targetOptions: string[][] = [];
+
+    for (let first = 0; first < ownCreatures.length; first += 1) {
+      targetOptions.push([ownCreatures[first].instanceId]);
+
+      for (let second = first + 1; second < ownCreatures.length; second += 1) {
+        targetOptions.push([ownCreatures[first].instanceId, ownCreatures[second].instanceId]);
+
+        for (let third = second + 1; third < ownCreatures.length; third += 1) {
+          targetOptions.push([ownCreatures[first].instanceId, ownCreatures[second].instanceId, ownCreatures[third].instanceId]);
+        }
+      }
+    }
+
+    return targetOptions;
+  }
+
   return getTargetableCreatures(game, controllerId, profile.targetMode).map((target) => [target.instanceId]);
 }
 
@@ -339,6 +462,19 @@ function findPermanentController(game: GameState, instanceId: string): PlayerSta
 function findPermanent(game: GameState, instanceId: string): CardInstance | null {
   const controller = findPermanentController(game, instanceId);
   return controller?.battlefield.find((instance) => instance.instanceId === instanceId) ?? null;
+}
+
+function findGraveyardCardController(game: GameState, instanceId: string): PlayerState | null {
+  return game.players.find((player) => player.graveyard.some((instance) => instance.instanceId === instanceId)) ?? null;
+}
+
+function findGraveyardCard(game: GameState, instanceId: string): CardInstance | null {
+  const controller = findGraveyardCardController(game, instanceId);
+  return controller?.graveyard.find((instance) => instance.instanceId === instanceId) ?? null;
+}
+
+function hasSubtype(instance: CardInstance, subtype: string): boolean {
+  return new RegExp(`\\b${subtype}\\b`, "i").test(instance.card.typeLine) || (instance.additionalSubtypes ?? []).includes(subtype);
 }
 
 function resetPermanentForHiddenZone(instance: CardInstance): void {
@@ -354,13 +490,83 @@ function resetPermanentForHiddenZone(instance: CardInstance): void {
   instance.plusOneCounters = 0;
   instance.staticKeywords = [];
   instance.temporaryKeywords = [];
+  instance.additionalSubtypes = [];
   instance.losesAbilities = false;
   instance.cannotAttack = false;
   instance.cannotDefend = false;
   instance.temporaryCannotDefend = false;
   instance.attachedToId = null;
+  instance.exiledById = null;
   instance.doesNotUntap = false;
   instance.enteredTurn = null;
+  instance.activatedAbilityIdsUsed = [];
+  instance.returnTappedWithCounterOnDeathUntilEndOfTurn = false;
+}
+
+function resetPermanentForBattlefield(instance: CardInstance, turnNumber: number, tapped: boolean): void {
+  instance.tapped = tapped;
+  instance.damageMarked = 0;
+  instance.deathtouchDamageMarked = 0;
+  instance.powerModifier = 0;
+  instance.toughnessModifier = 0;
+  instance.staticPowerModifier = 0;
+  instance.staticToughnessModifier = 0;
+  instance.basePowerOverride = null;
+  instance.baseToughnessOverride = null;
+  instance.staticKeywords = [];
+  instance.temporaryKeywords = [];
+  instance.additionalSubtypes = [];
+  instance.losesAbilities = false;
+  instance.cannotAttack = false;
+  instance.cannotDefend = false;
+  instance.temporaryCannotDefend = false;
+  instance.attachedToId = null;
+  instance.exiledById = null;
+  instance.doesNotUntap = false;
+  instance.enteredTurn = turnNumber;
+  instance.activatedAbilityIdsUsed = [];
+  instance.returnTappedWithCounterOnDeathUntilEndOfTurn = false;
+}
+
+function returnCardsExiledBy(game: GameState, sourceId: string): void {
+  for (const player of game.players) {
+    for (const exiled of [...player.exile]) {
+      if (exiled.exiledById !== sourceId) {
+        continue;
+      }
+
+      player.exile = player.exile.filter((candidate) => candidate.instanceId !== exiled.instanceId);
+      resetPermanentForBattlefield(exiled, game.turnNumber, false);
+      player.battlefield.push(exiled);
+      dispatchGameEvent(game, {
+        type: "permanentReturnedToBattlefield",
+        playerId: player.playerId,
+        sourceId,
+        targetId: exiled.instanceId,
+        details: { cardId: exiled.card.id, from: "exile" },
+      });
+    }
+  }
+}
+
+function returnFromGraveyardTappedWithCounter(game: GameState, instance: CardInstance): void {
+  const owner = getPlayer(game, instance.ownerId);
+  const graveyardIndex = owner.graveyard.findIndex((candidate) => candidate.instanceId === instance.instanceId);
+  const [returned] = graveyardIndex === -1 ? [] : owner.graveyard.splice(graveyardIndex, 1);
+
+  if (!returned) {
+    return;
+  }
+
+  resetPermanentForBattlefield(returned, game.turnNumber, true);
+  returned.plusOneCounters = 1;
+  owner.battlefield.push(returned);
+  dispatchGameEvent(game, {
+    type: "creatureEntered",
+    playerId: owner.playerId,
+    sourceId: returned.instanceId,
+    details: { cardId: returned.card.id, from: "graveyard", tapped: true, plusOneCounter: true },
+  });
 }
 
 function counterStackItem(game: GameState, stackItemId: string): void {
@@ -395,7 +601,9 @@ function movePermanentToGraveyard(game: GameState, instanceId: string): void {
     return;
   }
 
+  const shouldReturnTappedWithCounter = permanent.returnTappedWithCounterOnDeathUntilEndOfTurn === true;
   controller.battlefield = controller.battlefield.filter((instance) => instance.instanceId !== instanceId);
+  returnCardsExiledBy(game, permanent.instanceId);
   detachFromPermanent(game, permanent.instanceId);
   permanent.tapped = false;
   permanent.damageMarked = 0;
@@ -409,12 +617,16 @@ function movePermanentToGraveyard(game: GameState, instanceId: string): void {
   permanent.plusOneCounters = 0;
   permanent.staticKeywords = [];
   permanent.temporaryKeywords = [];
+  permanent.additionalSubtypes = [];
   permanent.losesAbilities = false;
   permanent.cannotAttack = false;
   permanent.cannotDefend = false;
   permanent.temporaryCannotDefend = false;
   permanent.attachedToId = null;
+  permanent.exiledById = null;
   permanent.doesNotUntap = false;
+  permanent.activatedAbilityIdsUsed = [];
+  permanent.returnTappedWithCounterOnDeathUntilEndOfTurn = false;
   controller.graveyard.push(permanent);
   dispatchGameEvent(game, {
     type: "permanentDied",
@@ -422,6 +634,10 @@ function movePermanentToGraveyard(game: GameState, instanceId: string): void {
     sourceId: permanent.instanceId,
     details: { cardId: permanent.card.id },
   });
+
+  if (shouldReturnTappedWithCounter) {
+    returnFromGraveyardTappedWithCounter(game, permanent);
+  }
 }
 
 function returnPermanentToHand(game: GameState, source: CardInstance, instanceId: string): void {
@@ -438,6 +654,7 @@ function returnPermanentToHand(game: GameState, source: CardInstance, instanceId
   }
 
   controller.battlefield = controller.battlefield.filter((instance) => instance.instanceId !== instanceId);
+  returnCardsExiledBy(game, permanent.instanceId);
   detachFromPermanent(game, permanent.instanceId);
   resetPermanentForHiddenZone(permanent);
   controller.hand.push(permanent);
@@ -447,6 +664,82 @@ function returnPermanentToHand(game: GameState, source: CardInstance, instanceId
     sourceId: source.instanceId,
     targetId: permanent.instanceId,
     details: { cardId: permanent.card.id },
+  });
+}
+
+function returnGraveyardCreatureToHand(
+  game: GameState,
+  controller: PlayerState,
+  source: CardInstance,
+  instanceId: string,
+  drawIfSubtype?: string,
+): void {
+  const targetIndex = controller.graveyard.findIndex(
+    (candidate) => candidate.instanceId === instanceId && candidate.card.cardTypes.includes("Creature"),
+  );
+  const [returned] = targetIndex === -1 ? [] : controller.graveyard.splice(targetIndex, 1);
+
+  if (!returned) {
+    return;
+  }
+
+  const shouldDraw = drawIfSubtype ? hasSubtype(returned, drawIfSubtype) : false;
+  resetPermanentForHiddenZone(returned);
+  controller.hand.push(returned);
+  dispatchGameEvent(game, {
+    type: "cardReturnedToHand",
+    playerId: controller.playerId,
+    sourceId: source.instanceId,
+    targetId: returned.instanceId,
+    details: { cardId: returned.card.id, from: "graveyard" },
+  });
+
+  if (shouldDraw) {
+    drawCards(game, controller, 1);
+  }
+}
+
+function returnGraveyardCreatureToBattlefieldTapped(
+  game: GameState,
+  controller: PlayerState,
+  source: CardInstance,
+  instanceId: string,
+): void {
+  const targetIndex = controller.graveyard.findIndex(
+    (candidate) => candidate.instanceId === instanceId && candidate.card.cardTypes.includes("Creature"),
+  );
+  const [returned] = targetIndex === -1 ? [] : controller.graveyard.splice(targetIndex, 1);
+
+  if (!returned) {
+    return;
+  }
+
+  returned.tapped = true;
+  returned.damageMarked = 0;
+  returned.deathtouchDamageMarked = 0;
+  returned.powerModifier = 0;
+  returned.toughnessModifier = 0;
+  returned.staticPowerModifier = 0;
+  returned.staticToughnessModifier = 0;
+  returned.basePowerOverride = null;
+  returned.baseToughnessOverride = null;
+  returned.staticKeywords = [];
+  returned.temporaryKeywords = [];
+  returned.additionalSubtypes = [];
+  returned.losesAbilities = false;
+  returned.cannotAttack = false;
+  returned.cannotDefend = false;
+  returned.temporaryCannotDefend = false;
+  returned.attachedToId = null;
+  returned.doesNotUntap = false;
+  returned.enteredTurn = game.turnNumber;
+  returned.activatedAbilityIdsUsed = [];
+  controller.battlefield.push(returned);
+  dispatchGameEvent(game, {
+    type: "creatureEntered",
+    playerId: controller.playerId,
+    sourceId: returned.instanceId,
+    details: { cardId: returned.card.id, from: "graveyard", tapped: true, spellSourceId: source.instanceId },
   });
 }
 
@@ -464,6 +757,7 @@ function movePermanentToExile(game: GameState, instanceId: string): void {
   }
 
   controller.battlefield = controller.battlefield.filter((instance) => instance.instanceId !== instanceId);
+  returnCardsExiledBy(game, permanent.instanceId);
   detachFromPermanent(game, permanent.instanceId);
   permanent.tapped = false;
   permanent.damageMarked = 0;
@@ -476,13 +770,17 @@ function movePermanentToExile(game: GameState, instanceId: string): void {
   permanent.baseToughnessOverride = null;
   permanent.staticKeywords = [];
   permanent.temporaryKeywords = [];
+  permanent.additionalSubtypes = [];
   permanent.losesAbilities = false;
   permanent.cannotAttack = false;
   permanent.cannotDefend = false;
   permanent.temporaryCannotDefend = false;
   permanent.attachedToId = null;
+  permanent.exiledById = null;
   permanent.doesNotUntap = false;
   permanent.enteredTurn = null;
+  permanent.activatedAbilityIdsUsed = [];
+  permanent.returnTappedWithCounterOnDeathUntilEndOfTurn = false;
   controller.exile.push(permanent);
   dispatchGameEvent(game, {
     type: "permanentExiled",
@@ -535,6 +833,40 @@ function attachPersistentPermanent(game: GameState, controller: PlayerState, sou
   log(game, `${source.card.name} attaches to ${target.card.name}.`);
 }
 
+function resolvePrayerBinding(game: GameState, controller: PlayerState, source: CardInstance, target: CardInstance | null): void {
+  source.enteredTurn = game.turnNumber;
+  source.tapped = false;
+  source.attachedToId = null;
+  controller.battlefield.push(source);
+
+  if (target) {
+    const targetController = findPermanentController(game, target.instanceId);
+
+    if (targetController) {
+      targetController.battlefield = targetController.battlefield.filter((candidate) => candidate.instanceId !== target.instanceId);
+      detachFromPermanent(game, target.instanceId);
+      resetPermanentForHiddenZone(target);
+      target.exiledById = source.instanceId;
+      targetController.exile.push(target);
+      dispatchGameEvent(game, {
+        type: "permanentExiled",
+        playerId: targetController.playerId,
+        sourceId: source.instanceId,
+        targetId: target.instanceId,
+        details: { cardId: target.card.id, untilSourceLeaves: true },
+      });
+    }
+  }
+
+  dispatchGameEvent(game, {
+    type: "permanentAttached",
+    playerId: controller.playerId,
+    sourceId: source.instanceId,
+    targetId: target?.instanceId,
+    details: { cardId: source.card.id, binding: true },
+  });
+}
+
 function drawCards(game: GameState, player: PlayerState, amount: number): void {
   for (let index = 0; index < amount; index += 1) {
     const [card, ...remainingDeck] = player.spellDeck;
@@ -556,6 +888,61 @@ function drawCards(game: GameState, player: PlayerState, amount: number): void {
       sourceId: card.instanceId,
       details: { cardId: card.card.id },
     });
+  }
+}
+
+function optionalDiscardThenDraw(game: GameState, player: PlayerState, source: CardInstance): void {
+  const [discarded] = player.hand.splice(0, 1);
+
+  if (!discarded) {
+    return;
+  }
+
+  resetPermanentForHiddenZone(discarded);
+  player.graveyard.push(discarded);
+  dispatchGameEvent(game, {
+    type: "cardDiscarded",
+    playerId: player.playerId,
+    sourceId: source.instanceId,
+    targetId: discarded.instanceId,
+  });
+  log(game, `${player.playerId} discards ${discarded.card.name} from ${source.card.name}.`);
+  drawCards(game, player, 1);
+}
+
+function estimateNextTurnAvailableMana(player: PlayerState): number {
+  return player.battlefield.filter((permanent) => permanent.card.isLand).length + 1;
+}
+
+function shouldKeepScryCard(player: PlayerState, card: CardInstance): boolean {
+  if (card.card.manaValue <= estimateNextTurnAvailableMana(player)) {
+    return true;
+  }
+
+  if (card.card.cardTypes.includes("Instant") && card.card.manaValue <= estimateNextTurnAvailableMana(player) + 1) {
+    return true;
+  }
+
+  return false;
+}
+
+function scryCards(game: GameState, player: PlayerState, amount: number, source: CardInstance): void {
+  for (let index = 0; index < amount; index += 1) {
+    const [topCard, ...remainingDeck] = player.spellDeck;
+
+    if (!topCard) {
+      return;
+    }
+
+    // TODO: Improve this once the AI has a real hand/curve evaluator instead of this simple tempo heuristic.
+    if (!shouldKeepScryCard(player, topCard)) {
+      player.spellDeck = [...remainingDeck, topCard];
+      log(game, `${source.card.name} scries ${topCard.card.name} to the bottom.`);
+      continue;
+    }
+
+    log(game, `${source.card.name} keeps ${topCard.card.name} on top.`);
+    return;
   }
 }
 
@@ -609,6 +996,49 @@ function addPlusOneCounters(
   });
 }
 
+function distributeCountersThenDouble(
+  game: GameState,
+  controller: PlayerState,
+  targets: CardInstance[],
+  amount: number,
+  source: CardInstance,
+): void {
+  if (targets.length === 0 || amount <= 0) {
+    return;
+  }
+
+  for (let index = 0; index < amount; index += 1) {
+    const target = targets[index % targets.length];
+    target.plusOneCounters += 1;
+    dispatchGameEvent(game, {
+      type: "plusOneCountersAdded",
+      playerId: controller.playerId,
+      sourceId: source.instanceId,
+      targetId: target.instanceId,
+      amount: 1,
+      details: { spellSourceId: source.instanceId, distributed: true },
+    });
+  }
+
+  for (const target of targets) {
+    const countersToAdd = target.plusOneCounters;
+
+    if (countersToAdd <= 0) {
+      continue;
+    }
+
+    target.plusOneCounters += countersToAdd;
+    dispatchGameEvent(game, {
+      type: "plusOneCountersAdded",
+      playerId: controller.playerId,
+      sourceId: source.instanceId,
+      targetId: target.instanceId,
+      amount: countersToAdd,
+      details: { spellSourceId: source.instanceId, doubled: true },
+    });
+  }
+}
+
 function createToken(
   game: GameState,
   controller: PlayerState,
@@ -653,6 +1083,7 @@ function createToken(
       plusOneCounters: 0,
       staticKeywords: [],
       temporaryKeywords: [],
+      additionalSubtypes: [],
       losesAbilities: false,
       cannotAttack: false,
       cannotDefend: false,
@@ -660,6 +1091,7 @@ function createToken(
       attachedToId: null,
       doesNotUntap: false,
       enteredTurn: game.turnNumber,
+      activatedAbilityIdsUsed: [],
     };
 
     controller.battlefield.push(token);
@@ -692,7 +1124,11 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
   }
 
   const target = stackItem.targetIds[0] ? findPermanent(game, stackItem.targetIds[0]) : null;
+  const graveyardTarget = stackItem.targetIds[0] ? findGraveyardCard(game, stackItem.targetIds[0]) : null;
   const secondTarget = stackItem.targetIds[1] ? findPermanent(game, stackItem.targetIds[1]) : null;
+  const targets = stackItem.targetIds
+    .map((targetId) => findPermanent(game, targetId))
+    .filter((candidate): candidate is CardInstance => candidate !== null);
 
   for (const effect of profile.effects) {
     if (effect.type === "destroyCreature" && target) {
@@ -751,6 +1187,11 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
       log(game, `${stackItem.source.card.name} grants ${effect.keywords.join(", ")} to ${target.card.name}.`);
     }
 
+    if (effect.type === "grantReturnTappedWithCounterOnDeath" && target) {
+      target.returnTappedWithCounterOnDeathUntilEndOfTurn = true;
+      log(game, `${stackItem.source.card.name} grants a death return trigger to ${target.card.name}.`);
+    }
+
     if (effect.type === "grantKeywordsToOwnCreatures") {
       for (const creature of getCreaturesOnBattlefield(controller)) {
         creature.temporaryKeywords.push(...effect.keywords);
@@ -769,9 +1210,17 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
       log(game, `${controller.playerId} gains ${effect.amount} life from ${stackItem.source.card.name}.`);
     }
 
+    if (effect.type === "scry") {
+      scryCards(game, controller, effect.amount, stackItem.source);
+    }
+
     if (effect.type === "drawCards") {
       drawCards(game, controller, effect.amount);
       log(game, `${controller.playerId} draws ${effect.amount} card(s) from ${stackItem.source.card.name}.`);
+    }
+
+    if (effect.type === "optionalDiscardThenDraw") {
+      optionalDiscardThenDraw(game, controller, stackItem.source);
     }
 
     if (effect.type === "drawCardsIfAdditionalManaPaid" && paidAdditionalMana(stackItem)) {
@@ -779,9 +1228,21 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
       log(game, `${controller.playerId} draws ${effect.amount} kicked card(s) from ${stackItem.source.card.name}.`);
     }
 
-    if (effect.type === "addPlusOneCounters" && target) {
-      addPlusOneCounters(game, controller, target, effect.amount, stackItem.source);
-      log(game, `${stackItem.source.card.name} puts ${effect.amount} +1/+1 counter(s) on ${target.card.name}.`);
+    if (effect.type === "addPlusOneCounters" && (target || secondTarget)) {
+      const counterTarget = profile.targetMode === "ownLandAndOwnCreature" ? secondTarget : target;
+
+      if (!counterTarget) {
+        continue;
+      }
+
+      addPlusOneCounters(game, controller, counterTarget, effect.amount, stackItem.source);
+      log(game, `${stackItem.source.card.name} puts ${effect.amount} +1/+1 counter(s) on ${counterTarget.card.name}.`);
+      applyStateBasedActions(game);
+    }
+
+    if (effect.type === "distributeCountersThenDouble") {
+      distributeCountersThenDouble(game, controller, targets, effect.amount, stackItem.source);
+      log(game, `${stackItem.source.card.name} distributes and doubles +1/+1 counters.`);
       applyStateBasedActions(game);
     }
 
@@ -818,8 +1279,27 @@ export function resolveNonCreatureSpell(game: GameState, stackItem: StackItem): 
       log(game, `${stackItem.source.card.name} returns ${target.card.name} to hand.`);
     }
 
+    if (effect.type === "returnGraveyardCreatureToHand" && graveyardTarget) {
+      returnGraveyardCreatureToHand(game, controller, stackItem.source, graveyardTarget.instanceId, effect.drawIfSubtype);
+      log(game, `${stackItem.source.card.name} returns ${graveyardTarget.card.name} from graveyard to hand.`);
+    }
+
+    if (effect.type === "destroyCreatureOrReturnZombieFromGraveyardToBattlefieldTapped") {
+      if (target) {
+        movePermanentToGraveyard(game, target.instanceId);
+        log(game, `${stackItem.source.card.name} destroys ${target.card.name}.`);
+      } else if (graveyardTarget && hasSubtype(graveyardTarget, "Zombie")) {
+        returnGraveyardCreatureToBattlefieldTapped(game, controller, stackItem.source, graveyardTarget.instanceId);
+        log(game, `${stackItem.source.card.name} returns ${graveyardTarget.card.name} tapped from graveyard.`);
+      }
+    }
+
     if (effect.type === "attachPersistent" && target) {
       attachPersistentPermanent(game, controller, stackItem.source, target);
+    }
+
+    if (effect.type === "prayerBinding") {
+      resolvePrayerBinding(game, controller, stackItem.source, target);
     }
   }
 

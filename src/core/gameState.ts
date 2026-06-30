@@ -44,6 +44,7 @@ function createInitialPlayerState(content: ContentBundle, config: InitialPlayerC
     spellDeck,
     lifeTotal: 20,
     manaPool: createEmptyManaPool(),
+    dragonHasteMana: 0,
     cardsDrawnThisTurn: 0,
     hand,
     battlefield: [],

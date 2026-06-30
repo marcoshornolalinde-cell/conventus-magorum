@@ -48,6 +48,7 @@ function resetInstance(instance: CardInstance): void {
   instance.plusOneCounters = 0;
   instance.staticKeywords = [];
   instance.temporaryKeywords = [];
+  instance.additionalSubtypes = [];
   instance.losesAbilities = false;
   instance.cannotAttack = false;
   instance.cannotDefend = false;
@@ -55,6 +56,7 @@ function resetInstance(instance: CardInstance): void {
   instance.attachedToId = null;
   instance.doesNotUntap = false;
   instance.enteredTurn = 0;
+  instance.activatedAbilityIdsUsed = [];
 }
 
 function setHand(player: PlayerState, cards: CardInstance[]): void {
@@ -181,6 +183,35 @@ describe("noncreature spells", () => {
 
     expect(player.hand.length).toBe(handSizeBefore + 1);
     expect(player.graveyard.map((instance) => instance.instanceId)).toContain(drawSpell.instanceId);
+  });
+
+  it("scries a slow top card to the bottom before drawing with Opt", () => {
+    const game = createInitialGame(content, {
+      seed: "spell-scry",
+      players: [
+        { id: "player1", archetypeIds: ["wizards", "pirates"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const opt = findPoolCard(player, "opt");
+    const slowCard = findPoolCard(player, "arcane_epiphany");
+    const cheapCard = findPoolCard(player, "fleeting_distraction");
+    setHand(player, [opt]);
+    player.spellDeck = [slowCard, cheapCard, ...player.spellDeck];
+    giveMana(player, "U", 1);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.cardInstanceId === opt.instanceId,
+    );
+    expect(action).toBeDefined();
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(player.hand.map((instance) => instance.instanceId)).toContain(cheapCard.instanceId);
+    expect(player.spellDeck.map((instance) => instance.instanceId)).not.toContain(cheapCard.instanceId);
+    expect(player.spellDeck[player.spellDeck.length - 1].instanceId).toBe(slowCard.instanceId);
   });
 
   it("AI prioritizes removal over playing a creature", () => {
@@ -452,6 +483,35 @@ describe("noncreature spells", () => {
     expect(player.manaPool.C).toBe(0);
   });
 
+  it("requires ward mana when targeting Tolarian Terror", () => {
+    const game = createInitialGame(content, {
+      seed: "ward-cost",
+      players: [
+        { id: "player1", archetypeIds: ["vampires", "cats"] },
+        { id: "player2", archetypeIds: ["pirates", "wizards"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const removal = findPoolCard(player, "heros_downfall");
+    const terror = findPoolCard(opponent, "tolarian_terror");
+    setHand(player, [removal]);
+    opponent.battlefield = [terror];
+    giveMana(player, "B", 2);
+    giveMana(player, "C", 1);
+    game.phase = "main1";
+
+    expect(getLegalActions(game, player.playerId).filter((candidate) => candidate.type === "castSpell")).toHaveLength(0);
+
+    giveMana(player, "C", 3);
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "castSpell");
+    expect(action).toBeDefined();
+    performAction(game, action!);
+
+    expect(player.manaPool.B).toBe(0);
+    expect(player.manaPool.C).toBe(0);
+  });
+
   it("reduces Arcane Epiphany if its controller has a Wizard", () => {
     const game = createInitialGame(content, {
       seed: "epiphany-cost-reduction",
@@ -551,6 +611,38 @@ describe("noncreature spells", () => {
     expect(target.plusOneCounters).toBe(1);
     expect(getCreatureStats(target)).toEqual({ power: 2, toughness: 2 });
     expect(player.graveyard.map((instance) => instance.instanceId)).toContain(spell.instanceId);
+  });
+
+  it("distributes and doubles counters with Biogenic Upgrade", () => {
+    const game = createInitialGame(content, {
+      seed: "biogenic-upgrade",
+      players: [
+        { id: "player1", archetypeIds: ["elves", "primal"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const spell = findPoolCard(player, "biogenic_upgrade");
+    const first = findPoolCard(player, "llanowar_elves");
+    const second = findPoolCard(player, "bear_cub");
+    const third = findPoolCard(player, "druid_of_the_cowl");
+    setHand(player, [spell]);
+    player.battlefield = [first, second, third];
+    giveMana(player, "G", 6);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.targetIds.length === 3,
+    );
+    expect(action).toBeDefined();
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(first.plusOneCounters).toBe(2);
+    expect(second.plusOneCounters).toBe(2);
+    expect(third.plusOneCounters).toBe(2);
+    expect(getCreatureStats(first)).toEqual({ power: 3, toughness: 3 });
+    expect(game.events.filter((event) => event.type === "plusOneCountersAdded")).toHaveLength(6);
   });
 
   it("counters a spell on the stack", () => {
@@ -688,6 +780,37 @@ describe("noncreature spells", () => {
     expect(opponent.graveyard.map((instance) => instance.instanceId)).not.toContain(target.instanceId);
     expect(opponent.exile.map((instance) => instance.instanceId)).toContain(target.instanceId);
     expect(game.events.map((event) => event.type)).toContain("permanentExiled");
+  });
+
+  it("optionally discards and draws from Incinerating Blast after damage", () => {
+    const game = createInitialGame(content, {
+      seed: "incinerating-blast",
+      players: [
+        { id: "player1", archetypeIds: ["inferno", "goblins"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const spell = findPoolCard(player, "incinerating_blast");
+    const discard = findPoolCard(player, "dragon_fodder");
+    const target = findPoolCard(opponent, "savannah_lions");
+    setHand(player, [spell, discard]);
+    opponent.battlefield = [target];
+    giveMana(player, "R", 5);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find((candidate) => candidate.type === "castSpell");
+    expect(action).toBeDefined();
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(opponent.graveyard.map((instance) => instance.instanceId)).toContain(target.instanceId);
+    expect(player.graveyard.map((instance) => instance.instanceId)).toEqual(
+      expect.arrayContaining([spell.instanceId, discard.instanceId]),
+    );
+    expect(player.hand).toHaveLength(1);
+    expect(game.events.map((event) => event.type)).toEqual(expect.arrayContaining(["damageDealt", "cardDiscarded", "cardDrawn"]));
   });
 
   it("requires additional mana costs before casting Eaten Alive", () => {
@@ -937,5 +1060,254 @@ describe("noncreature spells", () => {
     expect(getCreatureStats(second)).toEqual({ power: 5, toughness: 5 });
     expect(hasKeyword(first, "Trample")).toBe(true);
     expect(hasKeyword(second, "Trample")).toBe(true);
+  });
+
+  it("attaches New Horizons to a land and upgrades its tapped mana ability", () => {
+    const game = createInitialGame(content, {
+      seed: "new-horizons",
+      players: [
+        { id: "player1", archetypeIds: ["elves", "primal"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const aura = findPoolCard(player, "new_horizons");
+    const forest = findPoolCard(player, "forest");
+    const creature = findPoolCard(player, "llanowar_elves");
+    setHand(player, [aura]);
+    player.battlefield = [forest, creature];
+    giveMana(player, "G", 3);
+    game.phase = "main1";
+    game.turnNumber = 4;
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) =>
+        candidate.type === "castSpell" &&
+        candidate.targetIds[0] === forest.instanceId &&
+        candidate.targetIds[1] === creature.instanceId,
+    );
+    expect(action).toBeDefined();
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(player.battlefield.map((instance) => instance.instanceId)).toContain(aura.instanceId);
+    expect(aura.attachedToId).toBe(forest.instanceId);
+    expect(creature.plusOneCounters).toBe(1);
+
+    const manaAction = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "activateManaAbility" && candidate.permanentId === forest.instanceId,
+    );
+    expect(manaAction).toEqual(expect.objectContaining({ mana: "G", amount: 2 }));
+    performAction(game, manaAction!);
+
+    expect(forest.tapped).toBe(true);
+    expect(player.manaPool.G).toBe(2);
+  });
+
+  it("grants haste to a Dragon when Carnelian Orb mana pays for it", () => {
+    const game = createInitialGame(content, {
+      seed: "carnelian-orb-dragon",
+      players: [
+        { id: "player1", archetypeIds: ["inferno", "goblins"] },
+        { id: "player2", archetypeIds: ["cats", "healing"] },
+      ],
+    });
+    const player = game.players[0];
+    const orb = findPoolCard(player, "carnelian_orb_of_dragonkind");
+    const dragon = findPoolCard(player, "rapacious_dragon");
+    setHand(player, [dragon]);
+    player.battlefield = [orb];
+    giveMana(player, "C", 4);
+    game.phase = "main1";
+    game.turnNumber = 5;
+
+    const manaAction = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "activateManaAbility" && candidate.permanentId === orb.instanceId,
+    );
+    expect(manaAction).toBeDefined();
+    performAction(game, manaAction!);
+
+    const playDragon = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "playCreature" && candidate.cardInstanceId === dragon.instanceId,
+    );
+    expect(playDragon).toBeDefined();
+    performAction(game, playDragon!);
+    resolveTopOfStack(game);
+
+    expect(hasKeyword(dragon, "Haste")).toBe(true);
+    expect(canAttack(dragon, game.turnNumber)).toBe(true);
+  });
+
+  it("returns a creature card from graveyard with Cemetery Recruitment and draws for Zombies", () => {
+    const game = createInitialGame(content, {
+      seed: "cemetery-recruitment",
+      players: [
+        { id: "player1", archetypeIds: ["undead", "vampires"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const spell = findPoolCard(player, "cemetery_recruitment");
+    const zombie = findPoolCard(player, "diregraf_ghoul");
+    setHand(player, [spell]);
+    player.graveyard.push(zombie);
+    giveMana(player, "B", 2);
+    game.phase = "main1";
+
+    const action = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.targetIds[0] === zombie.instanceId,
+    );
+    expect(action).toBeDefined();
+    performAction(game, action!);
+    resolveTopOfStack(game);
+
+    expect(player.graveyard.map((instance) => instance.instanceId)).not.toContain(zombie.instanceId);
+    expect(player.hand.map((instance) => instance.instanceId)).toContain(zombie.instanceId);
+    expect(player.hand).toHaveLength(2);
+    expect(game.events.map((event) => event.type)).toEqual(expect.arrayContaining(["cardReturnedToHand", "cardDrawn"]));
+  });
+
+  it("uses Deadly Plot to destroy a creature or return a Zombie from graveyard tapped", () => {
+    const game = createInitialGame(content, {
+      seed: "deadly-plot",
+      players: [
+        { id: "player1", archetypeIds: ["undead", "vampires"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const destroySpell = findPoolCard(player, "deadly_plot");
+    const target = findPoolCard(opponent, "hinterland_sanctifier");
+    setHand(player, [destroySpell]);
+    opponent.battlefield = [target];
+    giveMana(player, "B", 4);
+    game.phase = "main1";
+    game.turnNumber = 3;
+
+    const destroyAction = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.targetIds[0] === target.instanceId,
+    );
+    expect(destroyAction).toBeDefined();
+    performAction(game, destroyAction!);
+    resolveTopOfStack(game);
+
+    expect(opponent.graveyard.map((instance) => instance.instanceId)).toContain(target.instanceId);
+
+    const secondGame = createInitialGame(content, {
+      seed: "deadly-plot-return",
+      players: [
+        { id: "player1", archetypeIds: ["undead", "vampires"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const secondPlayer = secondGame.players[0];
+    const returnSpell = findPoolCard(secondPlayer, "deadly_plot");
+    const zombie = findPoolCard(secondPlayer, "diregraf_ghoul");
+    setHand(secondPlayer, [returnSpell]);
+    secondPlayer.graveyard.push(zombie);
+    giveMana(secondPlayer, "B", 4);
+    secondGame.phase = "main1";
+    secondGame.turnNumber = 3;
+
+    const returnAction = getLegalActions(secondGame, secondPlayer.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.targetIds[0] === zombie.instanceId,
+    );
+    expect(returnAction).toBeDefined();
+    performAction(secondGame, returnAction!);
+    resolveTopOfStack(secondGame);
+
+    expect(secondPlayer.graveyard.map((instance) => instance.instanceId)).not.toContain(zombie.instanceId);
+    expect(secondPlayer.battlefield.map((instance) => instance.instanceId)).toContain(zombie.instanceId);
+    expect(zombie.tapped).toBe(true);
+  });
+
+  it("exiles a nonland permanent with Prayer of Binding until Prayer leaves the battlefield", () => {
+    const game = createInitialGame(content, {
+      seed: "prayer-of-binding",
+      players: [
+        { id: "player1", archetypeIds: ["healing", "cats"] },
+        { id: "player2", archetypeIds: ["elves", "primal"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const prayer = findPoolCard(player, "prayer_of_binding");
+    const target = findPoolCard(opponent, "bear_cub");
+    setHand(player, [prayer]);
+    opponent.battlefield = [target];
+    giveMana(player, "W", 4);
+    game.phase = "main1";
+
+    const castPrayer = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.targetIds[0] === target.instanceId,
+    );
+    expect(castPrayer).toBeDefined();
+    performAction(game, castPrayer!);
+    resolveTopOfStack(game);
+
+    expect(player.battlefield.map((instance) => instance.instanceId)).toContain(prayer.instanceId);
+    expect(opponent.exile.map((instance) => instance.instanceId)).toContain(target.instanceId);
+    expect(target.exiledById).toBe(prayer.instanceId);
+    expect(player.lifeTotal).toBe(22);
+
+    const brokenWings = findPoolCard(opponent, "broken_wings");
+    setHand(opponent, [brokenWings]);
+    giveMana(opponent, "G", 3);
+    const destroyPrayer = getLegalActions(game, opponent.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.targetIds[0] === prayer.instanceId,
+    );
+    expect(destroyPrayer).toBeDefined();
+    performAction(game, destroyPrayer!);
+    resolveTopOfStack(game);
+
+    expect(player.graveyard.map((instance) => instance.instanceId)).toContain(prayer.instanceId);
+    expect(opponent.exile.map((instance) => instance.instanceId)).not.toContain(target.instanceId);
+    expect(opponent.battlefield.map((instance) => instance.instanceId)).toContain(target.instanceId);
+    expect(target.exiledById).toBeNull();
+  });
+
+  it("returns a creature tapped with a counter from Undying Malice when it dies", () => {
+    const game = createInitialGame(content, {
+      seed: "undying-malice",
+      players: [
+        { id: "player1", archetypeIds: ["undead", "vampires"] },
+        { id: "player2", archetypeIds: ["vampires", "cats"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const malice = findPoolCard(player, "undying_malice");
+    const target = findPoolCard(player, "diregraf_ghoul");
+    setHand(player, [malice]);
+    player.battlefield = [target];
+    giveMana(player, "B", 1);
+    game.phase = "main1";
+    game.turnNumber = 4;
+
+    const castMalice = getLegalActions(game, player.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.targetIds[0] === target.instanceId,
+    );
+    expect(castMalice).toBeDefined();
+    performAction(game, castMalice!);
+    resolveTopOfStack(game);
+
+    expect(target.returnTappedWithCounterOnDeathUntilEndOfTurn).toBe(true);
+
+    const removal = findPoolCard(opponent, "heros_downfall");
+    setHand(opponent, [removal]);
+    giveMana(opponent, "B", 3);
+    const castRemoval = getLegalActions(game, opponent.playerId).find(
+      (candidate) => candidate.type === "castSpell" && candidate.targetIds[0] === target.instanceId,
+    );
+    expect(castRemoval).toBeDefined();
+    performAction(game, castRemoval!);
+    resolveTopOfStack(game);
+
+    expect(player.graveyard.map((instance) => instance.instanceId)).not.toContain(target.instanceId);
+    expect(player.battlefield.map((instance) => instance.instanceId)).toContain(target.instanceId);
+    expect(target.tapped).toBe(true);
+    expect(target.plusOneCounters).toBe(1);
+    expect(target.returnTappedWithCounterOnDeathUntilEndOfTurn).toBe(false);
   });
 });
