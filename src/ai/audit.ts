@@ -32,6 +32,7 @@ export interface AiDecisionSample {
   legalActionCount: number;
   nonManaOptionCount: number;
   topOptions: AiDecisionFeatures[];
+  decisionReasons: string[];
   issueTags: string[];
 }
 
@@ -170,6 +171,54 @@ function sortedTopOptions(features: AiDecisionFeatures[]): AiDecisionFeatures[] 
     .slice(0, 5);
 }
 
+function explainDecision(features: AiDecisionFeatures): string[] {
+  const reasons: string[] = [];
+
+  reasons.push(`score=${features.score.toFixed(1)}`);
+
+  if (features.strategyEnabled) {
+    reasons.push(`deck=${features.strategyKind}:${features.strategicConfidence.toFixed(2)}`);
+  }
+
+  if (features.matchupRole !== "balanced") {
+    reasons.push(`role=${features.matchupRole}:${features.matchupRoleConfidence.toFixed(2)}`);
+  }
+
+  reasons.push(`posture=${features.strategicPosture}`);
+
+  if (features.tags.length > 0) {
+    reasons.push(`tags=${features.tags.join(",")}`);
+  }
+
+  if (features.targetThreat > 0) {
+    reasons.push(`targetThreat=${features.targetThreat.toFixed(1)}`);
+  }
+
+  if (features.ownTargetQuality > 0) {
+    reasons.push(`ownTargetQuality=${features.ownTargetQuality.toFixed(1)}`);
+  }
+
+  if (features.raceScore >= 8) {
+    reasons.push(`raceFavored=${features.raceScore.toFixed(1)}`);
+  } else if (features.raceScore <= -8) {
+    reasons.push(`raceBad=${features.raceScore.toFixed(1)}`);
+  }
+
+  if (features.resourceNeed >= 0.5) {
+    reasons.push(`needsResources=${features.resourceNeed.toFixed(2)}`);
+  }
+
+  if (features.ownLife <= 8) {
+    reasons.push(`lowLife=${features.ownLife}`);
+  }
+
+  if (features.opponentLife <= 6) {
+    reasons.push(`opponentLow=${features.opponentLife}`);
+  }
+
+  return reasons;
+}
+
 function recordIssues(globalIssues: Record<string, number>, gameIssues: Record<string, number>, issues: string[]): void {
   for (const issue of issues) {
     increment(globalIssues, issue);
@@ -225,6 +274,7 @@ export function auditAiGames(content: ContentBundle, options: AiAuditOptions = {
             legalActionCount: legalActions.length,
             nonManaOptionCount: legalActions.filter((action) => action.type !== "pass" && action.type !== "activateManaAbility").length,
             topOptions,
+            decisionReasons: explainDecision(chosenFeatures),
             issueTags: issues,
           });
         }

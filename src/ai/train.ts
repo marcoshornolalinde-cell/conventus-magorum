@@ -9,6 +9,8 @@ export interface AiTrainingOptions {
   seed?: string;
   minutes?: number;
   gamesPerCandidate?: number;
+  validationGamesPerCandidate?: number;
+  validationMinScoreDelta?: number;
   maxTurns?: number;
   mutationRate?: number;
   candidatesPerGeneration?: number;
@@ -31,6 +33,7 @@ export interface AiTrainingCandidate {
   candidateIndex: number;
   weights: AiPolicyWeights;
   evaluation: AiTrainingEvaluation;
+  validationEvaluation?: AiTrainingEvaluation;
 }
 
 export interface AiTrainingResult {
@@ -266,10 +269,16 @@ function normalizeOptions(options: AiTrainingOptions): Required<AiTrainingOption
     seed: options.seed ?? "ai-train",
     minutes: options.minutes ?? 15,
     gamesPerCandidate: options.gamesPerCandidate ?? 24,
+    validationGamesPerCandidate: options.validationGamesPerCandidate ?? 0,
+    validationMinScoreDelta: options.validationMinScoreDelta ?? 0,
     maxTurns: options.maxTurns ?? 40,
     mutationRate: options.mutationRate ?? 0.08,
     candidatesPerGeneration: options.candidatesPerGeneration ?? 6,
   };
+}
+
+function getCandidateSelectionScore(candidate: AiTrainingCandidate): number {
+  return candidate.validationEvaluation?.score ?? candidate.evaluation.score;
 }
 
 export function trainAiPolicy(
@@ -290,11 +299,22 @@ export function trainAiPolicy(
     normalized.gamesPerCandidate,
     normalized.maxTurns,
   );
+  const baselineValidationEvaluation = normalized.validationGamesPerCandidate > 0
+    ? evaluateWeights(
+        content,
+        defaultAiPolicyWeights,
+        defaultAiPolicyWeights,
+        `${normalized.seed}:validation:baseline`,
+        normalized.validationGamesPerCandidate,
+        normalized.maxTurns,
+      )
+    : undefined;
   const baseline: AiTrainingCandidate = {
     generation: 0,
     candidateIndex: 0,
     weights: defaultAiPolicyWeights,
     evaluation: baselineEvaluation,
+    validationEvaluation: baselineValidationEvaluation,
   };
   let best = baseline;
   let generations = 0;
@@ -320,17 +340,28 @@ export function trainAiPolicy(
         normalized.gamesPerCandidate,
         normalized.maxTurns,
       );
+      const validationEvaluation = normalized.validationGamesPerCandidate > 0
+        ? evaluateWeights(
+            content,
+            candidateWeights,
+            defaultAiPolicyWeights,
+            `${normalized.seed}:validation:gen:${generations}:candidate:${candidateIndex}`,
+            normalized.validationGamesPerCandidate,
+            normalized.maxTurns,
+          )
+        : undefined;
       const candidate: AiTrainingCandidate = {
         generation: generations,
         candidateIndex,
         weights: candidateWeights,
         evaluation,
+        validationEvaluation,
       };
 
       evaluatedCandidates += 1;
       history.push(candidate);
 
-      if (candidate.evaluation.score > best.evaluation.score) {
+      if (getCandidateSelectionScore(candidate) > getCandidateSelectionScore(best) + normalized.validationMinScoreDelta) {
         best = candidate;
       }
 

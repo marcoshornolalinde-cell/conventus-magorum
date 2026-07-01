@@ -21,6 +21,10 @@ function readStringArg(args: string[], name: string, fallback: string): string {
 }
 
 function formatCandidate(candidate: AiTrainingCandidate): string {
+  const validation = candidate.validationEvaluation
+    ? ` val=${candidate.validationEvaluation.score.toFixed(4)} valWr=${(candidate.validationEvaluation.winrate * 100).toFixed(1)}%`
+    : "";
+
   return [
     `g=${candidate.generation}`,
     `i=${candidate.candidateIndex}`,
@@ -29,13 +33,15 @@ function formatCandidate(candidate: AiTrainingCandidate): string {
     `w=${candidate.evaluation.wins}`,
     `l=${candidate.evaluation.losses}`,
     `d=${candidate.evaluation.draws}`,
-    `issues=${candidate.evaluation.issuePenalty.toFixed(3)}`,
+    `issues=${candidate.evaluation.issuePenalty.toFixed(3)}${validation}`,
   ].join(" ");
 }
 
 const args = process.argv.slice(2);
 const minutes = readNumberArg(args, "minutes", 15);
 const gamesPerCandidate = readNumberArg(args, "gamesPerCandidate", 24);
+const validationGamesPerCandidate = readNumberArg(args, "validationGamesPerCandidate", 0);
+const validationMinScoreDelta = readNumberArg(args, "validationMinScoreDelta", 0);
 const candidatesPerGeneration = readNumberArg(args, "candidatesPerGeneration", 6);
 const maxTurns = readNumberArg(args, "maxTurns", 40);
 const mutationRate = readNumberArg(args, "mutationRate", 0.08);
@@ -56,6 +62,8 @@ const result = trainAiPolicy(
     seed,
     minutes,
     gamesPerCandidate,
+    validationGamesPerCandidate,
+    validationMinScoreDelta,
     candidatesPerGeneration,
     maxTurns,
     mutationRate,

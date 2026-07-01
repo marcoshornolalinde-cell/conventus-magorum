@@ -84,7 +84,7 @@ if (json) {
       .map((option) => `${option.cardName ?? option.abilityId ?? option.actionType} (${option.score.toFixed(1)})`)
       .join(", ");
     console.log(
-      `- G${sample.gameIndex} T${sample.turn} ${sample.phase} ${sample.playerId}: ${sample.issueTags.join(", ")}; chose ${chosenName}; top: ${top || "none"}`,
+      `- G${sample.gameIndex} T${sample.turn} ${sample.phase} ${sample.playerId}: ${sample.issueTags.join(", ")}; chose ${chosenName}; reasons: ${sample.decisionReasons.join(" | ")}; top: ${top || "none"}`,
     );
   }
 }
