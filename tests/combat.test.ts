@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { canAttack, hasKeyword, resolveCombatPhase } from "../src/core/combat.js";
 import { createInitialGame } from "../src/core/gameState.js";
 import type { InitialPlayerConfig } from "../src/core/gameState.js";
-import type { CardInstance, CombatPlan, ContentBundle, PlayerState } from "../src/core/types.js";
+import type { CardInstance, CombatPlan, ContentBundle, LegalAction, PlayerState } from "../src/core/types.js";
 import { loadContentBundle } from "../src/data/loadContent.js";
 
 const content: ContentBundle = loadContentBundle();
@@ -51,6 +51,56 @@ function findPoolCard(player: PlayerState, cardId: string): CardInstance {
     enteredTurn: 0,
     activatedAbilityIdsUsed: [],
   };
+}
+
+function findPoolCardInPlace(player: PlayerState, cardId: string): CardInstance {
+  const source = player.pool.find((instance) => instance.card.id === cardId);
+
+  if (!source) {
+    throw new Error(`Missing test card ${cardId}.`);
+  }
+
+  removeFromCurrentZones(player, source.instanceId);
+  resetInstance(source);
+  return source;
+}
+
+function removeFromCurrentZones(player: PlayerState, instanceId: string): void {
+  player.spellDeck = player.spellDeck.filter((instance) => instance.instanceId !== instanceId);
+  player.landDeck = player.landDeck.filter((instance) => instance.instanceId !== instanceId);
+  player.hand = player.hand.filter((instance) => instance.instanceId !== instanceId);
+  player.battlefield = player.battlefield.filter((instance) => instance.instanceId !== instanceId);
+  player.graveyard = player.graveyard.filter((instance) => instance.instanceId !== instanceId);
+  player.exile = player.exile.filter((instance) => instance.instanceId !== instanceId);
+}
+
+function resetInstance(instance: CardInstance): void {
+  instance.tapped = false;
+  instance.damageMarked = 0;
+  instance.deathtouchDamageMarked = 0;
+  instance.powerModifier = 0;
+  instance.toughnessModifier = 0;
+  instance.staticPowerModifier = 0;
+  instance.staticToughnessModifier = 0;
+  instance.basePowerOverride = null;
+  instance.baseToughnessOverride = null;
+  instance.plusOneCounters = 0;
+  instance.staticKeywords = [];
+  instance.temporaryKeywords = [];
+  instance.losesAbilities = false;
+  instance.cannotAttack = false;
+  instance.cannotDefend = false;
+  instance.temporaryCannotDefend = false;
+  instance.attachedToId = null;
+  instance.doesNotUntap = false;
+  instance.enteredTurn = 0;
+  instance.activatedAbilityIdsUsed = [];
+}
+
+function setHand(player: PlayerState, cards: CardInstance[]): void {
+  const testCardIds = new Set(cards.map((card) => card.instanceId));
+  player.graveyard.push(...player.hand.filter((card) => !testCardIds.has(card.instanceId)));
+  player.hand = [...cards];
 }
 
 function withCombatStats(
@@ -112,6 +162,46 @@ describe("combat", () => {
 
     expect(game.players[1].lifeTotal).toBe(18);
     expect(attacker.tapped).toBe(true);
+  });
+
+  it("lets both players attack in the same combat and resolves attacking priority first", () => {
+    const game = createInitialGame(content, {
+      seed: "both-players-attack",
+      players: defaultPlayers,
+    });
+    const firstAttacker = findPoolCard(game.players[0], "savannah_lions");
+    const secondAttacker = findPoolCard(game.players[1], "hinterland_sanctifier");
+    game.turnNumber = 2;
+    game.phase = "combat";
+    game.attackingPriorityPlayerId = game.players[0].playerId;
+    game.activePlayerId = game.players[0].playerId;
+    game.players[0].battlefield = [firstAttacker];
+    game.players[1].battlefield = [secondAttacker];
+
+    resolveCombatPhase(
+      game,
+      planFor(
+        {
+          playerId: game.players[0].playerId,
+          attackerIds: [firstAttacker.instanceId],
+          defenderIds: [],
+        },
+        {
+          playerId: game.players[1].playerId,
+          attackerIds: [secondAttacker.instanceId],
+          defenderIds: [],
+        },
+      ),
+    );
+
+    expect(firstAttacker.tapped).toBe(true);
+    expect(secondAttacker.tapped).toBe(true);
+    expect(game.players[0].lifeTotal).toBe(19);
+    expect(game.players[1].lifeTotal).toBe(18);
+
+    const damageEvents = game.events.filter((event) => event.type === "damageDealt" && event.details?.combat === true);
+    expect(damageEvents[0].sourceId).toBe(firstAttacker.instanceId);
+    expect(damageEvents[1].sourceId).toBe(secondAttacker.instanceId);
   });
 
   it("prevents a menace attacker from being blocked by only one creature", () => {
@@ -244,6 +334,62 @@ describe("combat", () => {
     expect(game.players[0].graveyard.map((instance) => instance.card.id)).toContain("savannah_lions");
     expect(game.players[1].graveyard.map((instance) => instance.card.id)).toContain("hinterland_sanctifier");
     expect(game.players[1].lifeTotal).toBe(20);
+  });
+
+  it("lets players cast instants after attackers and blockers are paired before damage", () => {
+    const game = createInitialGame(content, {
+      seed: "paired-combat-instant",
+      players: [
+        { id: "player1", archetypeIds: ["cats", "healing"] },
+        { id: "player2", archetypeIds: ["healing", "pirates"] },
+      ],
+    });
+    const attacker = findPoolCardInPlace(game.players[0], "savannah_lions");
+    const trick = findPoolCardInPlace(game.players[0], "moment_of_triumph");
+    const blocker = findPoolCardInPlace(game.players[1], "hinterland_sanctifier");
+    game.turnNumber = 2;
+    game.attackingPriorityPlayerId = game.players[0].playerId;
+    game.activePlayerId = game.players[0].playerId;
+    game.players[0].battlefield = [attacker];
+    setHand(game.players[0], [trick]);
+    game.players[0].manaPool.W = 1;
+    game.players[1].battlefield = [blocker];
+
+    const chooseCombatAction = (currentGame: typeof game, playerId: string, legalActions: LegalAction[]): LegalAction => {
+      const pairingsKnown = currentGame.log.some((entry) => entry.message.includes(`${attacker.card.name} is blocked by`));
+      const castTrick = legalActions.find(
+        (action) => action.type === "castSpell" && action.cardInstanceId === trick.instanceId,
+      );
+
+      if (pairingsKnown && playerId === game.players[0].playerId && castTrick) {
+        return castTrick;
+      }
+
+      return legalActions.find((action) => action.type === "pass") ?? legalActions[0];
+    };
+
+    resolveCombatPhase(
+      game,
+      planFor(
+        {
+          playerId: game.players[0].playerId,
+          attackerIds: [attacker.instanceId],
+          defenderIds: [],
+        },
+        {
+          playerId: game.players[1].playerId,
+          attackerIds: [],
+          defenderIds: [blocker.instanceId],
+        },
+      ),
+      chooseCombatAction,
+    );
+
+    expect(game.stack).toHaveLength(0);
+    expect(game.players[0].lifeTotal).toBe(22);
+    expect(game.players[0].battlefield.map((instance) => instance.instanceId)).toContain(attacker.instanceId);
+    expect(game.players[1].graveyard.map((instance) => instance.instanceId)).toContain(blocker.instanceId);
+    expect(game.events.map((event) => event.type)).toEqual(expect.arrayContaining(["spellCast", "spellResolved"]));
   });
 
   it("does not allow a non-haste creature to attack on the turn it entered", () => {

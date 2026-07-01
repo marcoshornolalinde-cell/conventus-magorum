@@ -1,4 +1,5 @@
 import { loadContentBundle } from "../data/loadContent.js";
+import { loadAiPolicyModel } from "../ai/model.js";
 import { runSelfplay, SelfplayRuntimeError } from "../selfplay/runMatch.js";
 
 function readSeedFromArgs(args: string[]): string {
@@ -11,14 +12,21 @@ function readMaxTurnsFromArgs(args: string[]): number {
   return maxTurnsArg ? Number.parseInt(maxTurnsArg.slice("--maxTurns=".length), 10) : 30;
 }
 
+function readStringArg(args: string[], name: string, fallback: string): string {
+  const arg = args.find((candidate) => candidate.startsWith(`--${name}=`));
+  return arg?.slice(name.length + 3) || fallback;
+}
+
 const args = process.argv.slice(2);
 const seed = readSeedFromArgs(args);
 const maxTurns = readMaxTurnsFromArgs(args);
+const modelPath = readStringArg(args, "model", "");
+const model = modelPath ? loadAiPolicyModel(modelPath) : null;
 const content = loadContentBundle();
 let result;
 
 try {
-  result = runSelfplay(content, { seed, maxTurns });
+  result = runSelfplay(content, { seed, maxTurns, aiWeights: model?.weights });
 } catch (error) {
   if (error instanceof SelfplayRuntimeError) {
     console.error(error.message);
@@ -34,6 +42,7 @@ const { game } = result;
 console.log(`Selfplay match`);
 console.log(`Seed: ${game.seed}`);
 console.log(`Game: ${game.id}`);
+console.log(`AI model: ${model?.sourcePath ?? "base"}`);
 console.log(`Status: ${game.status}`);
 console.log(`Phase: ${game.phase}`);
 console.log(`Turn: ${game.turnNumber}`);

@@ -77,6 +77,7 @@ export function createInitialGame(content: ContentBundle, options: CreateInitial
     phase: "setup",
     activePlayerId: attackingPriorityPlayerId,
     attackingPriorityPlayerId,
+    currentCombatPairings: [],
     players: playerStates,
     stack: [],
     winnerId: null,

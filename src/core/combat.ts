@@ -1,5 +1,5 @@
 import type { CardInstance, CombatPairing, CombatPlan, GameState, LegalAction, PlayerId, PlayerState } from "./types.js";
-import { getLegalActions, getOpponent, getPlayer, getPriorityOrder, performAction } from "./actions.js";
+import { getLegalActions, getOpponent, getPlayer, getPriorityOrder, performAction, resolveTopOfStack } from "./actions.js";
 import { dispatchGameEvent } from "./triggerEngine.js";
 import { applyContinuousEffects } from "./staticEffects.js";
 
@@ -144,28 +144,39 @@ function runCombatActionWindow(game: GameState, chooseCombatAction: ChooseCombat
   }
 
   const priorityOrder = getPriorityOrder(game);
-  const passedPlayers = new Set<PlayerId>();
   let actionCount = 0;
+  let windowOpen = true;
 
   log(game, `${label} combat action window begins.`);
 
-  while (passedPlayers.size < game.players.length && !hasGameEnded(game)) {
-    const playerId = priorityOrder[actionCount % priorityOrder.length];
-    const legalActions = getLegalActions(game, playerId);
-    const action = chooseCombatAction(game, playerId, legalActions);
+  while (windowOpen && !hasGameEnded(game)) {
+    const passedPlayers = new Set<PlayerId>();
 
-    performAction(game, action);
+    while (passedPlayers.size < game.players.length && !hasGameEnded(game)) {
+      const playerId = priorityOrder[actionCount % priorityOrder.length];
+      const legalActions = getLegalActions(game, playerId);
+      const action = chooseCombatAction(game, playerId, legalActions);
 
-    if (action.type === "pass") {
-      passedPlayers.add(playerId);
-    } else {
-      passedPlayers.clear();
+      performAction(game, action);
+
+      if (action.type === "pass") {
+        passedPlayers.add(playerId);
+      } else {
+        passedPlayers.clear();
+      }
+
+      actionCount += 1;
+
+      if (actionCount > 100) {
+        throw new Error(`${label} combat action window exceeded action guard.`);
+      }
     }
 
-    actionCount += 1;
-
-    if (actionCount > 100) {
-      throw new Error(`${label} combat action window exceeded action guard.`);
+    if (game.stack.length > 0 && !hasGameEnded(game)) {
+      resolveTopOfStack(game);
+      applyStateBasedActions(game);
+    } else {
+      windowOpen = false;
     }
   }
 
@@ -286,6 +297,26 @@ function buildPairings(
 
   log(game, `${attackingPlayer.playerId} attacks with ${pairings.length} creature(s).`);
   return pairings;
+}
+
+function logPairings(game: GameState, attackingPlayer: PlayerState, defendingPlayer: PlayerState, pairings: CombatPairing[]): void {
+  for (const pairing of pairings) {
+    const attacker = getBattlefieldCreature(attackingPlayer, pairing.attackerId);
+
+    if (!attacker) {
+      continue;
+    }
+
+    const blockers = pairing.defenderIds
+      .map((defenderId) => getBattlefieldCreature(defendingPlayer, defenderId))
+      .filter((defender): defender is CardInstance => defender !== null);
+
+    if (blockers.length === 0) {
+      log(game, `${attacker.card.name} attacks unblocked against ${defendingPlayer.playerId}.`);
+    } else {
+      log(game, `${attacker.card.name} is blocked by ${blockers.map((blocker) => blocker.card.name).join(", ")}.`);
+    }
+  }
 }
 
 function moveToGraveyard(game: GameState, player: PlayerState, instance: CardInstance): void {
@@ -691,11 +722,6 @@ function resolvePairing(
     return;
   }
 
-  log(
-    game,
-    `${attacker.card.name} is blocked by ${blockers.map((blocker) => blocker.card.name).join(", ")}.`,
-  );
-
   const hasFirstStrikeStep = [attacker, ...blockers].some(shouldDealDamageInFirstStrikeStep);
   if (hasFirstStrikeStep) {
     dealCombatDamageStep(game, attackingPlayer, defendingPlayer, attacker, blockers, "firstStrike", hasFirstStrikeStep, true);
@@ -712,6 +738,7 @@ function resolveAttack(
   defendingPlayer: PlayerState,
   attackingPlan: CombatPlan,
   defendingPlan: CombatPlan,
+  chooseCombatAction: ChooseCombatAction,
 ): void {
   const pairings = buildPairings(
     game,
@@ -721,13 +748,20 @@ function resolveAttack(
     defendingPlan.defenderIds,
   );
 
+  logPairings(game, attackingPlayer, defendingPlayer, pairings);
+  game.currentCombatPairings = pairings;
+  runCombatActionWindow(game, chooseCombatAction, `${attackingPlayer.playerId} paired-combat`);
+
   for (const pairing of pairings) {
     if (game.status === "gameOver") {
+      game.currentCombatPairings = [];
       return;
     }
 
     resolvePairing(game, attackingPlayer, defendingPlayer, pairing);
   }
+
+  game.currentCombatPairings = [];
 }
 
 export function resolveCombatPhase(
@@ -740,6 +774,7 @@ export function resolveCombatPhase(
   }
 
   applyContinuousEffects(game);
+  game.currentCombatPairings = [];
   game.phase = "combat";
   log(game, "Combat phase begins.");
   dispatchGameEvent(game, {
@@ -821,13 +856,15 @@ export function resolveCombatPhase(
   const [firstAttackerId, secondAttackerId] = getPriorityOrder(game);
   const firstAttacker = getPlayer(game, firstAttackerId);
   const firstDefender = getOpponent(game, firstAttackerId);
-  resolveAttack(game, firstAttacker, firstDefender, plans.get(firstAttackerId)!, plans.get(firstDefender.playerId)!);
+  resolveAttack(game, firstAttacker, firstDefender, plans.get(firstAttackerId)!, plans.get(firstDefender.playerId)!, chooseCombatAction);
 
   if (!hasGameEnded(game)) {
     const secondAttacker = getPlayer(game, secondAttackerId);
     const secondDefender = getOpponent(game, secondAttackerId);
-    resolveAttack(game, secondAttacker, secondDefender, plans.get(secondAttackerId)!, plans.get(secondDefender.playerId)!);
+    resolveAttack(game, secondAttacker, secondDefender, plans.get(secondAttackerId)!, plans.get(secondDefender.playerId)!, chooseCombatAction);
   }
+
+  game.currentCombatPairings = [];
 }
 
 export function clearCombatDamage(game: GameState): void {

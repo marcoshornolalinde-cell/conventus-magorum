@@ -4,6 +4,7 @@ import type { ArchetypeId, ContentBundle, GameEvent, PlayerState } from "../core
 import { createSeededRandom } from "../core/random.js";
 import { runSelfplay, SelfplayRuntimeError, type SelfplayDiagnostic } from "../selfplay/runMatch.js";
 import type { InitialPlayerConfig } from "../core/gameState.js";
+import type { AiPolicyWeights } from "../ai/policy.js";
 
 export interface ArchetypeSimulationStats {
   archetype: ArchetypeId;
@@ -47,6 +48,7 @@ export interface SimulationOptions {
   seed?: string;
   maxTurns?: number;
   topCards?: number;
+  aiWeights?: AiPolicyWeights;
 }
 
 export interface SimulationResult {
@@ -214,6 +216,7 @@ export function runSimulation(content: ContentBundle, options: SimulationOptions
         seed: `${seed}:${index}`,
         maxTurns,
         players,
+        aiWeights: options.aiWeights,
       });
       completedGames += 1;
       turns += result.game.turnNumber;

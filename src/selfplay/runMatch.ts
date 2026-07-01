@@ -1,10 +1,12 @@
-import { chooseBasicCombatPlan, chooseFirstPlayableCreature } from "../ai/heuristicAI.js";
+import { chooseActionWithPolicy } from "../ai/heuristicAI.js";
+import { chooseCombatPlanWithPolicy, defaultAiPolicyWeights, type AiPolicyWeights } from "../ai/policy.js";
 import { createInitialGame, type CreateInitialGameOptions } from "../core/gameState.js";
 import { playOneGeneralTurn, type TurnSummary } from "../core/turn.js";
-import type { ContentBundle, GameState } from "../core/types.js";
+import type { ContentBundle, GameState, LegalAction, PlayerId } from "../core/types.js";
 
 export interface SelfplayOptions extends CreateInitialGameOptions {
   maxTurns?: number;
+  aiWeights?: AiPolicyWeights;
 }
 
 export interface SelfplayResult {
@@ -67,9 +69,14 @@ export function runSelfplay(content: ContentBundle, options: SelfplayOptions = {
 
   try {
     game = createInitialGame(content, options);
+    const weights = options.aiWeights ?? defaultAiPolicyWeights;
+    const chooseAction = (currentGame: GameState, playerId: PlayerId, legalActions: LegalAction[]) =>
+      chooseActionWithPolicy(currentGame, playerId, legalActions, weights);
+    const chooseCombatPlan = (currentGame: GameState, playerId: PlayerId) =>
+      chooseCombatPlanWithPolicy(currentGame, playerId, weights);
 
     while (game.status !== "gameOver" && game.turnNumber < maxTurns) {
-      turns.push(playOneGeneralTurn(game, chooseFirstPlayableCreature, chooseBasicCombatPlan));
+      turns.push(playOneGeneralTurn(game, chooseAction, chooseCombatPlan));
     }
 
     return {

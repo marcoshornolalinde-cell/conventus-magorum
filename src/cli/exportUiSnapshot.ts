@@ -2,8 +2,10 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
 import { loadContentBundle } from "../data/loadContent.js";
+import { loadAiPolicyModel } from "../ai/model.js";
 import { runSelfplay, SelfplayRuntimeError } from "../selfplay/runMatch.js";
-import { chooseBasicCombatPlan, chooseFirstPlayableCreature } from "../ai/heuristicAI.js";
+import { chooseActionWithPolicy } from "../ai/heuristicAI.js";
+import { chooseCombatPlanWithPolicy, defaultAiPolicyWeights, type AiPolicyWeights } from "../ai/policy.js";
 import { createInitialGame, type InitialPlayerConfig } from "../core/gameState.js";
 import {
   beginGeneralTurn,
@@ -11,7 +13,7 @@ import {
   runCombat,
   runMainPhase,
 } from "../core/turn.js";
-import type { CardInstance, GameLogEntry, GamePhase, GameState, PlayerId, PlayerState } from "../core/types.js";
+import type { CardInstance, GameLogEntry, GamePhase, GameState, LegalAction, PlayerId, PlayerState } from "../core/types.js";
 
 interface UiCard {
   instanceId: string;
@@ -71,6 +73,7 @@ interface UiSnapshot {
     loserIds: PlayerId[];
     attackingPriorityPlayerId: PlayerId;
     reachedTurnLimit: boolean;
+    aiModel: string;
   };
   players: UiPlayer[];
   stack: UiCard[];
@@ -176,7 +179,7 @@ function hasGameEnded(game: GameState): boolean {
   return game.status === "gameOver";
 }
 
-function snapshotFromGame(game: GameState, seed: string, maxTurns: number, reachedTurnLimit: boolean): UiSnapshot {
+function snapshotFromGame(game: GameState, seed: string, maxTurns: number, reachedTurnLimit: boolean, aiModel: string): UiSnapshot {
   return {
     generatedAt: new Date().toISOString(),
     seed,
@@ -190,6 +193,7 @@ function snapshotFromGame(game: GameState, seed: string, maxTurns: number, reach
       loserIds: game.loserIds,
       attackingPriorityPlayerId: game.attackingPriorityPlayerId,
       reachedTurnLimit,
+      aiModel,
     },
     players: game.players.map(playerToUiPlayer),
     stack: game.stack.map((item) => cardToUiCard(item.source)),
@@ -208,25 +212,33 @@ function createSnapshot(
   seed: string,
   maxTurns: number,
   players?: [InitialPlayerConfig, InitialPlayerConfig],
+  aiWeights?: AiPolicyWeights,
+  aiModel = "base",
 ): UiSnapshot {
   const content = loadContentBundle();
-  const result = runSelfplay(content, { seed, maxTurns, players });
-  return snapshotFromGame(result.game, seed, maxTurns, result.reachedTurnLimit);
+  const result = runSelfplay(content, { seed, maxTurns, players, aiWeights });
+  return snapshotFromGame(result.game, seed, maxTurns, result.reachedTurnLimit, aiModel);
 }
 
 function createReplay(
   seed: string,
   maxTurns: number,
   players?: [InitialPlayerConfig, InitialPlayerConfig],
+  aiWeights: AiPolicyWeights = defaultAiPolicyWeights,
+  aiModel = "base",
 ): { states: UiReplayState[]; frames: UiReplayFrame[] } {
   const content = loadContentBundle();
   const game = createInitialGame(content, { seed, players });
   const states: UiReplayState[] = [];
   const frames: UiReplayFrame[] = [];
   let previousLogLength = 0;
+  const chooseAction = (currentGame: GameState, playerId: PlayerId, legalActions: LegalAction[]) =>
+    chooseActionWithPolicy(currentGame, playerId, legalActions, aiWeights);
+  const chooseCombatPlan = (currentGame: GameState, playerId: PlayerId) =>
+    chooseCombatPlanWithPolicy(currentGame, playerId, aiWeights);
 
   function capture(label: string, reachedTurnLimit = false): void {
-    const snapshot = snapshotFromGame(game, seed, maxTurns, reachedTurnLimit);
+    const snapshot = snapshotFromGame(game, seed, maxTurns, reachedTurnLimit, aiModel);
     const stateIndex = states.length;
     states.push({
       ...snapshot,
@@ -266,17 +278,17 @@ function createReplay(
       break;
     }
 
-    runMainPhase(game, "main1", chooseFirstPlayableCreature);
+    runMainPhase(game, "main1", chooseAction);
     capture(`Turno ${game.turnNumber}: fase principal 1`);
 
-    runCombat(game, chooseBasicCombatPlan, chooseFirstPlayableCreature);
+    runCombat(game, chooseCombatPlan, chooseAction);
     capture(`Turno ${game.turnNumber}: combate`);
 
     if (hasGameEnded(game)) {
       break;
     }
 
-    runMainPhase(game, "main2", chooseFirstPlayableCreature);
+    runMainPhase(game, "main2", chooseAction);
     capture(`Turno ${game.turnNumber}: fase principal 2`);
 
     cleanupGeneralTurn(game);
@@ -312,16 +324,21 @@ const args = process.argv.slice(2);
 const seed = readArgValue(args, "seed", "ui-demo-seed");
 const maxTurns = Number.parseInt(readArgValue(args, "maxTurns", "20"), 10);
 const output = resolve(readArgValue(args, "out", "web/state/live-match.js"));
+const modelPath = readArgValue(args, "model", "");
+const model = modelPath ? loadAiPolicyModel(modelPath) : null;
+const aiWeights = model?.weights ?? defaultAiPolicyWeights;
+const aiModel = model?.sourcePath ?? "base";
 const player1 = readPlayerConfig(args, "player1");
 const player2 = readPlayerConfig(args, "player2");
 const players = player1 && player2 ? [player1, player2] as [InitialPlayerConfig, InitialPlayerConfig] : undefined;
 
 try {
-  const replay = createReplay(seed, maxTurns, players);
-  const snapshot = replay.states[replay.states.length - 1] ?? createSnapshot(seed, maxTurns, players);
+  const replay = createReplay(seed, maxTurns, players, aiWeights, aiModel);
+  const snapshot = replay.states[replay.states.length - 1] ?? createSnapshot(seed, maxTurns, players, aiWeights, aiModel);
   writeSnapshot(snapshot, replay.states, replay.frames, output);
   console.log(`UI snapshot written: ${output}`);
   console.log(`Seed: ${snapshot.seed}`);
+  console.log(`AI model: ${snapshot.game.aiModel}`);
   console.log(`Replay states: ${replay.states.length}`);
   console.log(`Replay frames: ${replay.frames.length}`);
   console.log(`Turn: ${snapshot.game.turnNumber}`);

@@ -224,6 +224,7 @@ export interface GameState {
   phase: GamePhase;
   activePlayerId: PlayerId;
   attackingPriorityPlayerId: PlayerId;
+  currentCombatPairings: CombatPairing[];
   players: [PlayerState, PlayerState];
   stack: StackItem[];
   winnerId: PlayerId | null;

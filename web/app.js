@@ -420,6 +420,7 @@
     const panel = createElement("section", "player-panel");
     if (snapshot.game.attackingPriorityPlayerId === player.playerId) {
       panel.classList.add("priority");
+      panel.append(createElement("span", "resolution-priority", "Prioridad de resolucion"));
     }
 
     const primaryArchetype = player.archetypeIds[0];
@@ -488,6 +489,7 @@
       ["Fase", snapshot.game.phase],
       ["Estado", snapshot.game.status],
       ["Ganador", snapshot.game.winnerId || "none"],
+      ["IA", snapshot.game.aiModel || "base"],
       ["Hechizos", snapshot.eventSummary.spellsCast],
       ["Activadas", snapshot.eventSummary.abilityActivations],
     ];

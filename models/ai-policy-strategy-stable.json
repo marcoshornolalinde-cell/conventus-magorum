@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-07-01T11:26:06.985Z",
+  "startedAt": "2026-07-01T11:21:06.453Z",
+  "kind": "heuristic-policy-weights",
+  "seed": "strategy-train-stable-1",
+  "options": {
+    "seed": "strategy-train-stable-1",
+    "minutes": 5,
+    "gamesPerCandidate": 80,
+    "maxTurns": 40,
+    "mutationRate": 0.05,
+    "candidatesPerGeneration": 4
+  },
+  "baseline": {
+    "games": 80,
+    "wins": 31,
+    "losses": 49,
+    "draws": 0,
+    "winrate": 0.3875,
+    "avgTurns": 10.65,
+    "issueCounts": {
+      "all_in_no_defense_left": 13
+    },
+    "issuePenalty": 0.325,
+    "score": 0.0625
+  },
+  "best": {
+    "generation": 7,
+    "candidateIndex": 3,
+    "weights": {
+      "spellPlayWeight": 20.964,
+      "creaturePlayWeight": 48.099,
+      "manaEfficiencyWeight": 8.602,
+      "handPressureWeight": 4.089,
+      "removalTargetThreatWeight": 66.146,
+      "removalSaveForBiggerThreatWeight": 9.062,
+      "combatTrickHoldWeight": 5.204,
+      "combatTrickLethalWeight": 50.868,
+      "combatTrickSaveCreatureWeight": 6.785,
+      "attackLifePressureWeight": 15.794,
+      "attackTradeValueWeight": 3.354,
+      "attackRiskWeight": 14.757,
+      "leaveBlockerWeight": 13.556,
+      "evasionAttackWeight": 27.327,
+      "lifelinkAttackWeight": 5.084,
+      "trampleAttackWeight": 8.03,
+      "deathtouchBlockWeight": 8.939,
+      "firstStrikeTradeWeight": 8.234,
+      "activatedDrawWeight": 29.225,
+      "activatedDrawDeckoutPenalty": 36.315,
+      "graveyardRecursionWeight": 29.894,
+      "tokenCreationWeight": 39.002,
+      "pumpTargetQualityWeight": 12.228,
+      "auraEquipmentTimingWeight": 32.776,
+      "instantSpeedPatienceWeight": 23.341,
+      "lethalDetectionWeight": 100.336,
+      "survivalDetectionWeight": 67.149,
+      "strategyAggroCreatureDeploymentWeight": 21.572,
+      "strategyAggroAttackWeight": 18.896,
+      "strategyControlInteractionWeight": 10.803,
+      "strategyControlThreatPatienceWeight": 11.491,
+      "strategyControlResourceWeight": 19.575,
+      "strategyTempoAccelerationWeight": 32.642,
+      "strategyTempoThreatDeploymentWeight": 22.305,
+      "strategyRaceAttackWeight": 12.512,
+      "strategyStabilizeBlockerWeight": 21.52,
+      "strategyResourceDevelopmentWeight": 33.484
+    },
+    "evaluation": {
+      "games": 80,
+      "wins": 50,
+      "losses": 30,
+      "draws": 0,
+      "winrate": 0.625,
+      "avgTurns": 10.775,
+      "issueCounts": {
+        "all_in_no_defense_left": 5
+      },
+      "issuePenalty": 0.125,
+      "score": 0.5
+    }
+  }
+}

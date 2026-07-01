@@ -19,6 +19,10 @@ function isCreature(instance: CardInstance): boolean {
   return instance.card.cardTypes.includes("Creature");
 }
 
+function isInstant(instance: CardInstance): boolean {
+  return instance.card.cardTypes.includes("Instant");
+}
+
 function entersTapped(instance: CardInstance): boolean {
   return /\benters tapped\b/i.test(instance.card.gameText);
 }
@@ -145,27 +149,23 @@ export function getLegalActions(game: GameState, playerId: PlayerId): LegalActio
     actions.push(...getActivatedAbilityActions(game, playerId));
   }
 
-  if (isMainPhase(game.phase) && game.stack.length > 0) {
+  if ((isMainPhase(game.phase) || game.phase === "combat") && game.stack.length > 0) {
     for (const cardInstance of player.hand) {
-      if (
-        !isCreature(cardInstance) &&
-        /Counter target spell/i.test(cardInstance.card.gameText) &&
-        canPayFullSpellCost(player, cardInstance)
-      ) {
+      if (!isCreature(cardInstance) && isInstant(cardInstance) && canPayFullSpellCost(player, cardInstance)) {
         actions.push(...createCastSpellActions(game, player, cardInstance));
       }
     }
   }
 
-  if (isMainPhase(game.phase) && game.stack.length === 0) {
+  if ((isMainPhase(game.phase) || game.phase === "combat") && game.stack.length === 0) {
     for (const cardInstance of player.hand) {
-      if (isCreature(cardInstance) && canPayManaCost(player.manaPool, getEffectiveManaCost(player, cardInstance))) {
+      if (isMainPhase(game.phase) && isCreature(cardInstance) && canPayManaCost(player.manaPool, getEffectiveManaCost(player, cardInstance))) {
         actions.push({
           type: "playCreature",
           playerId,
           cardInstanceId: cardInstance.instanceId,
         });
-      } else if (!isCreature(cardInstance) && canPayFullSpellCost(player, cardInstance)) {
+      } else if (!isCreature(cardInstance) && (isMainPhase(game.phase) || isInstant(cardInstance)) && canPayFullSpellCost(player, cardInstance)) {
         actions.push(...createCastSpellActions(game, player, cardInstance));
       }
     }

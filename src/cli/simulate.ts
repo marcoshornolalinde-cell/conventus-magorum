@@ -1,5 +1,6 @@
 import { writeFileSync } from "node:fs";
 
+import { loadAiPolicyModel } from "../ai/model.js";
 import { loadContentBundle } from "../data/loadContent.js";
 import { runSimulation } from "../simulate/runSimulation.js";
 
@@ -28,8 +29,10 @@ const games = readNumberArg(args, "games", 1000);
 const maxTurns = readNumberArg(args, "maxTurns", 40);
 const top = readNumberArg(args, "top", 10);
 const seed = readStringArg(args, "seed", "simulation-seed");
+const modelPath = readStringArg(args, "model", "");
+const model = modelPath ? loadAiPolicyModel(modelPath) : null;
 const json = args.includes("--json");
-const result = runSimulation(loadContentBundle(), { games, maxTurns, seed, topCards: top });
+const result = runSimulation(loadContentBundle(), { games, maxTurns, seed, topCards: top, aiWeights: model?.weights });
 
 if (result.errors.length > 0) {
   const errorPath = `simulation-errors-${seed.replace(/[^a-z0-9_-]/gi, "_")}.json`;
@@ -42,6 +45,7 @@ if (json) {
 } else {
   console.log(`Simulation`);
   console.log(`Seed: ${seed}`);
+  console.log(`AI model: ${model?.sourcePath ?? "base"}`);
   console.log(`Games: ${result.completedGames}/${result.games}`);
   console.log(`Game overs: ${result.gameOvers}`);
   console.log(`Average turns: ${result.avgTurns.toFixed(2)}`);

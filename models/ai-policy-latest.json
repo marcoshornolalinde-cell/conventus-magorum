@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-06-30T18:33:44.535Z",
+  "startedAt": "2026-06-30T18:18:43.644Z",
+  "kind": "heuristic-policy-weights",
+  "seed": "ai-train-15m",
+  "options": {
+    "seed": "ai-train-15m",
+    "minutes": 15,
+    "gamesPerCandidate": 24,
+    "maxTurns": 40,
+    "mutationRate": 0.08,
+    "candidatesPerGeneration": 6
+  },
+  "baseline": {
+    "games": 24,
+    "wins": 14,
+    "losses": 10,
+    "draws": 0,
+    "winrate": 0.5833333333333334,
+    "avgTurns": 9.958333333333334,
+    "issueCounts": {
+      "all_in_no_defense_left": 2
+    },
+    "issuePenalty": 0.05,
+    "score": 0.5333333333333333
+  },
+  "best": {
+    "generation": 63,
+    "candidateIndex": 4,
+    "weights": {
+      "spellPlayWeight": 2.682,
+      "creaturePlayWeight": 40.865,
+      "manaEfficiencyWeight": 5.942,
+      "handPressureWeight": 0,
+      "removalTargetThreatWeight": 68.443,
+      "removalSaveForBiggerThreatWeight": 0,
+      "combatTrickHoldWeight": 0,
+      "combatTrickLethalWeight": 35.687,
+      "combatTrickSaveCreatureWeight": 31.616,
+      "attackLifePressureWeight": 19.159,
+      "attackTradeValueWeight": 11.497,
+      "attackRiskWeight": 16.197,
+      "leaveBlockerWeight": 8.79,
+      "evasionAttackWeight": 15.91,
+      "lifelinkAttackWeight": 4.322,
+      "trampleAttackWeight": 19.193,
+      "deathtouchBlockWeight": 16.067,
+      "firstStrikeTradeWeight": 11.347,
+      "activatedDrawWeight": 36.93,
+      "activatedDrawDeckoutPenalty": 6.61,
+      "graveyardRecursionWeight": 36.047,
+      "tokenCreationWeight": 36.808,
+      "pumpTargetQualityWeight": 17.267,
+      "auraEquipmentTimingWeight": 31.022,
+      "instantSpeedPatienceWeight": 20.54,
+      "lethalDetectionWeight": 93.988,
+      "survivalDetectionWeight": 81.264
+    },
+    "evaluation": {
+      "games": 24,
+      "wins": 19,
+      "losses": 5,
+      "draws": 0,
+      "winrate": 0.7916666666666666,
+      "avgTurns": 10.25,
+      "issueCounts": {},
+      "issuePenalty": 0,
+      "score": 0.7916666666666666
+    }
+  }
+}
