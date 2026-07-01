@@ -82,6 +82,13 @@ const weightBounds: Record<keyof AiPolicyWeights, [number, number]> = {
   strategyRaceAttackWeight: [0, 120],
   strategyStabilizeBlockerWeight: [0, 120],
   strategyResourceDevelopmentWeight: [0, 120],
+  matchupBeatdownPressureWeight: [0, 140],
+  matchupControlAnswerWeight: [0, 140],
+  matchupControlBlockerWeight: [0, 120],
+  manaCurveDevelopmentWeight: [0, 100],
+  cardAdvantagePreservationWeight: [0, 120],
+  lethalSetupRemovalWeight: [0, 160],
+  crackbackRiskWeight: [0, 140],
 };
 
 const issueWeights: Record<string, number> = {

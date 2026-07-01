@@ -72,6 +72,18 @@ describe("AI strategy", () => {
     expect(profile.raceScore).toBeGreaterThan(0);
   });
 
+  it("assigns a dynamic matchup role in addition to deck identity", () => {
+    const aggroGame = createGame(["cats", "goblins"], ["wizards", "pirates"], "strategy-role-aggro");
+    const controlGame = createGame(["wizards", "pirates"], ["cats", "goblins"], "strategy-role-control");
+
+    const aggroProfile = analyzeAiStrategy(aggroGame, aggroGame.players[0].playerId);
+    const controlProfile = analyzeAiStrategy(controlGame, controlGame.players[0].playerId);
+
+    expect(aggroProfile.matchupRole).toBe("beatdown");
+    expect(aggroProfile.matchupRoleConfidence).toBeGreaterThan(0);
+    expect(controlProfile.matchupRole).not.toBe("beatdown");
+  });
+
   it("moves into a stabilizing posture when behind on board and life", () => {
     const game = createGame(["wizards", "pirates"], ["cats", "goblins"], "strategy-stabilize");
     const player = game.players[0];

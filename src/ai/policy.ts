@@ -3,7 +3,7 @@ import { canAttack, canBlock, canDefend, getCreatureStats, getCreaturesOnBattlef
 import { getEffectiveManaCost } from "../core/costs.js";
 import { getSpellProfile } from "../core/spells.js";
 import type { Card, CardInstance, CombatPlan, GameState, LegalAction, PlayerId, PlayerState } from "../core/types.js";
-import { analyzeAiStrategy, type AiDeckStrategyKind, type AiStrategicPosture, type AiStrategyProfile } from "./strategy.js";
+import { analyzeAiStrategy, type AiDeckStrategyKind, type AiMatchupRole, type AiStrategicPosture, type AiStrategyProfile } from "./strategy.js";
 
 export interface AiPolicyWeights {
   spellPlayWeight: number;
@@ -43,6 +43,13 @@ export interface AiPolicyWeights {
   strategyRaceAttackWeight: number;
   strategyStabilizeBlockerWeight: number;
   strategyResourceDevelopmentWeight: number;
+  matchupBeatdownPressureWeight: number;
+  matchupControlAnswerWeight: number;
+  matchupControlBlockerWeight: number;
+  manaCurveDevelopmentWeight: number;
+  cardAdvantagePreservationWeight: number;
+  lethalSetupRemovalWeight: number;
+  crackbackRiskWeight: number;
 }
 
 export const defaultAiPolicyWeights: AiPolicyWeights = {
@@ -83,6 +90,13 @@ export const defaultAiPolicyWeights: AiPolicyWeights = {
   strategyRaceAttackWeight: 22,
   strategyStabilizeBlockerWeight: 20,
   strategyResourceDevelopmentWeight: 18,
+  matchupBeatdownPressureWeight: 20,
+  matchupControlAnswerWeight: 24,
+  matchupControlBlockerWeight: 18,
+  manaCurveDevelopmentWeight: 14,
+  cardAdvantagePreservationWeight: 18,
+  lethalSetupRemovalWeight: 36,
+  crackbackRiskWeight: 18,
 };
 
 export type AiSpellIntentTag =
@@ -122,6 +136,8 @@ export interface AiDecisionFeatures {
   strategicPosture: AiStrategicPosture;
   strategicConfidence: number;
   strategyEnabled: boolean;
+  matchupRole: AiMatchupRole;
+  matchupRoleConfidence: number;
   raceScore: number;
   resourceNeed: number;
 }
@@ -249,6 +265,8 @@ function getBaseFeatures(
     strategicPosture: strategy.posture,
     strategicConfidence: strategy.strategicConfidence,
     strategyEnabled: strategy.strategyEnabled,
+    matchupRole: strategy.matchupRole,
+    matchupRoleConfidence: strategy.matchupRoleConfidence,
     raceScore: strategy.raceScore,
     resourceNeed: strategy.resourceNeed,
   };
@@ -256,6 +274,14 @@ function getBaseFeatures(
 
 function getStrategyScale(strategy: AiStrategyProfile): number {
   return strategy.strategyEnabled ? strategy.strategicConfidence : 0;
+}
+
+function getMatchupRoleScale(strategy: AiStrategyProfile, role: AiMatchupRole): number {
+  return strategy.matchupRole === role ? strategy.matchupRoleConfidence : 0;
+}
+
+function estimateBattlefieldPower(player: PlayerState): number {
+  return getCreaturesOnBattlefield(player).reduce((total, creature) => total + Math.max(0, getCreatureStats(creature).power), 0);
 }
 
 function scoreStrategicSpellModifier(
@@ -699,12 +725,18 @@ function scoreSpellAction(
   const threat = targetThreat(game, playerId, action.targetIds);
   const ownQuality = ownTargetQuality(game, playerId, action.targetIds);
   const combatImpact = scoreCombatResolutionImpact(game, playerId, action);
+  const beatdownScale = getMatchupRoleScale(strategy, "beatdown");
+  const controlScale = getMatchupRoleScale(strategy, "control");
   let score = weights.spellPlayWeight;
 
   if (tags.includes("removal")) {
     score += weights.removalTargetThreatWeight + threat * 3;
     if (threat < 6) score -= weights.removalSaveForBiggerThreatWeight;
     if (game.phase === "combat" && combatImpact > 0) score += combatImpact;
+    if (controlScale > 0) score += weights.matchupControlAnswerWeight * controlScale;
+    if (beatdownScale > 0 && opponent.lifeTotal <= estimateBattlefieldPower(player) + 4) {
+      score += weights.lethalSetupRemovalWeight * beatdownScale;
+    }
   }
 
   if (tags.includes("counter")) {
@@ -739,17 +771,22 @@ function scoreSpellAction(
     score += weights.activatedDrawWeight;
     score += Math.max(0, 5 - player.hand.length) * weights.handPressureWeight;
     if (player.spellDeck.length <= 2) score -= weights.activatedDrawDeckoutPenalty;
+    if (controlScale > 0 && strategy.boardControlled) score += weights.cardAdvantagePreservationWeight * controlScale;
   }
 
   if (tags.includes("tokens")) score += weights.tokenCreationWeight;
   if (tags.includes("recursion")) score += weights.graveyardRecursionWeight + ownQuality;
   if (tags.includes("persistentAttachment")) score += weights.auraEquipmentTimingWeight + ownQuality + threat;
   if (tags.includes("manaDevelopment")) score += Math.max(0, 6 - game.turnNumber) * weights.manaEfficiencyWeight;
+  if (tags.includes("manaDevelopment") && strategy.deckKind === "tempo") score += weights.manaCurveDevelopmentWeight * getStrategyScale(strategy);
   if (tags.includes("lifeGain") && player.lifeTotal <= 8) score += weights.survivalDetectionWeight;
 
   score += (card?.card.manaValue ?? 0) * weights.manaEfficiencyWeight;
   score -= action.additionalCosts.length * 4;
   score += scoreStrategicSpellModifier(tags, strategy, weights);
+  if (tags.includes("combatTrick") && (game.phase !== "combat" || !hasKnownCombatPairings(game) || combatImpact <= 0)) {
+    score = Math.min(score, -weights.combatTrickHoldWeight);
+  }
 
   return {
     ...getBaseFeatures(game, playerId, "castSpell", score, tags, strategy, threat, ownQuality),
@@ -773,6 +810,8 @@ function scoreCreatureAction(
   let score = weights.creaturePlayWeight + (card?.card.manaValue ?? 0) * weights.manaEfficiencyWeight;
   const tags: string[] = ["creature"];
   const strategyScale = getStrategyScale(strategy);
+  const beatdownScale = getMatchupRoleScale(strategy, "beatdown");
+  const controlScale = getMatchupRoleScale(strategy, "control");
 
   score += stats.power * 2 + stats.toughness;
 
@@ -800,9 +839,19 @@ function scoreCreatureAction(
     tags.push("strategyAggroCurve");
   }
 
+  if (beatdownScale > 0 && card && card.card.manaValue <= Math.max(2, game.turnNumber + 1) && !hasSubtype(card, "Wall")) {
+    score += weights.matchupBeatdownPressureWeight * beatdownScale;
+    tags.push("matchupBeatdown");
+  }
+
   if (strategy.deckKind === "control" && strategy.posture !== "stabilize" && game.turnNumber < 6) {
     score -= weights.strategyControlThreatPatienceWeight * strategyScale;
     tags.push("strategyControlPatience");
+  }
+
+  if (controlScale > 0 && card && card.card.manaValue <= 2 && stats.toughness <= 1 && strategy.boardControlled) {
+    score -= weights.cardAdvantagePreservationWeight * 0.35 * controlScale;
+    tags.push("matchupControlPatience");
   }
 
   if (strategy.deckKind === "tempo" && card && (card.card.manaValue >= 4 || stats.power >= 4 || isEvasive(card))) {
@@ -864,6 +913,8 @@ function scoreActivatedAction(
   const combatImpact = scoreCombatResolutionImpact(game, playerId, action);
   const tags: string[] = ["activated"];
   const strategyScale = getStrategyScale(strategy);
+  const beatdownScale = getMatchupRoleScale(strategy, "beatdown");
+  const controlScale = getMatchupRoleScale(strategy, "control");
   let score = 0;
 
   if (/destroy/i.test(abilityId)) {
@@ -898,6 +949,8 @@ function scoreActivatedAction(
   if ((tags.includes("boardDevelopment") || tags.includes("pump")) && strategy.deckKind === "tempo") score += weights.strategyTempoThreatDeploymentWeight * 0.5 * strategyScale;
   if (strategy.posture === "race" && (tags.includes("pump") || tags.includes("lifeDrain") || tags.includes("evasion"))) score += weights.strategyRaceAttackWeight * strategyScale;
   if (strategy.posture === "stabilize" && tags.includes("removal")) score += weights.strategyStabilizeBlockerWeight * strategyScale;
+  if (tags.includes("removal")) score += weights.matchupControlAnswerWeight * controlScale;
+  if (tags.includes("lifeDrain") || tags.includes("evasion")) score += weights.matchupBeatdownPressureWeight * beatdownScale;
   if (/attacking_(pump|counter)/i.test(abilityId) && attackerCount === 0) score = -40;
   if (game.phase === "combat" && tags.includes("combatTrick")) {
     score = combatImpact > 0 ? score + combatImpact : -40;
@@ -976,13 +1029,19 @@ export function chooseCombatPlanWithPolicy(
   const opponent = getOpponent(game, playerId);
   const strategy = analyzeAiStrategy(game, playerId);
   const strategyScale = getStrategyScale(strategy);
+  const beatdownScale = getMatchupRoleScale(strategy, "beatdown");
+  const controlScale = getMatchupRoleScale(strategy, "control");
   const ownCreatures = getCreaturesOnBattlefield(player);
   const opponentBlockers = getCreaturesOnBattlefield(opponent).filter(canDefend);
+  const opponentPotentialDamage = estimateBattlefieldPower(opponent);
   const attackers = ownCreatures
     .filter((creature) => canAttack(creature, game.turnNumber))
     .filter((creature) => {
       const stats = getCreatureStats(creature);
       let score = stats.power * weights.attackLifePressureWeight;
+      const blockerRisk = maxAvailableBlockerRisk(creature, opponentBlockers);
+      const canConnect = opponentBlockers.every((blocker) => !canBlock(creature, blocker));
+      const crackbackIsDangerous = opponentPotentialDamage >= player.lifeTotal - 2;
 
       if (opponent.lifeTotal <= stats.power) score += weights.lethalDetectionWeight;
       if (isEvasive(creature)) score += weights.evasionAttackWeight;
@@ -992,13 +1051,24 @@ export function chooseCombatPlanWithPolicy(
       if (strategy.deckKind === "aggro") score += weights.strategyAggroAttackWeight * strategyScale;
       if (strategy.posture === "race") score += weights.strategyRaceAttackWeight * strategyScale;
       if (strategy.posture === "press") score += weights.strategyAggroAttackWeight * 0.5 * strategyScale;
+      score += weights.matchupBeatdownPressureWeight * beatdownScale;
 
-      score -= maxAvailableBlockerRisk(creature, opponentBlockers) * weights.attackRiskWeight;
+      score -= blockerRisk * weights.attackRiskWeight;
       if (player.lifeTotal <= 8 && canDefend(creature)) score -= weights.leaveBlockerWeight * Math.max(1, opponentBlockers.length);
       if (strategy.posture === "stabilize" && canDefend(creature)) score -= weights.strategyStabilizeBlockerWeight * Math.max(1, opponentBlockers.length) * strategyScale;
       if (strategy.deckKind === "control" && strategy.posture !== "race" && canDefend(creature)) score -= weights.strategyControlThreatPatienceWeight * 0.5 * strategyScale;
+      if (controlScale > 0 && canDefend(creature) && crackbackIsDangerous) {
+        score -= weights.matchupControlBlockerWeight * Math.max(1, opponentBlockers.length) * controlScale;
+      }
+      if (canDefend(creature) && strategy.posture !== "race" && beatdownScale < 0.4 && crackbackIsDangerous) {
+        score -= weights.crackbackRiskWeight * Math.max(1, opponentPotentialDamage - player.lifeTotal + 3);
+      }
 
-      return score > weights.attackTradeValueWeight || stats.power >= 2 || stats.power >= stats.toughness;
+      return (
+        score > weights.attackTradeValueWeight ||
+        opponent.lifeTotal <= stats.power ||
+        (canConnect && stats.power > 0 && (beatdownScale > 0.35 || player.lifeTotal > opponentPotentialDamage + 4))
+      );
     });
   const attackerIds = new Set(attackers.map((creature) => creature.instanceId));
   const defenderIds = ownCreatures

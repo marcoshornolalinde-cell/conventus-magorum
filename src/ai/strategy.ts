@@ -4,6 +4,7 @@ import type { Card, CardInstance, GameState, PlayerId, PlayerState } from "../co
 
 export type AiDeckStrategyKind = "aggro" | "control" | "tempo" | "balanced";
 export type AiStrategicPosture = "press" | "race" | "stabilize" | "develop" | "resource";
+export type AiMatchupRole = "beatdown" | "control" | "balanced";
 
 export interface AiDeckStrategyMetrics {
   cardCount: number;
@@ -16,6 +17,10 @@ export interface AiDeckStrategyMetrics {
   combatTrickCount: number;
   manaDevelopmentCount: number;
   evasionCount: number;
+  totalCreaturePower: number;
+  damagePlanScore: number;
+  answerPlanScore: number;
+  inevitabilityScore: number;
   averageManaValue: number;
   aggroScore: number;
   controlScore: number;
@@ -27,6 +32,8 @@ export interface AiStrategyProfile {
   posture: AiStrategicPosture;
   strategicConfidence: number;
   strategyEnabled: boolean;
+  matchupRole: AiMatchupRole;
+  matchupRoleConfidence: number;
   metrics: AiDeckStrategyMetrics;
   boardPowerDelta: number;
   boardToughnessDelta: number;
@@ -129,6 +136,7 @@ export function analyzeDeckStrategy(player: PlayerState): { deckKind: AiDeckStra
   const combatTricks = nonLands.filter(isCombatTrick);
   const manaDevelopment = nonLands.filter(isManaDevelopment);
   const evasion = creatures.filter(isEvasiveCard);
+  const totalCreaturePower = creatures.reduce((total, card) => total + getCardPower(card), 0);
   const averageManaValue = nonLands.length === 0
     ? 0
     : nonLands.reduce((total, card) => total + card.manaValue, 0) / nonLands.length;
@@ -152,6 +160,10 @@ export function analyzeDeckStrategy(player: PlayerState): { deckKind: AiDeckStra
     combatTrickCount: combatTricks.length,
     manaDevelopmentCount: manaDevelopment.length,
     evasionCount: evasion.length,
+    totalCreaturePower,
+    damagePlanScore: totalCreaturePower + cheapCreatures.length * 3 + evasion.length * 2 + combatTricks.length * 1.5,
+    answerPlanScore: removal.length * 4 + cardAdvantage.length * 2 + Math.max(0, averageManaValue - 3) * 1.5,
+    inevitabilityScore: bigThreats.length * 4 + cardAdvantage.length * 3 + manaDevelopment.length * 2 + averageManaValue,
     averageManaValue,
     aggroScore: cheapCreatureRatio * 42 + creatureRatio * 24 + combatTricks.length * 1.6 + evasionRatio * 14 - averageManaValue * 3 - bigThreatRatio * 8,
     controlScore: interactionRatio * 48 + cardAdvantageRatio * 34 + averageManaValue * 4 - cheapCreatureRatio * 10 + Math.max(0, 0.55 - creatureRatio) * 12,
@@ -164,6 +176,33 @@ export function analyzeDeckStrategy(player: PlayerState): { deckKind: AiDeckStra
     ...classification,
     strategyEnabled: classification.deckKind !== "balanced" && classification.confidence >= 0.35,
     metrics,
+  };
+}
+
+function chooseMatchupRole(
+  playerDeck: ReturnType<typeof analyzeDeckStrategy>,
+  opponentDeck: ReturnType<typeof analyzeDeckStrategy>,
+  raceScore: number,
+  boardControlled: boolean,
+): { matchupRole: AiMatchupRole; matchupRoleConfidence: number } {
+  const ownDamage = playerDeck.metrics.damagePlanScore;
+  const opponentDamage = opponentDeck.metrics.damagePlanScore;
+  const ownAnswers = playerDeck.metrics.answerPlanScore;
+  const opponentAnswers = opponentDeck.metrics.answerPlanScore;
+  const ownInevitability = playerDeck.metrics.inevitabilityScore;
+  const opponentInevitability = opponentDeck.metrics.inevitabilityScore;
+  const beatdownScore = ownDamage - opponentDamage * 0.7 + opponentInevitability * 0.35 - ownInevitability * 0.2 + raceScore * 0.35;
+  const controlScore = ownAnswers - opponentAnswers * 0.45 + ownInevitability - opponentInevitability * 0.45 + (boardControlled ? 3 : -2) - raceScore * 0.25;
+  const delta = beatdownScore - controlScore;
+  const confidence = clamp01(Math.abs(delta) / 18);
+
+  if (confidence < 0.2) {
+    return { matchupRole: "balanced", matchupRoleConfidence: 0 };
+  }
+
+  return {
+    matchupRole: delta > 0 ? "beatdown" : "control",
+    matchupRoleConfidence: confidence,
   };
 }
 
@@ -220,6 +259,7 @@ export function analyzeAiStrategy(game: GameState, playerId: PlayerId): AiStrate
   }
 
   const deck = analyzeDeckStrategy(player);
+  const opponentDeck = analyzeDeckStrategy(opponent);
   const ownStats = sumBoardStats(getCreaturesOnBattlefield(player));
   const opponentStats = sumBoardStats(getCreaturesOnBattlefield(opponent));
   const boardPowerDelta = ownStats.power - opponentStats.power;
@@ -230,6 +270,7 @@ export function analyzeAiStrategy(game: GameState, playerId: PlayerId): AiStrate
   const raceScore = boardPowerDelta + lifeDelta * 0.45 + ownStats.evasivePower * 1.4 + opponentClock * 10 - ownClockRisk * 8;
   const resourceNeed = Math.max(0, Math.min(1, (4 - player.hand.length) / 4 + Math.max(0, 4 - game.turnNumber) * 0.08));
   const boardControlled = boardPowerDelta >= -2 && boardToughnessDelta >= -3 && player.lifeTotal > 8;
+  const matchupRole = chooseMatchupRole(deck, opponentDeck, raceScore, boardControlled);
   const posture = choosePosture(deck.deckKind, boardPowerDelta, boardToughnessDelta, lifeDelta, raceScore, resourceNeed, boardControlled);
 
   return {
@@ -237,6 +278,8 @@ export function analyzeAiStrategy(game: GameState, playerId: PlayerId): AiStrate
     posture,
     strategicConfidence: deck.confidence,
     strategyEnabled: deck.strategyEnabled,
+    matchupRole: matchupRole.matchupRole,
+    matchupRoleConfidence: matchupRole.matchupRoleConfidence,
     metrics: deck.metrics,
     boardPowerDelta,
     boardToughnessDelta,

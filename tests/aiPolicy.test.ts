@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { auditAiGames } from "../src/ai/audit.js";
-import { defaultAiPolicyWeights, getSpellIntentTags, scoreLegalAction } from "../src/ai/policy.js";
+import { chooseCombatPlanWithPolicy, defaultAiPolicyWeights, getSpellIntentTags, scoreLegalAction } from "../src/ai/policy.js";
 import { createInitialGame } from "../src/core/gameState.js";
 import type { Card, CardInstance, ContentBundle, PlayerState } from "../src/core/types.js";
 import { loadContentBundle } from "../src/data/loadContent.js";
@@ -146,6 +146,34 @@ describe("AI policy", () => {
     });
 
     expect(features.score).toBeLessThan(0);
+  });
+
+  it("keeps blockers back when crackback damage is dangerous", () => {
+    const game = createInitialGame(content, {
+      seed: "ai-crackback-risk",
+      players: [
+        { id: "player1", archetypeIds: ["wizards", "pirates"] },
+        { id: "player2", archetypeIds: ["cats", "goblins"] },
+      ],
+    });
+    const player = game.players[0];
+    const opponent = game.players[1];
+    const defender = findPoolCard(player, "brineborn_cutthroat");
+    const firstAttacker = findPoolCard(opponent, "savannah_lions");
+    const secondAttacker = findPoolCard(opponent, "raging_redcap");
+
+    game.turnNumber = 6;
+    player.lifeTotal = 4;
+    defender.enteredTurn = 0;
+    firstAttacker.enteredTurn = 0;
+    secondAttacker.enteredTurn = 0;
+    player.battlefield = [defender];
+    opponent.battlefield = [firstAttacker, secondAttacker];
+
+    const plan = chooseCombatPlanWithPolicy(game, player.playerId);
+
+    expect(plan.attackerIds).not.toContain(defender.instanceId);
+    expect(plan.defenderIds).toContain(defender.instanceId);
   });
 
   it("audits a small deterministic batch of AI games", () => {
